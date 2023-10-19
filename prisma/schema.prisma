@@ -1,20 +1,55 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
 }
 
-datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+model Quest {
+  id           Int     @id @default(autoincrement())
+  description      String?
+  owner        User    @relation(fields: [userId], references: [id])
+  tags         Tag[]
+  tasks        Task[]
+  title        String
+  userId       Int     @unique
+
+  @@unique([title, userId])
+}
+
+model Tag {
+  id     Int     @id @default(autoincrement())
+  name   String
+  owner  User    @relation(fields: [userId], references: [id])
+  quests Quest[]
+  userId Int     @unique
+
+  @@unique([name, userId])
+}
+
+model Task {
+  id           Int       @id @default(autoincrement())
+  isCompleted    Boolean   @default(false)
+  deadline     DateTime?
+  description      String?
+  difficulty   Int
+  minutesSpent Int?       @default(0)
+  quest        Quest?    @relation(fields: [questId], references: [id])
+  questId      Int?      @unique
+  title        String    @default("New Task")
+
+  @@unique([title, questId])
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  password  String
+  id    Int    @id @default(autoincrement())
+  email String? @unique
+  name  String
+  phoneNumber String? @unique
+
+  quests Quest[]
+  tags   Tag[]
 }

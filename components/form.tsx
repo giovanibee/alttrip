@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { FormEvent, useMemo, useState } from 'react'
 import { signIn } from 'next-auth/react'
 import LoadingDots from '@/components/loading-dots'
 import toast from 'react-hot-toast'
@@ -10,75 +10,106 @@ import { useRouter } from 'next/navigation'
 export default function Form({ type }: { type: 'login' | 'register' }) {
 	const [loading, setLoading] = useState(false)
 	const router = useRouter()
+	const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		setLoading(true)
+		if (type === 'login') {
+			const { error } =
+				(await signIn('credentials', {
+					redirect: false,
+					email: event.currentTarget.email.value,
+					password: event.currentTarget.password.value,
+				})) || {}
+			if (error) {
+				console.log(error)
+				setLoading(false)
+				return toast.error(error.toString())
+			}
+			router.refresh()
+			return router.push('/protected')
+		}
+		const response = await fetch('/api/auth/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				email: event.currentTarget.email.value,
+				name: event.currentTarget.nameOfUser.value,
+				password: event.currentTarget.password.value,
+			}),
+		})
+		setLoading(false)
+		if (response.status === 200) {
+			toast.success('Account created! Redirecting to login...')
+			return setTimeout(() => router.push('/login'), 1000)
+		}
+		const { error } = await response.json()
+		toast.error(error)
+	}
+
+	const callToAction = useMemo(() => {
+		const className = `${loading ? 'loading' : 'not-loading'} something`
+		const content = loading ? (
+			<LoadingDots color="#808080" />
+		) : (
+			<p>{type === 'login' ? 'Sign In' : 'Sign Up'}</p>
+		)
+		return (
+			<button disabled={loading} className={className}>
+				{content}
+			</button>
+		)
+	}, [loading, type])
+
+	const additionalText = useMemo(
+		() =>
+			type === 'login' ? (
+				<p className="text-center text-sm text-gray-600">
+					{"Don't have an account? "}
+					<Link href="/register">Sign up</Link>
+					{' for free.'}
+				</p>
+			) : (
+				<p className="text-center text-sm text-gray-600">
+					Already have an account? <Link href="/login">Sign in</Link> instead.
+				</p>
+			),
+		[type],
+	)
 
 	return (
-		<form
-			onSubmit={(e) => {
-				e.preventDefault()
-				setLoading(true)
-				if (type === 'login') {
-					signIn('credentials', {
-						redirect: false,
-						email: e.currentTarget.email.value,
-						password: e.currentTarget.password.value,
-						// @ts-ignore
-					}).then(({ error }) => {
-						if (error) {
-							setLoading(false)
-							toast.error(error)
-						} else {
-							router.refresh()
-							router.push('/protected')
-						}
-					})
-				} else {
-					fetch('/api/auth/register', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify({
-							email: e.currentTarget.email.value,
-							password: e.currentTarget.password.value,
-						}),
-					}).then(async (res) => {
-						setLoading(false)
-						if (res.status === 200) {
-							toast.success('Account created! Redirecting to login...')
-							setTimeout(() => {
-								router.push('/login')
-							}, 2000)
-						} else {
-							const { error } = await res.json()
-							toast.error(error)
-						}
-					})
-				}
-			}}
-			className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
-		>
+		<form onSubmit={onSubmit} className="flex">
 			<div>
-				<label
-					htmlFor="email"
-					className="block text-xs text-gray-600 uppercase"
-				>
+				<label htmlFor="email" className="block">
 					Email Address
 				</label>
 				<input
 					id="email"
 					name="email"
 					type="email"
-					placeholder="panic@thedis.co"
+					placeholder="discoclown@email.co"
 					autoComplete="email"
 					required
-					className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+					className="border"
 				/>
 			</div>
+			{type !== 'login' && (
+				<div>
+					<label htmlFor="name" className="block">
+						Name
+					</label>
+					<input
+						id="nameOfUser"
+						name="nameOfUser"
+						placeholder="Sir Cottontail"
+						required
+						className="border"
+					/>
+				</div>
+			)}
 			<div>
-				<label
-					htmlFor="password"
-					className="block text-xs text-gray-600 uppercase"
-				>
+				<label htmlFor="password" className="block">
 					Password
 				</label>
 				<input
@@ -86,40 +117,11 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 					name="password"
 					type="password"
 					required
-					className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+					className="border"
 				/>
 			</div>
-			<button
-				disabled={loading}
-				className={`${
-					loading
-						? 'cursor-not-allowed border-gray-200 bg-gray-100'
-						: 'border-black bg-black text-white hover:bg-white hover:text-black'
-				} flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
-			>
-				{loading ? (
-					<LoadingDots color="#808080" />
-				) : (
-					<p>{type === 'login' ? 'Sign In' : 'Sign Up'}</p>
-				)}
-			</button>
-			{type === 'login' ? (
-				<p className="text-center text-sm text-gray-600">
-					Don&apos;t have an account?{' '}
-					<Link href="/register" className="font-semibold text-gray-800">
-						Sign up
-					</Link>{' '}
-					for free.
-				</p>
-			) : (
-				<p className="text-center text-sm text-gray-600">
-					Already have an account?{' '}
-					<Link href="/login" className="font-semibold text-gray-800">
-						Sign in
-					</Link>{' '}
-					instead.
-				</p>
-			)}
+			{callToAction}
+			{additionalText}
 		</form>
 	)
 }

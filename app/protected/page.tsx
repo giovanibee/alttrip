@@ -10,7 +10,7 @@ export default function Home() {
 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 					allowFullScreen
 					className="w-full max-w-screen-lg aspect-video"
-				></iframe>
+				/>
 				<SignOut />
 			</div>
 		</div>

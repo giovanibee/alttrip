@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev": "prisma generate && turbo dev",
+    "preinstall": "npx only-allow pnpm",
+    "dev": "pnpm build && next dev",
     "prettier": "prettier --write .",
     "lint:fix": "eslint --fix .",
     "build": "prisma generate && prisma db push && next build",
@@ -14,7 +15,7 @@
     "@types/react": "^18.0.25",
     "bcrypt": "^5.1.0",
     "next": "^13.4.2",
-    "next-auth": "^4.22.1",
+    "next-auth": "^4.24.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
@@ -36,8 +37,12 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "eslint --fix",
-    "*.{json,js,ts,jsx,tsx,html}": [
+    "**/*.{json,js,ts,jsx,tsx,html}": [
       "prettier --write --ignore-unknown"
     ]
+  },
+  "packageManager": "pnpm@8.9.2",
+  "prisma": {
+    "schema": "lib/prisma/schema.prisma"
   }
 }

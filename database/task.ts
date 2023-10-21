@@ -30,7 +30,12 @@ const getAllByQuestId = (id: number) =>
 
 const getByTitle = (title: string, questId: number) =>
 	prisma.task.findUnique({
-		where: { title, questId },
+		where: {
+			title_questId: {
+				title,
+				questId,
+			},
+		},
 	})
 
 const updateById = (id: number, data: UpdateData) =>

@@ -10,42 +10,44 @@ import { useRouter } from 'next/navigation'
 export default function Form({ type }: { type: 'login' | 'register' }) {
 	const [loading, setLoading] = useState(false)
 	const router = useRouter()
-	const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault()
-		setLoading(true)
-		if (type === 'login') {
-			const { error } =
-				(await signIn('credentials', {
-					redirect: false,
-					email: event.currentTarget.email.value,
-					password: event.currentTarget.password.value,
-				})) || {}
-			if (error) {
-				console.log(error)
-				setLoading(false)
-				return toast.error(error.toString())
-			}
-			router.refresh()
-			return router.push('/protected')
+
+	const onLogin = async (email: string, password: string) => {
+		const response = await signIn('credentials', { email, password })
+
+		if (response?.error) {
+			console.error(response?.error)
+			setLoading(false)
+			return toast.error(response?.error.toString())
 		}
+		console.log('success', response)
+		// router.push('/protected')
+	}
+
+	const onRegister = async (email: string, name: string, password: string) => {
 		const response = await fetch('/api/auth/register', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({
-				email: event.currentTarget.email.value,
-				name: event.currentTarget.nameOfUser.value,
-				password: event.currentTarget.password.value,
-			}),
+			body: JSON.stringify({ email, name, password }),
 		})
-		setLoading(false)
-		if (response.status === 200) {
-			toast.success('Account created! Redirecting to login...')
-			return setTimeout(() => router.push('/login'), 1000)
+
+		if (response.ok) {
+			toast.success('Account created! You can now sign in.')
+			return setTimeout(() => router.push('/login'), 2000)
 		}
-		const { error } = await response.json()
-		toast.error(error)
+
+		const { message } = await response.json()
+		return toast.error(message)
+	}
+
+	const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		setLoading(true)
+		const { email, nameOfUser, password } = event.currentTarget
+
+		if (type === 'login') return onLogin(email.value, password.value)
+		await onRegister(email.value, nameOfUser.value, password.value)
 	}
 
 	const callToAction = useMemo(() => {

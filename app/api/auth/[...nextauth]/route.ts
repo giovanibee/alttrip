@@ -1,31 +1,43 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { compare } from 'bcrypt'
-import * as User from 'database/user'
+import * as User from '../../../../database/user'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import db from '../../../../lib/prisma/prisma'
 
 export const authOptions: NextAuthOptions = {
+	adapter: PrismaAdapter(db),
+	pages: {
+		signIn: '/login',
+	},
 	providers: [
 		CredentialsProvider({
+			name: 'Credentials',
 			credentials: {
-				email: { label: 'Email', type: 'email' },
+				email: {
+					label: 'Email',
+					type: 'email',
+					placeholder: 'example@aol.com',
+				},
 				password: { label: 'Password', type: 'password' },
 			},
 			async authorize(credentials) {
-				console.log('credentials', credentials)
-				const { email, password } = credentials ?? {}
-				if (!email || !password) {
-					throw new Error('Missing username or password')
-				}
-				const user = await User.getByEmail(email)
-				console.log('user', user)
-				// if user doesn't exist or password doesn't match
-				if (!user || !(await compare(password, user.password))) {
-					throw new Error('Invalid username or password')
-				}
+				if (!credentials?.email || !credentials?.password) return null
+
+				const existingUser = await User.getByEmail(credentials.email)
+
+				if (!existingUser) return null
+
+				const doesPasswordMatch = await compare(
+					credentials.password,
+					existingUser.password,
+				)
+				if (!doesPasswordMatch) return null
+
 				return {
-					id: user.id.toString(),
-					name: user.password,
-					email: user.email,
+					id: existingUser.id,
+					email: existingUser.email,
+					name: existingUser.name,
 				}
 			},
 		}),

@@ -1,21 +1,22 @@
 generator client {
   provider = "prisma-client-js"
-  output = "../node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
   provider          = "postgresql"
   url               = env("POSTGRES_PRISMA_URL")
   directUrl         = env("POSTGRES_URL_NON_POOLING")
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+  shadowDatabaseUrl = env("DATABASE_URL")
 }
 
 model Place {
   id          Int       @id @default(autoincrement())
   description String?
+  hasBeenVisited Boolean?   @default(false)
   location    Decimal[] @default([43.09674, -89.51127])
   rating      Int?      @default(0)
-  name       String
+  name        String
   userId      Int       @unique
   owner       User      @relation(fields: [userId], references: [id])
   tasks       Task?
@@ -24,23 +25,22 @@ model Place {
 }
 
 model Quest {
-  id     Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   description String?
-  name   String
-  userId Int    @unique
-  owner  User   @relation(fields: [userId], references: [id])
-  task   Task[]
+  name        String
+  userId      Int     @unique
+  owner       User    @relation(fields: [userId], references: [id])
+  task        Task[]
 
   @@unique([name, userId])
 }
 
 model Task {
   id             Int       @id @default(autoincrement())
-  hasBeenVisited Boolean   @default(false)
   deadline       DateTime?
   description    String?
   placeId        Int?      @unique
-  name          String    @default("New Task")
+  name           String    @default("New Task")
   questId        Int
   place          Place?    @relation(fields: [placeId], references: [id])
   quest          Quest     @relation(fields: [questId], references: [id])

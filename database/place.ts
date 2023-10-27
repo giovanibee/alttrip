@@ -1,26 +1,24 @@
-import * as User from './user'
+import { user } from './'
 import prisma from 'lib/prisma/prisma'
 
 interface CreateData extends UpdateData {
-	difficulty: number
-	title: string
+	hasBeenVisited?: boolean
+	location: number[]
+	name: string
 	userId?: number
 }
 
 interface UpdateData {
 	description?: string
-	deadline?: Date
-	difficulty?: number
-	isCompleted?: boolean
-	minutesSpent?: number
-	title?: string
+	hasBeenVisited?: boolean
+	name?: string
+	rating?: number
 }
 
 const create = async (data: CreateData, email: string) => {
-	const { id } = await prisma.user.findUnique(email)
+	const { id } = (await user.getByEmail(email)) || {}
 	if (!id) throw new Error('User not found')
-	data.userId = id as number
-	await prisma.quest.create({ data })
+	await prisma.quest.create({ data: { ...data, userId: id } })
 }
 
 const deleteById = (id: number) =>
@@ -28,9 +26,9 @@ const deleteById = (id: number) =>
 		where: { id },
 	})
 
-const deleteByTitle = (userId: number, title: string) =>
+const deleteByTitle = (userId: number, name: string) =>
 	prisma.quest.delete({
-		where: { userId, title },
+		where: { userId, name },
 	})
 
 const getAllByQuestId = (id: number) =>
@@ -38,9 +36,9 @@ const getAllByQuestId = (id: number) =>
 		where: { id },
 	})
 
-const getByTitle = (title: string, userId: number) =>
+const getByTitle = (name: string, userId: number) =>
 	prisma.quest.findUnique({
-		where: { title, userId },
+		where: { name, userId },
 	})
 
 const updateById = (id: number, data: UpdateData) =>

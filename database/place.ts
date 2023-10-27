@@ -2,14 +2,13 @@ import { user } from './'
 import prisma from 'lib/prisma/prisma'
 
 interface CreateData extends UpdateData {
-	hasBeenVisited?: boolean
 	location: number[]
 	name: string
-	userId?: number
 }
 
 interface UpdateData {
 	description?: string
+	location?: number[]
 	hasBeenVisited?: boolean
 	name?: string
 	rating?: number
@@ -18,40 +17,31 @@ interface UpdateData {
 const create = async (data: CreateData, email: string) => {
 	const { id } = (await user.getByEmail(email)) || {}
 	if (!id) throw new Error('User not found')
-	await prisma.quest.create({ data: { ...data, userId: id } })
+	await prisma.place.create({ data: { ...data, userId: id } })
 }
 
 const deleteById = (id: number) =>
-	prisma.quest.delete({
+	prisma.place.delete({
 		where: { id },
 	})
 
-const deleteByTitle = (userId: number, name: string) =>
-	prisma.quest.delete({
-		where: { userId, name },
-	})
+const deleteByName = async (email: string, name: string) => {
+	const { id } = (await user.getByEmail(email)) || {}
+	await prisma.place.delete({ where: { userId: id, name } })
+}
 
-const getAllByQuestId = (id: number) =>
-	prisma.quest.findUnique({
-		where: { id },
-	})
+const getAllByUser = async (email: string) =>
+	(await user.getByEmail(email)).places
 
-const getByTitle = (name: string, userId: number) =>
-	prisma.quest.findUnique({
+const getByName = (name: string, userId: number) =>
+	prisma.place.findUnique({
 		where: { name, userId },
 	})
 
 const updateById = (id: number, data: UpdateData) =>
-	prisma.quest.update({
+	prisma.place.update({
 		where: { id },
 		data,
 	})
 
-export {
-	create,
-	deleteById,
-	deleteByTitle,
-	getAllByQuestId,
-	getByTitle,
-	updateById,
-}
+export { create, deleteById, deleteByName, getAllByUser, getByName, updateById }

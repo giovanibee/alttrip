@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { quest } from './'
+import prisma from 'lib/prisma/prisma'
 
 interface CreateData extends UpdateData {
 	placeId: number
@@ -22,18 +22,14 @@ const deleteById = (id: number) =>
 		where: { id },
 	})
 
-const getAllByQuestId = (id: number) =>
-	prisma.task.findUnique({
-		where: { id },
-	})
+const getAllByQuestId = async (name: string, userEmail: string) =>
+	(await quest.getByName(name, userEmail)).tasks
 
-const getByTitle = (title: string, questId: number) =>
+const getByName = (name: string, questId: number) =>
 	prisma.task.findUnique({
 		where: {
-			title_questId: {
-				title,
-				questId,
-			},
+			name,
+			questId,
 		},
 	})
 
@@ -43,4 +39,4 @@ const updateById = (id: number, data: UpdateData) =>
 		data,
 	})
 
-export { create, deleteById, getAllByQuestId, getByTitle, updateById }
+export { create, deleteById, getAllByQuestId, getByName, updateById }

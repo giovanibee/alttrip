@@ -7,12 +7,14 @@ interface Data {
 }
 
 const create = async (data: Data, email: string) => {
-	const { id } = await user.getByEmail(email) || {}
+	const { id } = (await user.getByEmail(email)) || {}
 	if (!id) throw new Error('User not found')
-	await prisma.quest.create({ data: {
-		...data,
-		userId: id
-	}})
+	await prisma.quest.create({
+		data: {
+			...data,
+			userId: id,
+		},
+	})
 }
 
 const deleteById = (id: number) =>
@@ -20,20 +22,20 @@ const deleteById = (id: number) =>
 		where: { id },
 	})
 
-const deleteByTitle = (id: number, name: string) =>
+const deleteByName = (name: string, userEmail: string) =>
 	prisma.quest.delete({
-		where: { id, name },
+		where: { name, email: userEmail },
 	})
 
-const getAllByQuestId = (id: number) =>
-	prisma.quest.findUnique({
-		where: { id },
-	})
+const getAllByUser = async (email: string) =>
+	(await user.getByEmail(email)).quests
 
-const getByTitle = (name: string, id: number) => 
-	prisma.quest.findUnique({
-		where: { name, id },
+const getByName = async (name: string, email: string) => {
+	const { id } = (await user.getByEmail(email)) || {}
+	return prisma.quest.findUnique({
+		where: { name, userId: id },
 	})
+}
 
 const updateById = (id: number, data: Data) =>
 	prisma.quest.update({
@@ -41,11 +43,4 @@ const updateById = (id: number, data: Data) =>
 		data,
 	})
 
-export {
-	create,
-	deleteById,
-	deleteByTitle,
-	getAllByQuestId,
-	getByTitle,
-	updateById,
-}
+export { create, deleteById, deleteByName, getAllByUser, getByName, updateById }

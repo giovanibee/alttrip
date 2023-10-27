@@ -1,31 +1,28 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { user } from './'
+import prisma from 'lib/prisma/prisma'
 
-interface CreateData extends UpdateData {
-	difficulty: number
-	userId: number
-	title: string
-}
-
-interface UpdateData {
+interface Data {
 	description?: string
-	deadline?: Date
-	difficulty?: number
-	isCompleted?: boolean
-	minutesSpent?: number
-	title?: string
+	name: string
 }
 
-const create = (data: CreateData) => prisma.quest.create({ data })
+const create = async (data: Data, email: string) => {
+	const { id } = await user.getByEmail(email) || {}
+	if (!id) throw new Error('User not found')
+	await prisma.quest.create({ data: {
+		...data,
+		userId: id
+	}})
+}
 
 const deleteById = (id: number) =>
 	prisma.quest.delete({
 		where: { id },
 	})
 
-const deleteByTitle = (userId: number, title: string) =>
+const deleteByTitle = (id: number, name: string) =>
 	prisma.quest.delete({
-		where: { userId, title },
+		where: { id, name },
 	})
 
 const getAllByQuestId = (id: number) =>
@@ -33,12 +30,12 @@ const getAllByQuestId = (id: number) =>
 		where: { id },
 	})
 
-const getByTitle = (title: string, userId: number) =>
+const getByTitle = (name: string, id: number) => 
 	prisma.quest.findUnique({
-		where: { title, userId },
+		where: { name, id },
 	})
 
-const updateById = (id: number, data: UpdateData) =>
+const updateById = (id: number, data: Data) =>
 	prisma.quest.update({
 		where: { id },
 		data,

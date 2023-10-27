@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 interface CreateData extends UpdateData {
-	difficulty: number
+	placeId: number
 	questId: number
 	title: string
 }
@@ -10,9 +10,8 @@ interface CreateData extends UpdateData {
 interface UpdateData {
 	description?: string
 	deadline?: Date
-	difficulty?: number
+	hasBeenVisited?: boolean
 	isCompleted?: boolean
-	minutesSpent?: number
 	title?: string
 }
 

@@ -1,18 +1,20 @@
-import SignOut from '@/components/sign-out'
+'use client'
 
-export default function Home() {
+import SignOut from '@/components/sign-out'
+// import { useDungeon } from 'lib/hooks'
+import { Button } from 'components'
+
+export default function Page() {
+	// useDungeon()
 	return (
-		<div className="flex h-screen bg-black">
-			<div className="w-screen h-screen flex flex-col space-y-5 justify-center items-center">
-				<iframe
-					src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-					title="YouTube video player"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-					allowFullScreen
-					className="w-full max-w-screen-lg aspect-video"
-				/>
-				<SignOut />
-			</div>
+		<div>
+			<p>aaaahhh</p>
+			<Button primary pad="medium">
+					Create quest
+				</Button>
+			{/* <canvas id="dungeon-canvas" width="800" height="600"></canvas> */}
+			<br/> <br />
+			<SignOut />
 		</div>
 	)
 }

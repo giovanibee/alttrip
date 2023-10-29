@@ -1,5 +1,7 @@
-import { quest } from './'
-import prisma from 'lib/prisma/prisma'
+'use server'
+
+import { quest } from 'database'
+import prisma from 'lib/prisma'
 
 interface CreateData extends UpdateData {
 	placeId: number

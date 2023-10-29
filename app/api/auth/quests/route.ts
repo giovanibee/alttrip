@@ -1,5 +1,15 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
- 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json({ name: 'John Doe' })
+export async function GET(request: Request) {
+	return Response.json({ res: await request.json() })
+}
+
+export async function POST(request: Request) {
+	return Response.json({ res: await request.json() })
+}
+
+export async function PUT(request: Request) {
+	return Response.json({ res: await request.json() })
+}
+
+export async function DELETE(request: Request) {
+	return Response.json({ res: await request.json() })
 }

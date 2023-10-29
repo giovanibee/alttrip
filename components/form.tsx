@@ -19,12 +19,11 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 			setLoading(false)
 			return toast.error(response?.error.toString())
 		}
-		console.log('success', response)
-		// router.push('/protected')
+		router.push('/protected')
 	}
 
 	const onRegister = async (email: string, name: string, password: string) => {
-		const response = await fetch('/api/auth/register', {
+		const response = await fetch('/api/auth/user', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

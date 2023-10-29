@@ -1,5 +1,7 @@
-import { user } from './'
-import prisma from 'lib/prisma/prisma'
+'use server'
+
+import { user } from 'database'
+import prisma from 'lib/prisma'
 
 interface Data {
 	description?: string

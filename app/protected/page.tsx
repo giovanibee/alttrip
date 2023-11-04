@@ -4,8 +4,11 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import SignOut from 'components/sign-out'
 import { Button } from 'components'
 import './styles.scss'
+import { useFetchPlaces } from '@/lib/hooks'
 
 export default function Page() {
+	const places = useFetchPlaces()
+	console.log('PLACES!', places.data)
 	return (
 		<div>
 			<p>aaaahhh</p>

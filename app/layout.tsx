@@ -8,6 +8,7 @@ import { Suspense } from 'react'
 import 'styles/globals.css'
 import AuthStatus from 'components/auth-status'
 import { ReactQueryProvider } from 'components'
+import { Grommet } from 'grommet'
 
 const inter = Inter({
 	variable: '--font-inter',
@@ -34,6 +35,16 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
+	const theme = {
+		global: {
+			font: {
+				family: 'Inter',
+				size: '18px',
+				height: '20px',
+			},
+			width: 'inherit',
+		},
+	}
 	return (
 		<ReactQueryProvider>
 			<html lang="en">
@@ -51,11 +62,13 @@ export default async function RootLayout({
 					/>
 				</head>
 				<body className={inter.variable}>
-					<Toaster />
-					<Suspense fallback="Loading...">
-						<AuthStatus />
-					</Suspense>
-					{children}
+					<Grommet theme={theme} themeMode="light">
+						<Toaster />
+						<Suspense fallback="Loading...">
+							<AuthStatus />
+						</Suspense>
+						{children}
+					</Grommet>
 				</body>
 			</html>
 		</ReactQueryProvider>

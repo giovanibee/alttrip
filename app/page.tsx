@@ -20,6 +20,15 @@ export default function Home() {
 						Find out for yourself
 					</Link>
 				</div>
+				<div>
+					<Link
+						href='/timer'
+						prefetch={false}
+						className='timer-link'
+					>
+						Timer page here--not protected
+					</Link>
+				</div>
 			</div>
 		</div>
 	)

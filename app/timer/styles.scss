@@ -1,0 +1,28 @@
+.timer {
+  &-input {
+    border: 0;
+    color: purple;
+
+    &:focus, &:active {
+      border: 0;
+    }
+
+    &-dark-mode {
+      color: greenyellow;
+    }
+  }
+}
+
+#timer {
+  &-display {
+    margin: 12px;
+
+    &-dark-mode {
+      color: white;
+    }
+  }
+
+  &-hours, &-minutes, &-seconds {
+    display: inline;
+  }
+}

@@ -26,6 +26,9 @@ importers:
       '@types/react':
         specifier: ^18.0.25
         version: 18.2.33
+      animejs:
+        specifier: ^3.2.1
+        version: 3.2.1
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -38,6 +41,9 @@ importers:
       express:
         specifier: ^4.18.2
         version: 4.18.2
+      feather-icons:
+        specifier: ^4.29.1
+        version: 4.29.1
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
@@ -66,9 +72,15 @@ importers:
         specifier: ^4.4.3
         version: 4.4.4(@types/react@18.2.33)(react@18.2.0)
     devDependencies:
+      '@types/animejs':
+        specifier: ^3.1.10
+        version: 3.1.10
       '@types/bcrypt':
         specifier: ^5.0.0
         version: 5.0.1
+      '@types/feather-icons':
+        specifier: ^4.29.3
+        version: 4.29.3
       '@types/leaflet':
         specifier: ^1.9.7
         version: 1.9.7
@@ -105,6 +117,9 @@ importers:
       react-leaflet:
         specifier: ^4.2.1
         version: 4.2.1(leaflet@1.9.4)(react-dom@18.2.0)(react@18.2.0)
+      three:
+        specifier: ^0.158.0
+        version: 0.158.0
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -710,6 +725,10 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@types/animejs@3.1.10:
+    resolution: {integrity: sha512-nCCSfdw7Ut/XwGSmkfh3nQJXKTnGe5wAhXoTBjMoGkBszbS7RYCxjggmZCAVf8mZJI4LEDTwQ7R6r7krFqPBFA==}
+    dev: true
+
   /@types/bcrypt@5.0.1:
     resolution: {integrity: sha512-dIIrEsLV1/v0AUNI8oHMaRRTSeVjoy5ID8oclJavtPj8CwPJoD1eFoNXEypuu6k091brEzBeOo3LlxeAH9zRZg==}
     dependencies:
@@ -731,6 +750,10 @@ packages:
     dependencies:
       '@types/color-convert': 2.0.2
     dev: false
+
+  /@types/feather-icons@4.29.3:
+    resolution: {integrity: sha512-DU5pZVD75WpswT9uGv06BQJMYNtXyDKG7Y5kJ6n2NA8hjk168gWa2z9VRG3A78bKIuGySJbQWHCleHhXARvOTw==}
+    dev: true
 
   /@types/geojson@7946.0.12:
     resolution: {integrity: sha512-uK2z1ZHJyC0nQRbuovXFt4mzXDwf27vQeUWNhfKGwRcWW429GOhP8HxUHlM6TLH4bzmlv/HlEjpvJh3JfmGsAA==}
@@ -883,6 +906,10 @@ packages:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
     dev: true
+
+  /animejs@3.2.1:
+    resolution: {integrity: sha512-sWno3ugFryK5nhiDm/2BKeFCpZv7vzerWUcUPyAZLDhMek3+S/p418ldZJbJXo5ZUOpfm2kP2XRO4NJcULMy9A==}
+    dev: false
 
   /ansi-escapes@5.0.0:
     resolution: {integrity: sha512-5GFMVX8HqE/TB+FuBJGuO5XG0WrsA6ptUqoODaT/n9mmUaZFkqnBueB4leqGBCmrUHnCnC4PCZTCd0E7QQ83bA==}
@@ -1237,6 +1264,10 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
+  /classnames@2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
+
   /cli-cursor@4.0.0:
     resolution: {integrity: sha512-VGtlMu3x/4DOtIUwEkRezxUZ2lBacNJCHash0N0WeZDBS+7Ux1dm3XWAgWYxLJFMMdOeXMHXorshEFhbMSGelg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -1339,6 +1370,11 @@ packages:
   /cookie@0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /core-js@3.33.2:
+    resolution: {integrity: sha512-XeBzWI6QL3nJQiHmdzbAOiMYqjrb7hwU7A39Qhvd/POSa/t9E1AeZyEZx3fNvp/vtM8zXwhoL0FsiS0hD0pruQ==}
+    requiresBuild: true
     dev: false
 
   /cross-spawn@7.0.3:
@@ -1990,6 +2026,13 @@ packages:
     dependencies:
       reusify: 1.0.4
     dev: true
+
+  /feather-icons@4.29.1:
+    resolution: {integrity: sha512-P1we61haGTds6lKWe6CCVPsNULb8tHr1y6S9gXEpU+lNR1Ja7GdV0A1l2hTNmzXv+0Stix/3YMWMAn7n1Qtd6A==}
+    dependencies:
+      classnames: 2.3.2
+      core-js: 3.33.2
+    dev: false
 
   /file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
@@ -3872,6 +3915,10 @@ packages:
 
   /text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
+    dev: true
+
+  /three@0.158.0:
+    resolution: {integrity: sha512-TALj4EOpdDPF1henk2Q+s17K61uEAAWQ7TJB68nr7FKxqwyDr3msOt5IWdbGm4TaWKjrtWS8DJJWe9JnvsWOhQ==}
     dev: true
 
   /timezone-groups@0.8.0:

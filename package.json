@@ -17,10 +17,12 @@
     "@tanstack/react-query": "^5.0.5",
     "@tanstack/react-query-next-experimental": "^5.0.5",
     "@types/react": "^18.0.25",
+    "animejs": "^3.2.1",
     "bcrypt": "^5.1.1",
     "chalk": "^5.3.0",
     "esri-loader": "^3.7.0",
     "express": "^4.18.2",
+    "feather-icons": "^4.29.1",
     "leaflet": "^1.9.4",
     "next": "^13.0.0",
     "next-auth": "^4.24.3",
@@ -32,7 +34,9 @@
     "zustand": "^4.4.3"
   },
   "devDependencies": {
+    "@types/animejs": "^3.1.10",
     "@types/bcrypt": "^5.0.0",
+    "@types/feather-icons": "^4.29.3",
     "@types/leaflet": "^1.9.7",
     "@types/node": "^20.8.9",
     "autoprefixer": "^10.4.4",
@@ -45,6 +49,7 @@
     "prettier": "3.0.3",
     "prisma": "^5.5.2",
     "react-leaflet": "^4.2.1",
+    "three": "^0.158.0",
     "typescript": "^5.2.2"
   },
   "lint-staged": {

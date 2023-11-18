@@ -1,20 +1,24 @@
-'use client'
+import { useMutation, useQuery } from 'react-query'
 
-import { useMutation, useQuery } from '@tanstack/react-query'
+const fetchPlaces = async () => {
+	const response = await fetch('localhost:3000/api/places', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	})
+	const body = await response.json()
+	console.log('response', body)
+	return body
+}
 
 export const useFetchPlaces = () =>
 	useQuery({
 		queryKey: ['places'],
-		queryFn: () => {
-			return fetch('/api/places', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					name: 'test',
-				}),
-			})
+		queryFn: async () => {
+			const response = await fetchPlaces()
+			console.log('response', response)
+			return response
 		},
 	})
 

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 
-import { useFetchPlaces } from '@/lib/hooks'
+import { useFetchPlaces } from '@/lib/hooks/place'
 import SignOut from 'components/sign-out'
 import { Button } from 'components'
 import './styles.scss'
@@ -36,9 +36,8 @@ export default function Page() {
 	}, [location])
 
 	const mapContainer = useMemo(() => {
-		if (!location) return <p>Loading map...</p>
-
-		const marks = areasOfInterest && areasOfInterest?.map((area) => (
+		if (!location) return null
+		const marks = Array.isArray(areasOfInterest) && areasOfInterest?.map((area) => (
 			<Marker key={area.id} position={area.coords}>
 				<Popup>
 					<p>{area.name}</p>

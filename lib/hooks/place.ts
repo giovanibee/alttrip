@@ -1,25 +1,14 @@
-import { useMutation, useQuery } from 'react-query'
-
-const fetchPlaces = async () => {
-	const response = await fetch('localhost:3000/api/places', {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	})
-	const body = await response.json()
-	console.log('response', body)
-	return body
-}
+import { useMutation, useQuery } from '@tanstack/react-query'
+import ky from 'ky-universal'
 
 export const useFetchPlaces = () =>
 	useQuery({
 		queryKey: ['places'],
-		queryFn: async () => {
-			const response = await fetchPlaces()
-			console.log('response', response)
-			return response
-		},
+		queryFn: () => ky.get('/api/auth/places', {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}).json(),
 	})
 
 export const useCreatePlace = () =>

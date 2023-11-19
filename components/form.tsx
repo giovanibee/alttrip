@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react'
 import LoadingDots from '@/components/loading-dots'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import ky from 'ky'
 import { useRouter } from 'next/navigation'
 
 export default function Form({ type }: { type: 'login' | 'register' }) {
@@ -23,12 +24,8 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 	}
 
 	const onRegister = async (email: string, name: string, password: string) => {
-		const response = await fetch('/api/auth/user', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ email, name, password }),
+		const response = await ky.post('/api/auth/user', {
+			json: { email, name, password },
 		})
 
 		if (response.ok) {
@@ -36,7 +33,7 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 			return setTimeout(() => router.push('/login'), 2000)
 		}
 
-		const { message } = await response.json()
+		const { message = 'Unknown error' } = await response.json() as { message?: string }
 		return toast.error(message)
 	}
 
@@ -46,6 +43,7 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 		const { email, nameOfUser, password } = event.currentTarget
 
 		if (type === 'login') return onLogin(email.value, password.value)
+		console.log('registering', email.value, nameOfUser.value, password.value)
 		await onRegister(email.value, nameOfUser.value, password.value)
 	}
 

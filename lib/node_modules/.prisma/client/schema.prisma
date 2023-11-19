@@ -10,49 +10,74 @@ datasource db {
   shadowDatabaseUrl = env("DATABASE_URL")
 }
 
-model Place {
-  id          Int       @id @default(autoincrement())
-  description String?
-  hasBeenVisited Boolean?   @default(false)
-  location    Decimal[] @default([43.09674, -89.51127])
-  name        String
-  owner       User      @relation(fields: [userId], references: [id])
-  rating      Int?      @default(0)
-  tasks       Task[]
-  userId      Int       @unique
+model Story {
+  id                    Int           @id @default(autoincrement())
+  description           String?
+  name                  String
+  owner                 User          @relation(fields: [userId], references: [id])
+  chapters              Chapter[]
+  userId                Int           @unique
+  savedStories          SavedStories[]
 
   @@unique([name, userId])
 }
 
-model Quest {
+model Chapter {
   id          Int     @id @default(autoincrement())
-  description String?
-  name        String
-  owner       User    @relation(fields: [userId], references: [id])
-  task        Task[]
-  userId      Int     @unique
+  description String
+  details     String
+  latitude    Float
+  longitude   Float
+  name        String  @default("New Task")
+  passcode    String?
+  order       Int
+  secretText  String?
+  story       Story   @relation(fields: [storyId], references: [id])
+  storyId     Int
 
-  @@unique([name, userId])
+  completedChapters      CompletedChapters[]
+  inProgressChapters     InProgressChapters[]
+
+  @@unique([name, storyId])
 }
 
-model Task {
-  id             Int       @id @default(autoincrement())
-  description    String?
-  name           String    @default("New Task")
-  place          Place?    @relation(fields: [placeId], references: [id])
-  placeId        Int?      @unique
-  quest          Quest     @relation(fields: [questId], references: [id])
-  questId        Int
+model CompletedChapters {
+  completedChapterId Int
+  chapters           Chapter[]
+  completedById      Int
+  completedBy        User      @relation(fields: [completedById], references: [id])
 
-  @@unique([name, questId])
+  @@id(completedById)
+}
+
+model InProgressChapters {
+  inProgressChapterId Int
+  chapters            Chapter[]
+  inProgressById      Int
+  inProgressBy        User      @relation(fields: [inProgressById], references: [id])
+
+  @@id(inProgressById)
+}
+
+model SavedStories {
+  savedStoryId Int
+  stories      Story[]
+  savedById    Int
+  savedBy      User    @relation(fields: [savedById], references: [id])
+
+  @@id(savedById)
 }
 
 model User {
   id          Int     @id @default(autoincrement())
   email       String? @unique
   name        String
-  phoneNumber String? @unique
   password    String
-  places      Place[]
-  quests      Quest[]
+  phoneNumber String? @unique
+
+  createdStories Story[]
+
+  completedChapters  CompletedChapters?
+  inProgressChapters InProgressChapters?
+  savedStories       SavedStories?
 }

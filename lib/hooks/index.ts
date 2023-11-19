@@ -1,3 +1,3 @@
-import { useFetchPlaces, useCreatePlace, useUpdatePlace } from 'lib/hooks/place'
+import { useFetchPlaces, useCreatePlace, useUpdatePlace } from '@/lib/hooks/chapters'
 
 export { useFetchPlaces, useCreatePlace, useUpdatePlace }

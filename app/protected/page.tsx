@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 
-import { useFetchPlaces } from '@/lib/hooks/place'
+import { useFetchChapters } from '@/lib/hooks/chapters'
 import SignOut from 'components/sign-out'
 import { Button } from 'components'
 import './styles.scss'
@@ -19,7 +19,7 @@ const roundNumber = (num: number, roundTo: number) => {
 
 export default function Page() {
 	// TODO: Fetch places from API
-	const { data: areasOfInterest } = useFetchPlaces()
+	const { data: areasOfInterest } = useFetchChapters()
 	const [location, setLocation] = useState<LatLngTuple>()
 
 	navigator.geolocation?.getCurrentPosition((coords) => setLocation(

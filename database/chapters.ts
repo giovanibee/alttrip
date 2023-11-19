@@ -1,22 +1,19 @@
 'use server'
 
-import { user } from 'database'
 import prisma from 'lib/prisma'
 
-interface CreateChapter {
+interface CreateChapter extends UpdateChapter {
 	description: string
 	details: string
 	latitude: number
 	longitude: number
 	name: string
-  passcode?: string
   order: number
-  secretText?:  string
   storyId: number
 }
 
 // TODO: allow for updating of order (and maybe story) later
-interface UpdateChapter extends CreateChapter {
+interface UpdateChapter {
 	description?: string
 	details?: string
 	latitude?: number
@@ -29,31 +26,24 @@ interface UpdateChapter extends CreateChapter {
 // TODO: Return only chapters within a certain distance of the user
 // TODO (SOON): Return only chapters that the user is allowed to see (correct order, etc.) using filter options
 
-const create = async (data: CreateChapter) => {
-	await prisma.chapter.create({ data })
-}
+const create = async (data: CreateChapter) => prisma.chapter.create({ data })
 
 const deleteById = (id: number) =>
 	prisma.chapter.delete({
 		where: { id },
 	})
 
-const deleteAllByStoryId = async (storyId: number) => {
-	await prisma.chapter.deleteMany({ where: { storyId } })
-}
+const deleteAllByStoryId = async (storyId: number) => prisma.chapter.deleteMany({ where: { storyId } })
 
-const getAllByUser = async (email: string) =>
-	(await user.getByEmail(email)).chapters
+const getAllByStoryId = async (storyId: number) =>
+	prisma.chapter.findMany({ where: { storyId } })
 
-const getByName = (name: string, userId: number) =>
-	prisma.chapter.findUnique({
-		where: { name, userId },
-	})
+const getById = (id: number) => prisma.chapter.findUnique({ where: { id } })
 
-const updateById = (id: number, data: Chapter) =>
+const updateById = (id: number, data: UpdateChapter) =>
 	prisma.chapter.update({
 		where: { id },
 		data,
 	})
 
-export { create, deleteById, deleteAllByStoryId, getAllByUser, getByName, updateById }
+export { create, deleteById, deleteAllByStoryId, getAllByStoryId, getById, updateById }

@@ -32,7 +32,9 @@ export default function Page() {
 		if (!location) return null
 		let coords = 'loading...'
 		coords = location ? roundNumber(location[0], 3) + ', ' + roundNumber(location[1], 3) : 'unknown'
-		return <p>Current location is {coords}</p>
+		return (
+			<p id="current-location">Current location is {coords}</p>
+		)
 	}, [location])
 
 	const mapContainer = useMemo(() => {
@@ -63,9 +65,6 @@ export default function Page() {
 			<Button primary pad="medium">
 				Create story
 			</Button>
-			<br />
-			<br />	
-			<SignOut />
 		</div>
 	)
 }

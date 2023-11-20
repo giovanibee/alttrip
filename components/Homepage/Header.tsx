@@ -6,7 +6,7 @@ import './Header.scss'
 
 export default function MainHeader() {
   return (
-    <BaseHeader>
+    <BaseHeader id="main-header">
       <Logo />
       <Suspense fallback={<div>Loading...</div>}>
         <AuthStatus />

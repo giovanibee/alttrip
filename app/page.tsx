@@ -22,7 +22,7 @@ export default function Home() {
 				href="/protected"
 			>
 				<h3>
-					Jump down the hole
+					Jump in
 				</h3>
 			</Link>
 		</div>

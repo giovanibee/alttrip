@@ -7,7 +7,7 @@ import { Poppins } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import 'styles/globals.css'
 import { MainHeader } from '@/components/Homepage'
-import { Main } from '@/components/BaseComponents'
+import { Footer, Main } from '@/components/BaseComponents'
 import { ReactQueryProvider } from '@/components/Misc'
 
 const poppins = Poppins({
@@ -69,9 +69,14 @@ export default async function RootLayout({
 					<Grommet>
 						<Toaster />
 						<MainHeader />
-						<Main>
+						<Main style={{ margin: '56px' }}>
 							{children}
 						</Main>
+						<Footer>
+							<div style={{ color: 'grey', display: 'block', margin: '0px 56px 28px auto' }}>
+								made with love from las vegas, nv, usa
+							</div>
+						</Footer>
 					</Grommet>
 				</ReactQueryProvider>
 			</body>

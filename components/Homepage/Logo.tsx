@@ -1,14 +1,15 @@
 'use client'
 
-import Ztext from 'react-ztext'
+import Link from 'next/link'
+import './Header.scss'
 
 export default function Logo() {
   return (
     <>
-      <div id='logo'>
+      <Link id='logo' href='/'>
         <div id='logo-1'>alt</div>
         <div id='logo-2'>trip</div>
-      </div>
+      </Link>
       <div id='tagline'>
         There&apos;s magic everywhere!
       </div>

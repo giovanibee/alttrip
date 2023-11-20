@@ -6,8 +6,8 @@
 #logo {
   font-family: 'Aloja';
   font-size: 4em;
-  margin-left: 28px;
-  margin-top: 20px;
+  margin: 28px 28px 0px 0px;
+  text-decoration: none;
   transform: rotate(350deg);
 
   &-1, &-2 {
@@ -19,10 +19,15 @@
   }
 }
 
+#main-header {
+  display: flex;
+  padding: 14px;
+}
+
 #tagline {
   font-family: 'Aloja';
   font-size: 1.1em;
-  margin: auto auto 0 0;
+  margin: auto auto 0 14px;
   transform: rotate(356deg);
 
   &:hover {

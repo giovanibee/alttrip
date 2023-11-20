@@ -40,10 +40,12 @@ const getAllByStoryId = async (storyId: number) =>
 
 const getById = (id: number) => prisma.chapter.findUnique({ where: { id } })
 
+const getByOrder = (order: number, storyId: number) => prisma.chapter.findUnique({ where: { order, storyId } })
+
 const updateById = (id: number, data: UpdateChapter) =>
 	prisma.chapter.update({
 		where: { id },
 		data,
 	})
 
-export { create, deleteById, deleteAllByStoryId, getAllByStoryId, getById, updateById }
+export { create, deleteById, deleteAllByStoryId, getByOrder, getAllByStoryId, getById, updateById }

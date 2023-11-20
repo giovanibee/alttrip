@@ -1,0 +1,33 @@
+#link-enter-protected {
+  font-family: Aloja;
+  font-size: 1.3em;
+  font-weight: bold;
+
+  text-align: center;
+  text-decoration: none;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    transform: scale(1.1);
+  }
+}
+
+#globe-image {
+  border: 2px solid transparent;
+  border-radius: 50%;
+  display: block;
+  margin: 56px auto;
+}
+
+#main-home {
+  margin: 28px;
+}
+
+.summary-container {
+  display: flex;
+  font-size: larger;
+
+  :nth-of-type(2) {
+    padding: 56px;
+  }
+}

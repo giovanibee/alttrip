@@ -39,6 +39,7 @@ model Chapter {
   inProgressChapters     InProgressChapters[]
 
   @@unique([name, storyId])
+  @@unique([order, storyId])
 }
 
 model CompletedChapters {

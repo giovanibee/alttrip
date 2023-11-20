@@ -1,0 +1,32 @@
+@font-face {
+  font-family: Aloja;
+  src: url('../../public/fonts/Aloja-Extended.woff');
+}
+
+#logo {
+  font-family: 'Aloja';
+  font-size: 4em;
+  margin-left: 28px;
+  margin-top: 20px;
+  transform: rotate(350deg);
+
+  &-1, &-2 {
+    display: inline;
+  }
+
+  &-1 {
+    color: rgb(16, 192, 223);
+  }
+}
+
+#tagline {
+  font-family: 'Aloja';
+  font-size: 1.1em;
+  margin: auto auto 0 0;
+  transform: rotate(356deg);
+
+  &:hover {
+    transition: all 0.4s ease-in-out;
+    transform: rotate(359deg) scale(1.1);
+  }
+}

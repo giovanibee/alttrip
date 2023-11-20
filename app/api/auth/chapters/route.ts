@@ -1,28 +1,30 @@
 'use server'
 
-import { NextRequest, NextResponse } from "next/server"
+import { chapters } from 'database'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(_req: NextRequest, _res: NextResponse) {
-  return NextResponse.json(
-    [{
-      id: 1,
-      name: 'Area 51',
-      summary: 'A secret military base in the Nevada desert',
-      details: 'Look for a juniper tree',
-      secretCode: '1234',
-      coords: [36.27555765016105, -115.16988130693387]
-    }], { status: 200 }
-  )
+export async function GET(request: NextRequest) {
+	const { storyId } = await request.json()
+	const allchapters = await chapters.getAllByStoryId(storyId)
+	return NextResponse.json(allchapters)
 }
 
-export async function POST(req: NextRequest, _res: NextResponse) {
-  return NextResponse.json({})
+export async function POST(request: NextRequest) {
+	// TODO: add verification for body
+	const body = await request.json()
+	if (!body) return NextResponse.json({ error: 'Body is missing' })
+	const response = await chapters.create(body)
+	return NextResponse.json(response)
 }
 
-export async function PUT(req: NextRequest, _res: NextResponse) {
-  return NextResponse.json({})
+export async function PUT(request: NextRequest) {
+	const { id, ...body } = await request.json()
+	const response = await chapters.updateById(id, body)
+	return NextResponse.json(response)
 }
 
-export async function DELETE(req: NextRequest, _res: NextResponse) {
-  return NextResponse.json({})
+export async function DELETE(request: NextRequest) {
+	const { id } = await request.json()
+	const response = await chapters.deleteById(id)
+	return NextResponse.json(response)
 }

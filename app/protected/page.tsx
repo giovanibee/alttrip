@@ -5,8 +5,8 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import SignOut from 'components/sign-out'
-import { Button } from 'components'
+import SignOut from '@/components/Authentication/SignOut'
+import { Button } from '@/components/BaseComponents'
 import './styles.scss'
 
 // const DEFAULT_LOCATION: LatLngTuple = [37.61044011296472, -115.3930761807285]
@@ -61,8 +61,10 @@ export default function Page() {
 			{locationString}
 			{mapContainer}
 			<Button primary pad="medium">
-				Create quest
+				Create story
 			</Button>
+			<br />
+			<br />	
 			<SignOut />
 		</div>
 	)

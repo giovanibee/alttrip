@@ -33,6 +33,7 @@
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-query": "^3.39.3",
+    "react-ztext": "^1.0.3",
     "sass": "^1.69.4",
     "zustand": "^4.4.3"
   },

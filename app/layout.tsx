@@ -1,21 +1,22 @@
 import React from 'react'
 // These styles apply to every route in the application
+import { Grommet } from 'grommet'
 import { Metadata } from 'next'
 import Script from 'next/script'
-import { Inter } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
-import { Suspense } from 'react'
 import 'styles/globals.css'
-import AuthStatus from 'components/auth-status'
-import { ReactQueryProvider } from 'components'
-import { Grommet } from 'grommet'
+import { MainHeader } from '@/components/Homepage'
+import { Main } from '@/components/BaseComponents'
+import { ReactQueryProvider } from '@/components/Misc'
 
-const inter = Inter({
-	variable: '--font-inter',
+const poppins = Poppins({
+  display: 'swap',
 	subsets: ['latin'],
+  weight: '400',
 })
 
-const title = 'happy map :)'
+const title = 'alt trip'
 const description = 'A local bucketlist for places that make you happy (:'
 
 export const metadata: Metadata = {
@@ -35,16 +36,6 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
-	const theme = {
-		global: {
-			font: {
-				family: 'Inter',
-				size: '18px',
-				height: '20px',
-			},
-			width: 'inherit',
-		},
-	}
 	return (
 		<html lang="en">
 			<head>
@@ -54,20 +45,33 @@ export default async function RootLayout({
 					integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
 					crossOrigin=""
 				/>
+				<link
+					rel="preload"
+					as="image"
+					type="image/png"
+					href="/public/logo/logo.png"
+				/>
+				<link
+					rel="preload"
+					href="/fonts/Aloja-Extended.woff"
+					as="font"
+					type="font/woff"
+					crossOrigin=""
+				/>
 				<Script
 					src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
 					integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 					crossOrigin=""
 				/>
 			</head>
-			<body className={inter.variable}>
+			<body className={poppins.className}>
 				<ReactQueryProvider>
-					<Grommet theme={theme} themeMode="light">
+					<Grommet>
 						<Toaster />
-						<Suspense fallback="Loading...">
-							<AuthStatus />
-						</Suspense>
-						{children}
+						<MainHeader />
+						<Main>
+							{children}
+						</Main>
 					</Grommet>
 				</ReactQueryProvider>
 			</body>

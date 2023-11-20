@@ -1,6 +1,5 @@
-import * as chapter from './chapters'
-import * as quest from './quest'
-import * as task from './task'
+import * as chapters from './chapters'
+import * as stories from './stories'
 import * as user from './user'
 
-export { chapter, quest, task, user }
+export { chapters, stories, user }

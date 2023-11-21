@@ -1,0 +1,16 @@
+#auth-status {
+  margin: 0 0 0 auto;
+
+  &-options {
+    display: flex;
+    margin-top: 28px;
+    min-width: 200px;
+
+    a {
+      display: block;
+      font-weight: 600;
+      padding: 0px 12px;
+      text-decoration: none;
+    }
+  }
+}

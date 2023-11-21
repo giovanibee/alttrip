@@ -65,20 +65,20 @@ export default async function RootLayout({
 				/>
 			</head>
 			<body className={poppins.className}>
-				<ReactQueryProvider>
-					<Grommet>
+					<ReactQueryProvider>
 						<Toaster />
-						<MainHeader />
-						<Main style={{ margin: '56px' }}>
-							{children}
-						</Main>
-						<Footer>
-							<div style={{ color: 'grey', display: 'block', margin: '0px 56px 28px auto' }}>
-								made with love from las vegas, nv, usa
-							</div>
-						</Footer>
-					</Grommet>
-				</ReactQueryProvider>
+						<Grommet>
+							<MainHeader />
+							<Main style={{ margin: '56px' }}>
+								{children}
+							</Main>
+							<Footer>
+								<div style={{ color: 'grey', display: 'block', margin: '0px 56px 28px auto' }}>
+								⊛ hello.alttrip@gmail.com ⊛ made with love from las vegas, nv, usa © 2023
+								</div>
+							</Footer>
+						</Grommet>
+					</ReactQueryProvider>
 			</body>
 		</html>
 	)

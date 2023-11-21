@@ -1,12 +1,12 @@
 'use client'
 
+import { Grommet, ResponsiveContext, Tab } from 'grommet'
 import { useMemo, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import SignOut from '@/components/Authentication/SignOut'
-import { Button } from '@/components/BaseComponents'
+import { Box, Button, Grid } from '@/components/BaseComponents'
 import './styles.scss'
 
 // const DEFAULT_LOCATION: LatLngTuple = [37.61044011296472, -115.3930761807285]
@@ -18,9 +18,10 @@ const roundNumber = (num: number, roundTo: number) => {
 }
 
 export default function Page() {
-	// TODO: Fetch places from API
-	const { data: areasOfInterest } = useFetchChapters()
 	const [location, setLocation] = useState<LatLngTuple>()
+
+	// update case when undefined
+	const { data: chapters } = useFetchChapters(location)
 
 	navigator.geolocation?.getCurrentPosition((coords) => setLocation(
 		[coords.coords.latitude, coords.coords.longitude]
@@ -39,11 +40,11 @@ export default function Page() {
 
 	const mapContainer = useMemo(() => {
 		if (!location) return null
-		const marks = Array.isArray(areasOfInterest) && areasOfInterest?.map((area) => (
-			<Marker key={area.id} position={area.coords}>
+		const marks = Array.isArray(chapters) && chapters?.map((chapter) => (
+			<Marker key={chapter.id} position={[chapter.latitude, chapter.longitude]}>
 				<Popup>
-					<p>{area.name}</p>
-					<p>Description: {area.summary}</p>
+					<p>{chapter.name}</p>
+					<p>Description: {chapter.description}</p>
 				</Popup>
 			</Marker>
 		))
@@ -56,15 +57,43 @@ export default function Page() {
 				{marks}
 			</MapContainer>
 		)
-	}, [areasOfInterest, location])
+	}, [chapters, location])
 
+	const orderBasedOnScreensize = (screenSize: string, options: string[]) => {
+		if (['xlarge', 'large'].includes(screenSize)) return [options]
+		return options.map((option) => ([option, option]))
+	}
 	return (
-		<div>
-			{locationString}
-			{mapContainer}
-			<Button primary pad="medium">
-				Create story
-			</Button>
-		</div>
+		<Grommet>
+			<ResponsiveContext.Consumer>
+				{(screenSize) => (
+				<Grid
+					id="create-story-page"
+					columns={['auto', 'medium']}
+					rows={['xxsmall', 'xxsmall', 'auto', 'auto']}
+					gap="small"
+					areas={[
+						['description', 'description'],
+						['options', 'options'],
+						...(orderBasedOnScreensize(screenSize, ['map', 'nearby']))
+					]}
+				>
+					<Box gridArea='description'>
+						{locationString}
+					</Box>
+					<Box gridArea='options'>
+						WIP options for create a story, edit a story, or delete a story
+						<Button label="Create a story" />
+					</Box>
+					<Box gridArea='map'>
+						{mapContainer}
+					</Box>
+					<Box gridArea='nearby'>
+						<h3>Nearby stories</h3>
+					</Box>
+				</Grid>
+				)}
+			</ResponsiveContext.Consumer>
+		</Grommet>
 	)
 }

@@ -22,7 +22,7 @@ export default function Home() {
 				href="/protected"
 			>
 				<h3>
-					Jump in
+					Jump in!
 				</h3>
 			</Link>
 		</div>

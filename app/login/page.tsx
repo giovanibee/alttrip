@@ -1,17 +1,20 @@
 import Form from '@/components/Authentication/form'
 import Link from 'next/link'
+import { Card, CardHeader, CardBody, CardFooter } from '@/components/BaseComponents'
+import './style.scss'
 
 export default function Login() {
 	return (
-		<div className="flex">
-			<div className="flex">
-				<Link href="/">Return to home</Link>
-				<h3 className="text-xl font-semibold">Sign In</h3>
-				<p className="text-sm text-gray-500">
-					Use your email and password to sign in
-				</p>
-			</div>
-			<Form type="login" />
-		</div>
+		<Card id='login-card'>
+			<CardHeader id='login-card-header'>
+				Login ★
+			</CardHeader>
+			<CardBody>
+				<Form type="login" />
+			</CardBody>
+			<CardFooter id='login-card-footer'>
+				Don&apos;t have an account? <Link href="/register">Register here</Link>
+			</CardFooter>
+		</Card>
 	)
 }

@@ -1,13 +1,31 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import ky from 'ky-universal'
+import { LatLngTuple } from 'leaflet'
 
-export const useFetchChapters = () =>
+export interface Chapter {
+	id: number
+	description: string
+	details: string
+	latitude: number
+	longitude: number
+	name: string
+	passcode: string | null
+	order: number
+	secretText: string | null
+	storyId: number
+}
+
+export const useFetchChapters = (location?: LatLngTuple) =>
 	useQuery({
 		queryKey: ['chapters'],
-		queryFn: () => ky.get('/api/auth/chapters', {
+		queryFn: (): Promise<Chapter[]> | undefined => location && ky.get('/api/auth/chapters', {
 				headers: {
 					'Content-Type': 'application/json',
 				},
+				json: {
+					latitude: location[0],
+					longitude: location[1],
+				}
 			}).json(),
 	})
 

@@ -4,7 +4,6 @@ import { FormEvent, useMemo, useState } from 'react'
 import { signIn } from 'next-auth/react'
 import LoadingDots from '@/components/Loading/loading-dots'
 import toast from 'react-hot-toast'
-import Link from 'next/link'
 import ky from 'ky'
 import { useRouter } from 'next/navigation'
 
@@ -61,22 +60,6 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 		)
 	}, [loading, type])
 
-	const additionalText = useMemo(
-		() =>
-			type === 'login' ? (
-				<p className="text-center text-sm text-gray-600">
-					{"Don't have an account? "}
-					<Link href="/register">Sign up</Link>
-					{' for free.'}
-				</p>
-			) : (
-				<p className="text-center text-sm text-gray-600">
-					Already have an account? <Link href="/login">Sign in</Link> instead.
-				</p>
-			),
-		[type],
-	)
-
 	return (
 		<form onSubmit={onSubmit} className="flex">
 			<div>
@@ -120,7 +103,6 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 				/>
 			</div>
 			{callToAction}
-			{additionalText}
 		</form>
 	)
 }

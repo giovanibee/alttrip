@@ -1,4 +1,6 @@
+import Box from './Box'
 import Button from './Button'
+import Card, { CardBody, CardFooter, CardHeader } from './Card'
 // import Checkbox from './Checkbox'
 import Footer from './Footer'
 import Grid from './Grid'
@@ -10,6 +12,7 @@ import Menu from './Menu'
 import Page from './Page'
 import Select from './Select'
 import Sidebar from './Sidebar'
+import Tabs from './Tabs'
 import Textarea from './Textarea'
 // import Radio from './Radio'
 // import Switch from './Switch'
@@ -19,7 +22,12 @@ import Textarea from './Textarea'
 // import Tag from './Tag'
 
 export {
+	Box,
 	Button,
+	Card,
+	CardBody,
+	CardFooter,
+	CardHeader,
 	// Checkbox,
 	Footer,
 	Grid,
@@ -31,6 +39,7 @@ export {
 	Page,
 	Select,
 	Sidebar,
+	Tabs,
 	Textarea,
 	// Radio,
 	// Switch,

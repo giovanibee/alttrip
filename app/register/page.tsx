@@ -1,6 +1,5 @@
-import Form from '@/components/Authentication/form'
 import { Card, CardHeader, CardBody } from '@/components/BaseComponents'
-import './style.scss'
+import { SignUpForm } from '@/components/Authentication'
 
 export default function Login() {
 	return (
@@ -9,7 +8,7 @@ export default function Login() {
 				Sign Up ★
 			</CardHeader>
 			<CardBody>
-				<Form type="register" />
+				<SignUpForm />
 			</CardBody>
 		</Card>
 	)

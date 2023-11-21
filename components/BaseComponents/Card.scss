@@ -1,0 +1,25 @@
+@use 'lib/themes/variables';
+
+div.default-card {
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-shadow: 0 0 10px 4px variables.$iconic-yellow;
+  margin: 28px 14px 14px;
+  max-width: 1000px;
+  padding: 14px 28px;
+}
+
+footer.default-card-footer {
+  justify-content: right;
+}
+
+footer.default-card-footer, header.default-card-header {
+  margin: 28px 14px 14px;
+}
+
+header.default-card-header {
+  display: grid;
+  font-family: Aloja;
+  font-size: 2.2em;
+  padding: 7px 0px 14px;
+}

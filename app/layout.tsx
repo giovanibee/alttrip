@@ -9,6 +9,7 @@ import 'styles/globals.css'
 import { MainHeader } from '@/components/Homepage'
 import { Footer, Main } from '@/components/BaseComponents'
 import { ReactQueryProvider } from '@/components/Misc'
+import { StyledComponentsRegistry } from '@/components/Misc'
 
 const poppins = Poppins({
   display: 'swap',
@@ -16,8 +17,8 @@ const poppins = Poppins({
   weight: '400',
 })
 
-const title = 'alt trip'
-const description = 'A local bucketlist for places that make you happy (:'
+const title = 'alt trip 📍 🗺️ 📓'
+const description = 'story-driven scavenger hunts'
 
 export const metadata: Metadata = {
 	title,
@@ -66,6 +67,7 @@ export default async function RootLayout({
 			</head>
 			<body className={poppins.className}>
 					<ReactQueryProvider>
+						<StyledComponentsRegistry>
 						<Toaster />
 						<Grommet>
 							<MainHeader />
@@ -78,6 +80,7 @@ export default async function RootLayout({
 								</div>
 							</Footer>
 						</Grommet>
+						</StyledComponentsRegistry>
 					</ReactQueryProvider>
 			</body>
 		</html>

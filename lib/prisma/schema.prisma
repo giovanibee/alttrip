@@ -26,6 +26,7 @@ model Chapter {
   id          Int     @id @default(autoincrement())
   description String
   details     String
+  favor       String?
   latitude    Float
   longitude   Float
   name        String  @default("New Task")

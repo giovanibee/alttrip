@@ -1,26 +1,14 @@
 'use client'
 
 import { FormEvent, useMemo, useState } from 'react'
-import { signIn } from 'next-auth/react'
 import LoadingDots from '@/components/Loading/loading-dots'
 import toast from 'react-hot-toast'
 import ky from 'ky'
 import { useRouter } from 'next/navigation'
 
-export default function Form({ type }: { type: 'login' | 'register' }) {
+export default function SignUpForm() {
 	const [loading, setLoading] = useState(false)
 	const router = useRouter()
-
-	const onLogin = async (email: string, password: string) => {
-		const response = await signIn('credentials', { email, password })
-
-		if (response?.error) {
-			console.error(response?.error)
-			setLoading(false)
-			return toast.error(response?.error.toString())
-		}
-		router.push('/protected')
-	}
 
 	const onRegister = async (email: string, name: string, password: string) => {
 		const response = await ky.post('/api/auth/user', {
@@ -41,7 +29,6 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 		setLoading(true)
 		const { email, nameOfUser, password } = event.currentTarget
 
-		if (type === 'login') return onLogin(email.value, password.value)
 		console.log('registering', email.value, nameOfUser.value, password.value)
 		await onRegister(email.value, nameOfUser.value, password.value)
 	}
@@ -51,14 +38,14 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 		const content = loading ? (
 			<LoadingDots color="#808080" />
 		) : (
-			<p>{type === 'login' ? 'Sign In' : 'Sign Up'}</p>
+			<p>{'Sign Up'}</p>
 		)
 		return (
 			<button disabled={loading} className={className}>
 				{content}
 			</button>
 		)
-	}, [loading, type])
+	}, [loading])
 
 	return (
 		<form onSubmit={onSubmit} className="flex">
@@ -76,20 +63,18 @@ export default function Form({ type }: { type: 'login' | 'register' }) {
 					className="border"
 				/>
 			</div>
-			{type !== 'login' && (
-				<div>
-					<label htmlFor="name" className="block">
-						Name
-					</label>
-					<input
-						id="nameOfUser"
-						name="nameOfUser"
-						placeholder="Sir Cottontail"
-						required
-						className="border"
-					/>
-				</div>
-			)}
+			<div>
+				<label htmlFor="name" className="block">
+					Name
+				</label>
+				<input
+					id="nameOfUser"
+					name="nameOfUser"
+					placeholder="Sir Cottontail"
+					required
+					className="border"
+				/>
+			</div>
 			<div>
 				<label htmlFor="password" className="block">
 					Password

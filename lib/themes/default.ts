@@ -15,13 +15,7 @@ export const globalGrommetTheme = {
 			},
 			xlarge: {
 				value: 1366,
-				// edgeSize: {
-				// 	none: "0px",
-				// 	small: "12px",
-				// 	medium: "24px",
-				// 	large: "48px"
-				// }
 			}
 		}
-	}
+	},
 }

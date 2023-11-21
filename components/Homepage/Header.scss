@@ -1,3 +1,5 @@
+@use 'lib/themes/variables';
+
 @font-face {
   font-family: Aloja;
   src: url('../../public/fonts/Aloja-Extended.woff');
@@ -15,7 +17,7 @@
   }
 
   &-1 {
-    color: rgb(16, 192, 223);
+    color: variables.$iconic-blue;
   }
 }
 

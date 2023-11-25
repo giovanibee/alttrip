@@ -1,0 +1,11 @@
+@use 'lib/themes/variables';
+
+textarea.default-textarea {
+  border: 1px solid variables.$iconic-white;
+  padding: 11px;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 2px 2px variables.$iconic-blue;
+  }
+}

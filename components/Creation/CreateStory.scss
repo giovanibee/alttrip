@@ -1,0 +1,16 @@
+@use 'lib/themes/variables';
+
+#create-story-modal {
+  background-color: transparent;
+  margin: 0;
+  width: 100%;
+
+  &-card {
+    background-color: rgb(0, 0, 0, 0.74);
+    border: 1px solid variables.$iconic-yellow;
+    box-shadow: none;
+    color: white;
+    margin: 0 14px;
+    overflow-y: scroll;
+  }
+}

@@ -38,8 +38,8 @@ export default function Home() {
 				<p>Make your own and share them with others 🔗 🤝🏽</p>
 			</div>
 			<Link
-				id="link-enter-protected"
-				href="/protected"
+				id="link-enter-explore"
+				href="/explore"
 			>
 				<h3>
 					Jump in!

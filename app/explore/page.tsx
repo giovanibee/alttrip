@@ -1,13 +1,14 @@
 'use client'
 
-import { Grommet, ResponsiveContext, Tab } from 'grommet'
+import { Grommet, ResponsiveContext } from 'grommet'
 import { useMemo, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import { Box, Button, Grid } from '@/components/BaseComponents'
+import { Box, Button, Grid, Layer } from '@/components/BaseComponents'
 import './styles.scss'
+import { CreateStoryModal } from '@/components/Creation'
 
 // const DEFAULT_LOCATION: LatLngTuple = [37.61044011296472, -115.3930761807285]
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">'
@@ -19,6 +20,7 @@ const roundNumber = (num: number, roundTo: number) => {
 
 export default function Page() {
 	const [location, setLocation] = useState<LatLngTuple>()
+	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
 
 	// update case when undefined
 	const { data: chapters } = useFetchChapters(location)
@@ -49,7 +51,7 @@ export default function Page() {
 			</Marker>
 		))
 		return (
-			<MapContainer center={location} id="main-map" zoom={13}>
+			<MapContainer center={location} id="main-map" style={{ zIndex: 14 }} zoom={13}>
 				<TileLayer
 					attribution={attribution}
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -67,6 +69,7 @@ export default function Page() {
 		<Grommet>
 			<ResponsiveContext.Consumer>
 				{(screenSize) => (
+				<>
 				<Grid
 					id="create-story-page"
 					columns={['auto', 'medium']}
@@ -83,7 +86,10 @@ export default function Page() {
 					</Box>
 					<Box gridArea='options'>
 						WIP options for create a story, edit a story, or delete a story
-						<Button label="Create a story" />
+						<Button
+							label="Create a story"
+							onClick={() => setIsCreateStoryOpen(true)}
+						/>
 					</Box>
 					<Box gridArea='map'>
 						{mapContainer}
@@ -92,6 +98,11 @@ export default function Page() {
 						<h3>Nearby stories</h3>
 					</Box>
 				</Grid>
+				<CreateStoryModal
+					closeModal={() => setIsCreateStoryOpen(false)}
+					isOpen={isCreateStoryOpen}
+				/>
+				</>
 				)}
 			</ResponsiveContext.Consumer>
 		</Grommet>

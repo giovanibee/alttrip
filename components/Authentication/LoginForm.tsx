@@ -29,7 +29,7 @@ export default function LoginForm() {
 			console.error(response?.error)
 			setIsLoading(false)
 			return toast.error(response?.error.toString())
-		} else router.push('/protected')
+		} else router.push('/explore')
 		
 	}
 

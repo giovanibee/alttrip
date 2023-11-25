@@ -1,0 +1,12 @@
+@use 'lib/themes/variables';
+
+input.default-input {
+  border: 1px solid variables.$iconic-white;
+  padding: 11px;
+  margin: 6px 0px;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 2px 2px variables.$iconic-blue;
+  }
+}

@@ -19,6 +19,10 @@
   &-1 {
     color: variables.$iconic-blue;
   }
+
+  &:hover {
+    text-shadow: none;
+  }
 }
 
 #main-header {

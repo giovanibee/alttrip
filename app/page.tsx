@@ -1,9 +1,29 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
+import anime from 'animejs/lib/anime.es.js'
 import globeImage from '/public/images/stock-globe-picture.png'
 import './page.scss'
+import { useEffect } from 'react'
 
 export default function Home() {
+	useEffect(() => {
+		anime({
+			direction: 'alternate',
+			easing: 'spring(4, 60, 10, 0)',
+			loop: true,
+			targets: '#globe-image',
+			keyframes: [
+				{
+					translateY: 14,
+				},
+				{
+					translateY: -14,
+				},
+			],
+		})
+	})
 	return (
 		<div id="main-home">
 			<Image

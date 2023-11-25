@@ -1,4 +1,5 @@
-import { Card, CardHeader, CardBody } from '@/components/BaseComponents'
+import Link from 'next/link'
+import { Card, CardHeader, CardBody, CardFooter } from '@/components/BaseComponents'
 import { SignUpForm } from '@/components/Authentication'
 
 export default function Login() {
@@ -10,6 +11,9 @@ export default function Login() {
 			<CardBody>
 				<SignUpForm />
 			</CardBody>
+			<CardFooter id='register-card-footer'>
+				Already have an account? <Link href="/login">Login here</Link>
+			</CardFooter>
 		</Card>
 	)
 }

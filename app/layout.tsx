@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 		description,
 	},
 	metadataBase: new URL('https://nextjs-postgres-auth.vercel.app'),
-	themeColor: '#FFF',
+	themeColor: 'black',
 }
 
 export default async function RootLayout({
@@ -64,6 +64,7 @@ export default async function RootLayout({
 					integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 					crossOrigin=""
 				/>
+				<Script src="https://cdn.jsdelivr.net/npm/animejs@3.0.1/lib/anime.min.js" crossOrigin='' />
 			</head>
 			<body className={poppins.className}>
 					<ReactQueryProvider>

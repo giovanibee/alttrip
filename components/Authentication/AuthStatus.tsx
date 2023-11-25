@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth/next'
 import Link from 'next/link'
 import { Menu } from '@/components/BaseComponents'
 import { SignOut } from '@/components/Authentication'
-import './AuthStatus.scss'
+import './style.scss'
 
 export default async function AuthStatus() {
 	const session = await getServerSession()

@@ -1,0 +1,11 @@
+@use 'lib/themes/variables';
+
+button.default-button {
+  background-color: variables.$iconic-blue;
+  border-radius: 4px;
+  border: 1px solid variables.$iconic-white;
+
+  &:hover {
+    box-shadow: 0 0 1px 2px variables.$subdued-yellow;
+  }
+}

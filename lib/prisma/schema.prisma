@@ -61,6 +61,12 @@ model InProgressChapters {
   @@id(inProgressById)
 }
 
+model InviteCode {
+  id        Int     @id @default(autoincrement())
+  code      String  @unique
+  isRedeemed  Boolean @default(false)
+}
+
 model SavedStories {
   savedStoryId Int
   stories      Story[]

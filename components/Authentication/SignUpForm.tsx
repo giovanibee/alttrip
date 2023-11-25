@@ -1,93 +1,114 @@
 'use client'
 
-import { FormEvent, useMemo, useState } from 'react'
-import LoadingDots from '@/components/Loading/loading-dots'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import ky from 'ky'
+import { Form, FormExtendedEvent } from 'grommet'
 import { useRouter } from 'next/navigation'
+import LoadingDots from '@/components/Loading/LoadingDots'
+import { Button, FormField, Input } from '@/components/BaseComponents'
+import './style.scss'
 
 export default function SignUpForm() {
-	const [loading, setLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
 	const router = useRouter()
 
-	const onRegister = async (email: string, name: string, password: string) => {
-		const response = await ky.post('/api/auth/user', {
-			json: { email, name, password },
-		})
+	const onSubmit = async (event: FormExtendedEvent) => {
+		event.preventDefault()
+		setIsLoading(true)
+		const { email, nameOfUser, password, confirmPassword, inviteCode } = event.value
 
-		if (response.ok) {
-			toast.success('Account created! You can now sign in.')
-			return setTimeout(() => router.push('/login'), 2000)
+		if (password !== confirmPassword) {
+			toast.error('Passwords do not match.')
+			return setIsLoading(false)
 		}
 
-		const { message = 'Unknown error' } = await response.json() as { message?: string }
-		return toast.error(message)
+		let response
+
+		try {
+			response = await ky.post('/api/auth/user', {
+				json: { email, name: nameOfUser, password, inviteCode },
+			})
+			if (response.status === 201) {
+				toast.success('Account created! You can now sign in.')
+				setTimeout(() => router.push('/login'), 2000)
+			}
+		} catch (error: Error | any) {
+			switch (error?.response?.status) {
+				case 400:
+					toast.error('Field is missing')
+					break
+				case 409:
+					toast.error('Email already in use')
+					break
+				case 401:
+					toast.error('Invalid invite code')
+					break
+				case 410:
+					toast.error('Invite code already redeemed')
+					break
+				default:
+					toast.error('Server error')
+			}
+		} finally {
+			setIsLoading(false)
+		}
 	}
-
-	const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault()
-		setLoading(true)
-		const { email, nameOfUser, password } = event.currentTarget
-
-		console.log('registering', email.value, nameOfUser.value, password.value)
-		await onRegister(email.value, nameOfUser.value, password.value)
-	}
-
-	const callToAction = useMemo(() => {
-		const className = `${loading ? 'loading' : 'not-loading'} something`
-		const content = loading ? (
-			<LoadingDots color="#808080" />
-		) : (
-			<p>{'Sign Up'}</p>
-		)
-		return (
-			<button disabled={loading} className={className}>
-				{content}
-			</button>
-		)
-	}, [loading])
 
 	return (
-		<form onSubmit={onSubmit} className="flex">
-			<div>
-				<label htmlFor="email" className="block">
-					Email Address
-				</label>
-				<input
+		<Form onSubmit={onSubmit} className="flex">
+			<FormField name="email" htmlFor="email" label='Email address'>
+				<Input
 					id="email"
 					name="email"
 					type="email"
 					placeholder="discoclown@email.co"
 					autoComplete="email"
 					required
-					className="border"
 				/>
-			</div>
-			<div>
-				<label htmlFor="name" className="block">
-					Name
-				</label>
-				<input
+			</FormField>
+			<FormField name="nameOfUser" htmlFor="name" label="Name">
+				<Input
 					id="nameOfUser"
 					name="nameOfUser"
 					placeholder="Sir Cottontail"
 					required
-					className="border"
 				/>
-			</div>
-			<div>
-				<label htmlFor="password" className="block">
-					Password
-				</label>
-				<input
+			</FormField>
+			<FormField name="password" htmlFor="password" label="Password">
+				<Input
 					id="password"
-					name="password"
+					name="password" 
 					type="password"
 					required
-					className="border"
 				/>
-			</div>
-			{callToAction}
-		</form>
+			</FormField>
+			<FormField name="confirmPassword" htmlFor="password" label="Confirm password">
+				<Input
+					id="password"
+					name="confirmPassword" 
+					type="password"
+					required
+				/>
+			</FormField>
+			<FormField name="inviteCode" htmlFor='inviteCode' label="Invite code">
+				<Input
+					id="inviteCode"
+					name="inviteCode" 
+					type="text"
+				/>
+			</FormField>
+			{isLoading
+				? <LoadingDots />
+				: (
+				<Button
+					className={`${isLoading ? 'loading' : 'not-loading'} something`}
+					id='sign-up-submit-button'
+					type='submit'
+				>
+					Sign Up
+				</Button>
+				)}
+		</Form>
 	)
 }

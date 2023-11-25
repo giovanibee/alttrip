@@ -1,0 +1,20 @@
+@use 'lib/themes/variables';
+
+span.loading-dots {
+	display: block;
+  margin-left: auto;
+  width: 66px;
+}
+
+.spacer {
+	margin-right: 4px;
+}
+
+span.loading-dots span {
+  background-color: variables.$iconic-blue;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	display: inline-block;
+	margin: 0 2px;
+}

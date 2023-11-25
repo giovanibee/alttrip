@@ -2,6 +2,7 @@ import Box from './Box'
 import Button from './Button'
 import Card, { CardBody, CardFooter, CardHeader } from './Card'
 // import Checkbox from './Checkbox'
+import FormField from './FormField'
 import Footer from './Footer'
 import Grid from './Grid'
 import Header from './Header'
@@ -29,6 +30,7 @@ export {
 	CardFooter,
 	CardHeader,
 	// Checkbox,
+	FormField,
 	Footer,
 	Grid,
 	Header,

@@ -3,16 +3,26 @@
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import toast from 'react-hot-toast'
-import { Form, FormExtendedEvent, FormField } from 'grommet'
-import { Button, Input } from '@/components/BaseComponents'
-import LoadingDots from '@/components/Loading/loading-dots'
+import { Form, FormExtendedEvent } from 'grommet'
+import { Button, FormField, Input } from '@/components/BaseComponents'
+import LoadingDots from '@/components/Loading/LoadingDots'
 import { useRouter } from 'next/navigation'
+import './style.scss'
 
 export default function LoginForm() {
 	const [isLoading, setIsLoading] = useState(false)
 	const router = useRouter()
 
-	const onLogin = async (email: string, password: string) => {
+	const onSubmit = async (event: FormExtendedEvent) => {
+		event.preventDefault()
+		setIsLoading(true)
+		const { email, password = '' } = event.value as { email: string, password: string }
+
+		if (password?.length < 8) {
+			toast.error('Password must be at least 8 characters long.')
+			return setIsLoading(false)
+		}
+
 		const response = await signIn('credentials', { email, password })
 
 		if (response?.error) {
@@ -20,23 +30,7 @@ export default function LoginForm() {
 			setIsLoading(false)
 			return toast.error(response?.error.toString())
 		} else router.push('/protected')
-	}
-
-	const onSubmit = async (event: FormExtendedEvent) => {
-		event.preventDefault()
-		setIsLoading(true)
-		const { email, password } = event.value
-		// TODO: validate value
-		console.log('email', email)
-		console.log('password', password)
-
-		if (!email || !password) {
-			setIsLoading(false)
-			// return toast.error('Please fill out all fields')
-		}
-	
-		// TODO: add something for it fails
-		// return onLogin(email, password)
+		
 	}
 
 	return (
@@ -59,13 +53,17 @@ export default function LoginForm() {
 					required
 				/>
 			</FormField>
-			<Button
-				disabled={isLoading}
-				id={`submit-button${isLoading ? '-loading' : ''}`}
-				type='submit'
-			>
-				{isLoading ? <LoadingDots color="#808080" /> : 'Sign In'}
-			</Button>
+			{isLoading 
+				? <LoadingDots />
+				: <Button
+						alignSelf='end'
+						disabled={isLoading}
+						id='login-submit-button'
+						type='submit'
+					>
+						Sign In
+					</Button>
+				}
 		</Form>
 	)
 }

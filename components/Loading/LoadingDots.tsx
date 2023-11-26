@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import anime from 'animejs/lib/anime.es.js'
 import './LoadingDots.scss'
 
-const LoadingDots = () => {
+const LoadingDots = ({ color = 'blue', size = 'small ' }) => {
 	useEffect(() => {
 		anime({
 			delay: anime.stagger(200),
@@ -25,13 +25,13 @@ const LoadingDots = () => {
 				},
 				{
 					opacity: 1,
-				}
+				},
 			],
 		})
 	})
 
 	return (
-		<span className='loading-dots'>
+		<span className={`loading-dots loading-dots-${color} loading-dots-${size}`}>
 			<span />
 			<span />
 			<span />

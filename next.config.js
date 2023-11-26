@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	cssLoaderOptions: {
+		url: false,
+	},
 	experimental: {
-    serverActions: true,
-  },
+		serverActions: true,
+	},
 	typescript: {
 		ignoreBuildErrors: true,
 	},

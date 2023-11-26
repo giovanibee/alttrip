@@ -3,18 +3,47 @@
 span.loading-dots {
 	display: block;
   margin-left: auto;
-  width: 66px;
+
+	& span {
+
+		border-radius: 50%;
+		display: inline-block;
+		margin: 0 2px;
+	}
+
+	&-blue span {
+		background-color: variables.$iconic-blue;
+	}
+
+	&-grey span {
+		background-color: grey;
+	}
+
+	&-small {
+		width: 66px;
+	}
+	&-small span {
+		width: 18px;
+		height: 18px;
+	}
+
+	&-medium {
+		width: 100px;
+	}
+	&-medium span {
+		width: 24px;
+		height: 24px;
+	}
+
+	&-large {
+		width: 150px;
+	}
+	&-large span {
+		width: 36px;
+		height: 36px;
+	}
 }
 
 .spacer {
 	margin-right: 4px;
-}
-
-span.loading-dots span {
-  background-color: variables.$iconic-blue;
-	width: 18px;
-	height: 18px;
-	border-radius: 50%;
-	display: inline-block;
-	margin: 0 2px;
 }

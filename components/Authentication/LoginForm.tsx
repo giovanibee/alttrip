@@ -16,26 +16,33 @@ export default function LoginForm() {
 	const onSubmit = async (event: FormExtendedEvent) => {
 		event.preventDefault()
 		setIsLoading(true)
-		const { email, password = '' } = event.value as { email: string, password: string }
+		const { email, password = '' } = event.value as {
+			email: string
+			password: string
+		}
 
 		if (password?.length < 8) {
 			toast.error('Password must be at least 8 characters long.')
 			return setIsLoading(false)
 		}
 
-		const response = await signIn('credentials', { email, password })
+		const response = await signIn('credentials', {
+			email,
+			password,
+			redirect: false,
+		})
+		console.log(response)
 
 		if (response?.error) {
 			console.error(response?.error)
 			setIsLoading(false)
-			return toast.error(response?.error.toString())
+			toast.error('Invalid login credentials--please try again.')
 		} else router.push('/explore')
-		
 	}
 
 	return (
 		<Form onSubmit={onSubmit}>
-			<FormField name='email' htmlFor='email' label='Email address'>
+			<FormField name="email" htmlFor="email" label="Email address">
 				<Input
 					id="text-input-login-email"
 					name="email"
@@ -45,25 +52,21 @@ export default function LoginForm() {
 					required
 				/>
 			</FormField>
-			<FormField name='password' htmlFor='password' label='Password'>
-				<Input
-					id="password"
-					name="password"
-					type="password"
-					required
-				/>
+			<FormField name="password" htmlFor="password" label="Password">
+				<Input id="password" name="password" type="password" required />
 			</FormField>
-			{isLoading 
-				? <LoadingDots />
-				: <Button
-						alignSelf='end'
-						disabled={isLoading}
-						id='login-submit-button'
-						type='submit'
-					>
-						Sign In
-					</Button>
-				}
+			{isLoading ? (
+				<LoadingDots />
+			) : (
+				<Button
+					alignSelf="end"
+					disabled={isLoading}
+					id="login-submit-button"
+					type="submit"
+				>
+					Sign In
+				</Button>
+			)}
 		</Form>
 	)
 }

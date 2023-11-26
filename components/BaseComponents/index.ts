@@ -1,3 +1,5 @@
+import { Skeleton } from 'grommet'
+
 import Box from './Box'
 import Button from './Button'
 import Card from './Card'
@@ -44,6 +46,7 @@ export {
 	Page,
 	Select,
 	Sidebar,
+	Skeleton,
 	Tabs,
 	Textarea,
 	// Radio,

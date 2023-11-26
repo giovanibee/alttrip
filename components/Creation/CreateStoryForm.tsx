@@ -11,10 +11,7 @@ import { roundNumber } from '@/lib/helpers'
 import ChapterForm from './ChapterForm'
 import './CreateStory.scss'
 
-const CreateStoryForm = ({
-	latitude = 0,
-	longitude = 0,
-}) => {
+const CreateStoryForm = ({ latitude = 0, longitude = 0 }) => {
 	const [isLoading, setIsLoading] = useState(false)
 	const [numberOfForms, setNumberOfForms] = useState([0])
 	const router = useRouter()
@@ -28,13 +25,11 @@ const CreateStoryForm = ({
 			...chapters
 		} = event.value
 		console.log(event.value)
-		
+
 		// TODO: VALIDATION!!!
 		const story = {
 			name,
 			description,
-			latitude,
-			longitude,
 		}
 
 		const parsedChapters: { [key: string]: any }[] = []
@@ -56,7 +51,7 @@ const CreateStoryForm = ({
 			})
 			if (response.status === 200) {
 				toast.success('New story created! You can now view it on the map')
-			setTimeout(() => router.push('/login'), 2000)
+				setTimeout(() => router.push('/login'), 2000)
 			}
 		} catch (error: Error | any) {
 			switch (error?.response?.status) {
@@ -74,11 +69,7 @@ const CreateStoryForm = ({
 	const location = useMemo(() => {
 		if (!latitude || !longitude) return <h4>Location unknown</h4>
 		const text = `${roundNumber(latitude)}, ${roundNumber(longitude)}`
-		return (
-			<h4>
-				Location: {text}
-			</h4>
-		)
+		return <h4>Location: {text}</h4>
 	}, [latitude, longitude])
 
 	return (
@@ -92,7 +83,11 @@ const CreateStoryForm = ({
 					required
 				/>
 			</FormField>
-			<FormField name="storyDescription" htmlFor="story description" label='Description'>
+			<FormField
+				name="storyDescription"
+				htmlFor="story description"
+				label="Description"
+			>
 				<Input
 					id="storyDescription"
 					name="storyDescription"
@@ -103,21 +98,21 @@ const CreateStoryForm = ({
 			<ChapterForm numberOfForms={numberOfForms} />
 			<Button
 				label="Add another chapter"
-				onClick={() => setNumberOfForms(
-					[...numberOfForms, numberOfForms.length + 1]
-				)}
+				onClick={() =>
+					setNumberOfForms([...numberOfForms, numberOfForms.length + 1])
+				}
 			/>
-			{isLoading
-				? <LoadingDots />
-				: (
+			{isLoading ? (
+				<LoadingDots />
+			) : (
 				<Button
 					className={`${isLoading ? 'loading' : 'not-loading'} something`}
-					id='sign-up-submit-button'
-					type='submit'
+					id="sign-up-submit-button"
+					type="submit"
 				>
 					Create story
 				</Button>
-				)}
+			)}
 		</Form>
 	)
 }

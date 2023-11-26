@@ -1,7 +1,2 @@
-import ReactQueryProvider from "./ReactQueryProvider"
-import StyledComponentsRegistry from "./StyledComponentsRegistry"
-
-export {
-  ReactQueryProvider,
-  StyledComponentsRegistry
-}
+import ReactQueryProvider from './ReactQueryProvider'
+export { ReactQueryProvider }

@@ -6,7 +6,6 @@ import prisma from 'lib/prisma'
 export interface CreateStory extends UpdateStory {
 	description: string
 	name: string
-	userId: number
 }
 
 export interface UpdateStory {
@@ -17,7 +16,7 @@ export interface UpdateStory {
 const create = async (data: CreateStory, email: string) => {
 	const id = (await user.getIdByEmail(email))?.id
 	if (!id) throw new Error('User not found')
-	await prisma.story.create({
+	return prisma.story.create({
 		data: { ...data, userId: id },
 	})
 }

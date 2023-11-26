@@ -1,8 +1,7 @@
-@use 'lib/themes/variables';
+@use '../../lib/themes/variables';
 
 #create-story-modal {
   background-color: transparent;
-  margin: 0;
   width: 100%;
 
   &-card {
@@ -10,7 +9,26 @@
     border: 1px solid variables.$iconic-yellow;
     box-shadow: none;
     color: white;
-    margin: 0 14px;
+    margin: auto;
     overflow-y: scroll;
+    position: relative;
+    width: 100%;
+  }
+
+  &-close-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    justify-content: center;
+    position: absolute;
+    right: 28px;
+    top: 28px;
+    width: 40px;
+
+    &:hover, &:focus {
+      box-shadow: none;
+      text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5);
+    }
   }
 }

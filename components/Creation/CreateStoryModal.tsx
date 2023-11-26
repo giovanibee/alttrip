@@ -2,10 +2,12 @@ import { Button, Card, CardBody, CardHeader, Layer } from '@/components/BaseComp
 import { CreateStoryForm } from '@/components/Creation'
 import './CreateStory.scss'
 
-export default function CreateStoryModal ({
+const CreateStoryModal = ({
   closeModal = () => {},
   isOpen = false,
-}) {
+  latitude = 0,
+  longitude = 0,
+}) => {
   if (!isOpen) return null
   return (
     <Layer id='create-story-modal' style={{ zIndex: 9999 }}>
@@ -13,15 +15,18 @@ export default function CreateStoryModal ({
         <CardHeader>
           New story
           <Button
+            id='create-story-modal-close-button'
             label="X"
             onClick={closeModal}
             plain
           />
         </CardHeader>
         <CardBody>
-          <CreateStoryForm />
+          <CreateStoryForm latitude={latitude} longitude={longitude} />
         </CardBody>
       </Card>
     </Layer>
   )
 }
+
+export default CreateStoryModal

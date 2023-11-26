@@ -2,24 +2,22 @@
 
 import { Grommet, ResponsiveContext } from 'grommet'
 import { useMemo, useState } from 'react'
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import { Box, Button, Grid, Layer } from '@/components/BaseComponents'
+import { Box, Grid } from '@/components/BaseComponents'
 import './styles.scss'
 import { CreateStoryModal } from '@/components/Creation'
+import { roundNumber } from '@/lib/helpers'
 
 // const DEFAULT_LOCATION: LatLngTuple = [37.61044011296472, -115.3930761807285]
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">'
 
-const roundNumber = (num: number, roundTo: number) => {
-	const decimalPlace = Math.pow(10, roundTo)
-	return Math.round(num*decimalPlace) / decimalPlace
-}
-
 export default function Page() {
 	const [location, setLocation] = useState<LatLngTuple>()
+	const [newStoryLocation, setNewStoryLocation] = useState<LatLngTuple>()
+	const [editMode, setEditMode] = useState(true)
 	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
 
 	// update case when undefined
@@ -34,11 +32,23 @@ export default function Page() {
 	const locationString = useMemo(() => {
 		if (!location) return null
 		let coords = 'loading...'
-		coords = location ? roundNumber(location[0], 3) + ', ' + roundNumber(location[1], 3) : 'unknown'
+		coords = location ? roundNumber(location[0]) + ', ' + roundNumber(location[1], 3) : 'unknown'
 		return (
 			<p id="current-location">Current location is {coords}</p>
 		)
 	}, [location])
+
+	const MapComponent = () => {
+		const _map = useMapEvents({
+			click: ({ latlng }) => {
+				console.log(latlng)
+				const { lat, lng } = latlng
+				setNewStoryLocation([lat, lng])
+				setIsCreateStoryOpen(true)
+			}
+		})
+		return <div />
+	}
 
 	const mapContainer = useMemo(() => {
 		if (!location) return null
@@ -57,6 +67,7 @@ export default function Page() {
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 				{marks}
+				<MapComponent />
 			</MapContainer>
 		)
 	}, [chapters, location])
@@ -85,11 +96,7 @@ export default function Page() {
 						{locationString}
 					</Box>
 					<Box gridArea='options'>
-						WIP options for create a story, edit a story, or delete a story
-						<Button
-							label="Create a story"
-							onClick={() => setIsCreateStoryOpen(true)}
-						/>
+						Info on WIP options for create a story, edit a story, or delete a story
 					</Box>
 					<Box gridArea='map'>
 						{mapContainer}
@@ -101,6 +108,8 @@ export default function Page() {
 				<CreateStoryModal
 					closeModal={() => setIsCreateStoryOpen(false)}
 					isOpen={isCreateStoryOpen}
+					latitude={newStoryLocation?.[0]}
+					longitude={newStoryLocation?.[1]}
 				/>
 				</>
 				)}

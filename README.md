@@ -1,4 +1,6 @@
-# alttrip -- a place-based storytelling medium
+# alt trip
+*A place-based storytelling medium*
+
 Go on adventures by hunting for stories in the real world 🗺️ 🔎
 
 Make your own and share them with others 🔗 🤝🏽

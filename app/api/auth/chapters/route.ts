@@ -4,7 +4,6 @@ import { chapters } from 'database'
 import { NextRequest } from 'next/server'
 
 // get all first chapters
-// TODO: get by proximity
 // TODO: get by user completion
 export async function GET(request: NextRequest) {
 	const { latitude, longitude } = await request.json()
@@ -13,8 +12,18 @@ export async function GET(request: NextRequest) {
 	}
 
 	try {
-		const allchapters = await chapters.getAll()
-		return Response.json({ res: allchapters })
+		let response = await chapters.getAll()
+		console.log('response', response)
+		// filter by distance
+		// TODO: refine proximity
+		response = response.filter((chapter) => {
+			const distance = Math.sqrt(
+				Math.pow(chapter.latitude - latitude, 2) + Math.pow(chapter.longitude - longitude, 2)
+			)
+			return distance < 0.1
+		})
+		// TODO: filter by completion by user
+		return Response.json({ res: response })
 	} catch (error) {
 		return Response.json({ error }, { status: 500 })
 	}

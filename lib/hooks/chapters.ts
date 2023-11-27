@@ -19,16 +19,14 @@ export const useFetchChapters = (location: LatLngTuple) =>
 	useQuery({
 		queryKey: ['chapters'],
 		queryFn: async (): Promise<Chapter[] | null> => {
-			if (!location) return null
+			const [latitude, longitude] = location || []
+			if (!latitude || !longitude) return null
 			console.log('location', location)
 			return ky.get('/api/auth/chapters', {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				json: {
-					latitude: location[0],
-					longitude: location[1],
-				}
+				json: { latitude, longitude }
 			}).json()
 		},
 	})

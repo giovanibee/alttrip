@@ -2,7 +2,7 @@
 
 import { getServerSession } from 'next-auth'
 import { NextRequest } from 'next/server'
-import { object, string } from 'yup'
+import { number, object, string } from 'yup'
 import { chapters, stories } from 'database'
 
 const postSchema = object({
@@ -14,6 +14,9 @@ const postSchema = object({
 		name: string().required(),
 		description: string().required(),
 		details: string().required(),
+		latitude: number().required(),
+		longitude: number().required(),
+		order: number().required(),
 		passcode: string().required(),
 		secretText: string().required(),
 	}).required(),

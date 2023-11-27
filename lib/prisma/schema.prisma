@@ -16,7 +16,7 @@ model Story {
   name                  String
   owner                 User          @relation(fields: [userId], references: [id])
   chapters              Chapter[]
-  userId                Int           @unique
+  userId                Int           
   savedStories          SavedStories[]
 
   @@unique([name, userId])

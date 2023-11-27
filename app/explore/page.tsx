@@ -1,12 +1,13 @@
 'use client'
 
-import { Grommet, ResponsiveContext } from 'grommet'
+import { ResponsiveContext } from 'grommet'
 import { useEffect, useMemo, useState } from 'react'
-import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet'
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import { Box, Checkbox, Grid } from '@/components/BaseComponents'
+import { Box, Checkbox, Grid, Grommet } from '@/components/BaseComponents'
+import Marks from '@/components/Creation/Maps/Marks'
 import { CreateStoryModal } from '@/components/Creation'
 import { roundNumber } from '@/lib/helpers'
 import './styles.scss'
@@ -18,6 +19,7 @@ export default function Page() {
 	const [location, setLocation] = useState<LatLngTuple>()
 	const [newStoryLocation, setNewStoryLocation] = useState<LatLngTuple>()
 	const [addStory, setAddStory] = useState(false)
+	const [addChapter, setAddChapter] = useState(false)
 	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
 
 	// update case when undefined
@@ -32,6 +34,7 @@ export default function Page() {
 
 	useEffect(() => {
 		if (location) refetch()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location])
 
 	const locationString = useMemo(() => {
@@ -61,14 +64,7 @@ export default function Page() {
 
 	const mapContainer = useMemo(() => {
 		if (!location) return null
-		const marks = chapters?.length && chapters?.map((chapter) => (
-			<Marker key={chapter.id} position={[chapter.latitude, chapter.longitude]}>
-				<Popup>
-					<p>{chapter.name}</p>
-					<p>Description: {chapter.description}</p>
-				</Popup>
-			</Marker>
-		))
+
 		return (
 			<MapContainer
 				center={location}
@@ -80,7 +76,7 @@ export default function Page() {
 					attribution={attribution}
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
-				{marks}
+				<Marks chapters={chapters} />
 				<MapComponent />
 			</MapContainer>
 		)
@@ -98,7 +94,7 @@ export default function Page() {
 					<Grid
 						id="create-story-page"
 						columns={['auto', 'medium']}
-						rows={['xxsmall', 'xxsmall', 'auto', 'auto']}
+						rows={['xxsmall', 'xsmall', 'auto', 'auto']}
 						gap="small"
 						areas={[
 							['description', 'description'],
@@ -110,14 +106,18 @@ export default function Page() {
 							{locationString}
 						</Box>
 						<Box gridArea='options'>
-							<p>
-								Info on WIP options for create a story, edit a story, or delete a story
-							</p>
+								On map click
 							<Checkbox
 								checked={addStory}
 								id="add-story-checkbox"
 								label="Add story"
 								onChange={(event) => setAddStory(event.target.checked)}
+							/>
+							<Checkbox
+								checked={addChapter}
+								id="add-chapter-checkbox"
+								label="Add chapter"
+								onChange={(event) => setAddChapter(event.target.checked)}
 							/>
 						</Box>
 						<Box gridArea='map'>

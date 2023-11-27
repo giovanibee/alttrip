@@ -6,7 +6,7 @@ import Card from './Card'
 import CardBody from './CardBody'
 import CardFooter from './CardFooter'
 import CardHeader from './CardHeader'
-// import Checkbox from './Checkbox'
+import Checkbox from './Checkbox'
 import FormField from './FormField'
 import Footer from './Footer'
 import Grid from './Grid'
@@ -34,7 +34,7 @@ export {
 	CardBody,
 	CardFooter,
 	CardHeader,
-	// Checkbox,
+	Checkbox,
 	FormField,
 	Footer,
 	Grid,

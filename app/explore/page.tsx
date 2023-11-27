@@ -1,12 +1,12 @@
 'use client'
 
 import { Grommet, ResponsiveContext } from 'grommet'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import { Box, Grid } from '@/components/BaseComponents'
+import { Box, Checkbox, Grid } from '@/components/BaseComponents'
 import { CreateStoryModal } from '@/components/Creation'
 import { roundNumber } from '@/lib/helpers'
 import './styles.scss'
@@ -17,17 +17,22 @@ const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">'
 export default function Page() {
 	const [location, setLocation] = useState<LatLngTuple>()
 	const [newStoryLocation, setNewStoryLocation] = useState<LatLngTuple>()
-	const [editMode, setEditMode] = useState(true)
+	const [addStory, setAddStory] = useState(false)
 	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
 
 	// update case when undefined
-	const { data: chapters = [] } = useFetchChapters(location ?? [0, 0])
+	const { data: chapters = [], refetch } = useFetchChapters(location ?? [0, 0])
 
-	navigator.geolocation?.getCurrentPosition((coords) => setLocation(
-		[coords.coords.latitude, coords.coords.longitude]
-	), (err) => {
-		console.error(err)
-	})
+	useEffect(() => {
+		navigator.geolocation?.getCurrentPosition(
+			({ coords }) => setLocation([coords.latitude, coords.longitude]),
+			(err) => console.error(err)
+		)
+	}, [])
+
+	useEffect(() => {
+		if (location) refetch()
+	}, [location])
 
 	const locationString = useMemo(() => {
 		if (!location) return null
@@ -56,9 +61,7 @@ export default function Page() {
 
 	const mapContainer = useMemo(() => {
 		if (!location) return null
-		const shouldShowMarks = Array.isArray(chapters) && chapters?.length
-		console.log('shouldShowMarks', shouldShowMarks)
-		const marks = shouldShowMarks && chapters?.map((chapter) => (
+		const marks = chapters?.length && chapters?.map((chapter) => (
 			<Marker key={chapter.id} position={[chapter.latitude, chapter.longitude]}>
 				<Popup>
 					<p>{chapter.name}</p>
@@ -107,7 +110,15 @@ export default function Page() {
 							{locationString}
 						</Box>
 						<Box gridArea='options'>
-							Info on WIP options for create a story, edit a story, or delete a story
+							<p>
+								Info on WIP options for create a story, edit a story, or delete a story
+							</p>
+							<Checkbox
+								checked={addStory}
+								id="add-story-checkbox"
+								label="Add story"
+								onChange={(event) => setAddStory(event.target.checked)}
+							/>
 						</Box>
 						<Box gridArea='map'>
 							{mapContainer}
@@ -118,7 +129,7 @@ export default function Page() {
 					</Grid>
 					<CreateStoryModal
 						closeModal={() => setIsCreateStoryOpen(false)}
-						isOpen={isCreateStoryOpen}
+						isOpen={addStory && isCreateStoryOpen}
 						latitude={newStoryLocation?.[0]}
 						longitude={newStoryLocation?.[1]}
 					/>

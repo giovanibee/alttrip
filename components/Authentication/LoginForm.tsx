@@ -31,13 +31,10 @@ export default function LoginForm() {
 			password,
 			redirect: false,
 		})
-		console.log(response)
-
-		if (response?.error) {
-			console.error(response?.error)
-			setIsLoading(false)
-			toast.error('Invalid login credentials--please try again.')
-		} else router.push('/explore')
+		if (!response?.error) return router.push('/explore')
+		console.error(response?.error)
+		setIsLoading(false)
+		toast.error('Invalid login credentials--please try again.')
 	}
 
 	return (

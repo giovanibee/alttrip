@@ -1,13 +1,15 @@
 import { Button, Card, CardBody, CardHeader, Layer } from '@/components/BaseComponents'
 import { CreateStoryForm } from '@/components/Creation'
+
 import './CreateStory.scss'
 
-const CreateStoryModal = ({
+export default function CreateStoryModal ({
   closeModal = () => {},
   isOpen = false,
   latitude = 0,
   longitude = 0,
-}) => {
+}) {
+  // TODO: add a popup to ask if the user wants to save the story before closing
   if (!isOpen) return null
   return (
     <Layer id='create-story-modal' style={{ zIndex: 9999 }}>
@@ -22,11 +24,13 @@ const CreateStoryModal = ({
           />
         </CardHeader>
         <CardBody>
-          <CreateStoryForm latitude={latitude} longitude={longitude} />
+          <CreateStoryForm
+            closeModal={closeModal}
+            latitude={latitude}
+            longitude={longitude}
+          />
         </CardBody>
       </Card>
     </Layer>
   )
 }
-
-export default CreateStoryModal

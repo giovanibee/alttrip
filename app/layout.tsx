@@ -6,12 +6,11 @@ import { Metadata } from 'next'
 import Script from 'next/script'
 import { Poppins } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
-import 'styles/globals.css'
 import { MainHeader } from '@/components/Homepage'
 import { Footer, Main } from '@/components/BaseComponents'
-import { ReactQueryProvider } from '@/components/Misc'
+import { NextAuthProvider, ReactQueryProvider } from '@/components/Misc'
 import Loading from '@/app/loading'
-import '@/lib/themes/global.scss'
+import 'styles/globals.css'
 
 const poppins = Poppins({
 	display: 'swap',
@@ -40,6 +39,7 @@ export default async function RootLayout({
 	children: React.ReactNode
 }) {
 	return (
+		<NextAuthProvider>
 		<html lang="en">
 			<head>
 				<link
@@ -96,5 +96,6 @@ export default async function RootLayout({
 				</ReactQueryProvider>
 			</body>
 		</html>
+		</NextAuthProvider>
 	)
 }

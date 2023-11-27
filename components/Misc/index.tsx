@@ -1,2 +1,4 @@
 import ReactQueryProvider from './ReactQueryProvider'
-export { ReactQueryProvider }
+import NextAuthProvider from './SessionProvider'
+
+export { ReactQueryProvider, NextAuthProvider }

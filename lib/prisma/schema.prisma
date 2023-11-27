@@ -70,18 +70,15 @@ model InviteCode {
 model SavedStories {
   savedStoryId Int
   stories      Story[]
-  savedById    Int
-  savedBy      User    @relation(fields: [savedById], references: [id])
-
-  @@id(savedById)
+  savedById    Int  @id
+  savedBy      User @relation(fields: [savedById], references: [id])
 }
 
 model User {
   id          Int     @id @default(autoincrement())
-  email       String? @unique
+  email       String  @unique
   name        String
   password    String
-  phoneNumber String? @unique
 
   createdStories Story[]
 

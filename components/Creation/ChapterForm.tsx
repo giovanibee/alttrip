@@ -1,6 +1,6 @@
 import { FormField, Input, Textarea } from '@/components/BaseComponents';
 
-const ChapterForm = ({ numberOfForms = [1] }) => {
+export default function ChapterForm ({ numberOfForms = [1] }) {
 	// Note: order of fields starts at 0, so chapter 1 is index 0
   return numberOfForms.map((_, id) =>
 			<div key={id}>
@@ -47,5 +47,3 @@ const ChapterForm = ({ numberOfForms = [1] }) => {
 			</div>
 		)
 }
-
-export default ChapterForm

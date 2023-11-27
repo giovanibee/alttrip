@@ -14,7 +14,7 @@ export interface UpdateStory {
 }
 
 const create = async (data: CreateStory, email: string) => {
-	const id = (await user.getIdByEmail(email))?.id
+	const id = (await user.getByEmail(email))?.id
 	if (!id) throw new Error('User not found')
 	return prisma.story.create({
 		data: { ...data, userId: id },
@@ -27,7 +27,7 @@ const deleteById = async (id: number) =>
 	})
 
 const deleteByName = async (name: string, email: string) => {
-	const id = (await user.getIdByEmail(email))?.id
+	const id = (await user.getByEmail(email))?.id
 	return prisma.story.delete({ where: { name, userId: id } })
 }
 
@@ -36,12 +36,12 @@ const deleteByName = async (name: string, email: string) => {
 const getAllByProximity = () => prisma.story.findMany()
 
 const getAllByUser = async (email: string) => {
-	const id = (await user.getIdByEmail(email))?.id
+	const id = (await user.getByEmail(email))?.id
 	return prisma.story.findMany({ where: { userId: id } })
 }
 
 const getByName = async (name: string, email: string) => {
-	const id = (await user.getIdByEmail(email))?.id
+	const id = (await user.getByEmail(email))?.id
 	return prisma.story.findUnique({
 		where: { name, userId: id },
 	})

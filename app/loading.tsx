@@ -1,6 +1,6 @@
 'use client'
 
-import LoadingDots from '@/components/Loading/LoadingDots'
+import { LoadingDots } from '@/components/Loading'
 
 export default function Loading() {
 	return (

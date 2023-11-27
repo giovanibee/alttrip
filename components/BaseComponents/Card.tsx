@@ -4,8 +4,6 @@ import {
 } from 'grommet'
 import './Card.scss'
 
-const Card = (props: BoxProps) => {
+export default function Card (props: BoxProps) {
 	return <GrommetCard {...props} className={`${props.className} default-card`} />
 }
-
-export default Card

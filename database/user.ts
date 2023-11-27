@@ -16,11 +16,10 @@ interface UpdateData {
 
 const create = async (data: CreateData) => prisma.user.create({ data })
 const deleteById = async (id: number) => prisma.user.delete({ where: { id } })
-const getIdByEmail = async (email: string) => prisma.user.findUnique({ where: { email }, select: { id: true } })
 const getByEmail = async (email: string) =>
 	prisma.user.findUnique({ where: { email } })
 const getById = async (id: number) => prisma.user.findUnique({ where: { id } })
 const updateById = async (id: number, data: UpdateData) =>
 	prisma.user.update({ where: { id }, data })
 
-export { create, deleteById, getByEmail, getById, getIdByEmail, updateById }
+export { create, deleteById, getByEmail, getById, updateById }

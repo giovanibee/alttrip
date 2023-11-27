@@ -2,26 +2,18 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import ky from 'ky-universal'
 import { LatLngTuple } from 'leaflet'
 
-export interface Chapter {
+export interface Story {
 	id: number
 	description: string
-	details: string
-	latitude: number
-	longitude: number
-	name: string
-	passcode: string | null
-	order: number
-	secretText: string | null
-	storyId: number
+  name: string
 }
 
-export const useFetchChapters = (location: LatLngTuple) =>
+export const useFetchStories = (location?: LatLngTuple) =>
 	useQuery({
-		queryKey: ['chapters'],
-		queryFn: async (): Promise<Chapter[] | null> => {
+		queryKey: ['stories'],
+		queryFn: (): Promise<Story[]> | null => {
 			if (!location) return null
-			console.log('location', location)
-			return ky.get('/api/auth/chapters', {
+			return ky.get('/api/auth/stories', {
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -33,10 +25,10 @@ export const useFetchChapters = (location: LatLngTuple) =>
 		},
 	})
 
-export const useCreateChapters = () =>
+export const useCreateStories = () =>
 	useMutation({
 		mutationFn: () => {
-			return fetch('/api/chapters', {
+			return fetch('/api/stories', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -48,10 +40,10 @@ export const useCreateChapters = () =>
 		},
 	})
 
-export const useUpdateChapters = () =>
+export const useUpdateStories = () =>
 	useMutation({
 		mutationFn: () => {
-			return fetch('/api/chapters', {
+			return fetch('/api/stories', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',

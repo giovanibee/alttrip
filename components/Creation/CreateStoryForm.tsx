@@ -2,19 +2,23 @@
 
 import { useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-import ky from 'ky'
 import { Form, FormExtendedEvent } from 'grommet'
-import { useRouter } from 'next/navigation'
-import LoadingDots from '@/components/Loading/LoadingDots'
+import ky from 'ky'
+
 import { Button, FormField, Input } from '@/components/BaseComponents'
+import { ChapterForm } from '@/components/Creation'
+import { LoadingDots } from '@/components/Loading'
 import { roundNumber } from '@/lib/helpers'
-import ChapterForm from './ChapterForm'
+
 import './CreateStory.scss'
 
-const CreateStoryForm = ({ latitude = 0, longitude = 0 }) => {
+export default function CreateStoryForm ({
+	closeModal = () => {},
+	latitude = 0,
+	longitude = 0,
+}) {
 	const [isLoading, setIsLoading] = useState(false)
-	const [numberOfForms, setNumberOfForms] = useState([0])
-	const router = useRouter()
+	const numberOfForms = [0]
 
 	const onSubmit = async (event: FormExtendedEvent) => {
 		event.preventDefault()
@@ -24,7 +28,6 @@ const CreateStoryForm = ({ latitude = 0, longitude = 0 }) => {
 			storyDescription: description,
 			...chapters
 		} = event.value
-		console.log(event.value)
 
 		// TODO: VALIDATION!!!
 		const story = {
@@ -47,11 +50,11 @@ const CreateStoryForm = ({ latitude = 0, longitude = 0 }) => {
 
 		try {
 			response = await ky.post('/api/auth/stories', {
-				json: { story, chapters: parsedChapters },
+				json: { story, firstChapter: parsedChapters[0] },
 			})
 			if (response.status === 200) {
 				toast.success('New story created! You can now view it on the map')
-				setTimeout(() => router.push('/login'), 2000)
+				closeModal()
 			}
 		} catch (error: Error | any) {
 			switch (error?.response?.status) {
@@ -96,25 +99,19 @@ const CreateStoryForm = ({ latitude = 0, longitude = 0 }) => {
 				/>
 			</FormField>
 			<ChapterForm numberOfForms={numberOfForms} />
-			<Button
+			{/* <Button
 				label="Add another chapter"
 				onClick={() =>
 					setNumberOfForms([...numberOfForms, numberOfForms.length + 1])
 				}
-			/>
+			/> */}
 			{isLoading ? (
 				<LoadingDots />
 			) : (
-				<Button
-					className={`${isLoading ? 'loading' : 'not-loading'} something`}
-					id="sign-up-submit-button"
-					type="submit"
-				>
+				<Button id="sign-up-submit-button" type="submit">
 					Create story
 				</Button>
 			)}
 		</Form>
 	)
 }
-
-export default CreateStoryForm

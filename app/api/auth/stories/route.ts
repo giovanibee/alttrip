@@ -46,9 +46,7 @@ export async function POST(request: NextRequest) {
 	if (!email) return Response.json({ error: 'Not authorized' }, { status: 401 })
 
 	try {
-		console.log(body)
 		const response = await stories.create(body.story, email)
-		console.log('response1', response)
 		if (!response) return Response.json({ error: 'Story not created' }, { status: 500 })
 		body.firstChapter.storyId = response.id
 

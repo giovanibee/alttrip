@@ -21,7 +21,7 @@ export default function Page() {
 	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
 
 	// update case when undefined
-	const { data: chapters = [] } = useFetchChapters(location || [0, 0])
+	const { data: chapters = [] } = useFetchChapters(location ?? [0, 0])
 
 	navigator.geolocation?.getCurrentPosition((coords) => setLocation(
 		[coords.coords.latitude, coords.coords.longitude]
@@ -56,8 +56,9 @@ export default function Page() {
 
 	const mapContainer = useMemo(() => {
 		if (!location) return null
-		console.log('chapters', chapters)
-		const marks = chapters?.map((chapter) => (
+		const shouldShowMarks = Array.isArray(chapters) && chapters?.length
+		console.log('shouldShowMarks', shouldShowMarks)
+		const marks = shouldShowMarks && chapters?.map((chapter) => (
 			<Marker key={chapter.id} position={[chapter.latitude, chapter.longitude]}>
 				<Popup>
 					<p>{chapter.name}</p>

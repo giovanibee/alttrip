@@ -18,18 +18,34 @@ export interface Chapter {
 export const useFetchChapters = (location: LatLngTuple) =>
 	useQuery({
 		queryKey: ['chapters'],
-		queryFn: async (): Promise<Chapter[] | null> => {
+		queryFn: async (): Promise<unknown | null> => {
 			const [latitude, longitude] = location || []
-			if (!latitude || !longitude) return null
-			console.log('location', location)
-			return ky.get('/api/auth/chapters', {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				json: { latitude, longitude }
-			}).json()
-		},
-	})
+			if (Math.abs(latitude) < 1 || Math.abs(longitude) < 1) {
+				console.log('booooooo')
+				return null
+			}
+			try {
+				let response = await ky.get('/api/auth/chapters', {
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				}).json() as { res: Chapter[] }
+				console.log('response in fetchchapters', response)
+				// response = response.filter((chapter) => {
+				// 	const distance = Math.sqrt(
+				// 		Math.pow(chapter.latitude - latitude, 2) + Math.pow(chapter.longitude - longitude, 2)
+				// 	)
+				// 	return distance < 0.1
+				// })
+				// TODO: fil
+				if (!response?.res) throw new Error('no response') 
+				return response.res
+			} catch (error) {
+				console.log('got an error')
+				console.error(error)
+				return null
+			}
+		}})
 
 export const useCreateChapters = () =>
 	useMutation({

@@ -20,6 +20,8 @@ export default function CreateStoryForm ({
 	const [isLoading, setIsLoading] = useState(false)
 	const numberOfForms = [0]
 
+	// TODO: usehook???
+	// get loaading that way
 	const onSubmit = async (event: FormExtendedEvent) => {
 		event.preventDefault()
 		setIsLoading(true)

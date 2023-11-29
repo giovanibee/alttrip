@@ -13,35 +13,40 @@ export interface Chapter {
 	order: number
 	secretText: string | null
 	storyId: number
+
+	hasBeenCompleted?: boolean
 }
 
-export const useFetchChapters = (location: LatLngTuple) =>
+export interface FetchChapterProps {
+	location?: LatLngTuple,
+	shouldFilterByDistance?: boolean,
+}
+export const useFetchChapters = ({
+	location,
+	shouldFilterByDistance = false,
+}: FetchChapterProps) =>
 	useQuery({
 		queryKey: ['chapters'],
-		queryFn: async (): Promise<unknown | null> => {
-			const [latitude, longitude] = location || []
-			if (Math.abs(latitude) < 1 || Math.abs(longitude) < 1) {
-				console.log('booooooo')
-				return null
-			}
+		queryFn: async (): Promise<Chapter[] | null> => {
+			const [latitude, longitude] = location || [0, 0]
+			if (Math.abs(latitude) < 1 || Math.abs(longitude) < 1) return null
 			try {
-				let response = await ky.get('/api/auth/chapters', {
+				let response = (await ky.get('/api/auth/chapters', {
 					headers: {
 						'Content-Type': 'application/json',
 					}
-				}).json() as { res: Chapter[] }
-				console.log('response in fetchchapters', response)
-				// response = response.filter((chapter) => {
-				// 	const distance = Math.sqrt(
-				// 		Math.pow(chapter.latitude - latitude, 2) + Math.pow(chapter.longitude - longitude, 2)
-				// 	)
-				// 	return distance < 0.1
-				// })
-				// TODO: fil
-				if (!response?.res) throw new Error('no response') 
-				return response.res
+				}).json() as { res: Chapter[] }).res
+				if (!Array.isArray(response)) throw new Error('No response')
+				if (shouldFilterByDistance) {
+					response = response.filter((chapter) => {
+						const distance = Math.sqrt(
+							Math.pow(chapter.latitude - latitude, 2) + Math.pow(chapter.longitude - longitude, 2)
+						)
+						return distance < 0.1
+					})
+				}
+				return response
 			} catch (error) {
-				console.log('got an error')
 				console.error(error)
 				return null
 			}

@@ -1,14 +1,23 @@
 'use server'
 
-import { chapters } from 'database'
+import { chapters, sortedChapters, user } from 'database'
 import { NextRequest } from 'next/server'
+import { getServerSession } from 'next-auth'
 
 // get all first chapters
 // TODO: Use graphql somehow for this
 // TODO: get by user completion
 export async function GET() {
 	try {
-		let response = await chapters.getAll()
+		const session = await getServerSession()
+		const email =  session?.user?.email
+		if (!email) {
+			return Response.json(
+				{ error: 'Unauthorized access' }, { status: 401 }
+			)
+		}
+
+		const response = await sortedChapters.getSortedChapters(email)
 		return Response.json({ res: response })
 	} catch (error) {
 		return Response.json({ error }, { status: 500 })

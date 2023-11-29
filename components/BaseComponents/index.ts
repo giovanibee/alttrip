@@ -6,10 +6,11 @@ import Card from './Card'
 import CardBody from './CardBody'
 import CardFooter from './CardFooter'
 import CardHeader from './CardHeader'
-// import Checkbox from './Checkbox'
+import Checkbox from './Checkbox'
 import FormField from './FormField'
 import Footer from './Footer'
 import Grid from './Grid'
+import Grommet from './Grommet'
 import Header from './Header'
 import Input from './Input'
 import Layer from './Layer'
@@ -34,10 +35,11 @@ export {
 	CardBody,
 	CardFooter,
 	CardHeader,
-	// Checkbox,
+	Checkbox,
 	FormField,
 	Footer,
 	Grid,
+	Grommet,
 	Header,
 	Input,
 	Layer,
@@ -46,7 +48,6 @@ export {
 	Page,
 	Select,
 	Sidebar,
-	Skeleton,
 	Tabs,
 	Textarea,
 	// Radio,

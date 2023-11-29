@@ -1,12 +1,13 @@
 'use client'
 
-import { Grommet, ResponsiveContext } from 'grommet'
-import { useMemo, useState } from 'react'
-import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet'
+import { ResponsiveContext } from 'grommet'
+import { useEffect, useMemo, useState } from 'react'
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import { Box, Grid } from '@/components/BaseComponents'
+import { Box, Checkbox, Grid, Grommet } from '@/components/BaseComponents'
+import Marks from '@/components/Creation/Maps/Marks'
 import { CreateStoryModal } from '@/components/Creation'
 import { roundNumber } from '@/lib/helpers'
 import './styles.scss'
@@ -17,17 +18,28 @@ const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">'
 export default function Page() {
 	const [location, setLocation] = useState<LatLngTuple>()
 	const [newStoryLocation, setNewStoryLocation] = useState<LatLngTuple>()
-	const [editMode, setEditMode] = useState(true)
+	const [addStory, setAddStory] = useState(false)
+	const [addChapter, setAddChapter] = useState(false)
 	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
+	const [shouldFilterByDistance, _setShouldFilterByDistance] = useState(false)
 
 	// update case when undefined
-	const { data: chapters = [] } = useFetchChapters(location ?? [0, 0])
-
-	navigator.geolocation?.getCurrentPosition((coords) => setLocation(
-		[coords.coords.latitude, coords.coords.longitude]
-	), (err) => {
-		console.error(err)
+	const { data: chapters = [], refetch } = useFetchChapters({
+		location,
+		shouldFilterByDistance,
 	})
+
+	useEffect(() => {
+		navigator.geolocation?.getCurrentPosition(
+			({ coords }) => setLocation([coords.latitude, coords.longitude]),
+			(err) => console.error(err)
+		)
+	}, [])
+
+	useEffect(() => {
+		if (location) refetch()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [location])
 
 	const locationString = useMemo(() => {
 		if (!location) return null
@@ -56,16 +68,7 @@ export default function Page() {
 
 	const mapContainer = useMemo(() => {
 		if (!location) return null
-		const shouldShowMarks = Array.isArray(chapters) && chapters?.length
-		console.log('shouldShowMarks', shouldShowMarks)
-		const marks = shouldShowMarks && chapters?.map((chapter) => (
-			<Marker key={chapter.id} position={[chapter.latitude, chapter.longitude]}>
-				<Popup>
-					<p>{chapter.name}</p>
-					<p>Description: {chapter.description}</p>
-				</Popup>
-			</Marker>
-		))
+
 		return (
 			<MapContainer
 				center={location}
@@ -77,7 +80,7 @@ export default function Page() {
 					attribution={attribution}
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
-				{marks}
+				<Marks chapters={chapters} />
 				<MapComponent />
 			</MapContainer>
 		)
@@ -95,7 +98,7 @@ export default function Page() {
 					<Grid
 						id="create-story-page"
 						columns={['auto', 'medium']}
-						rows={['xxsmall', 'xxsmall', 'auto', 'auto']}
+						rows={['xxsmall', 'xsmall', 'auto', 'auto']}
 						gap="small"
 						areas={[
 							['description', 'description'],
@@ -107,7 +110,19 @@ export default function Page() {
 							{locationString}
 						</Box>
 						<Box gridArea='options'>
-							Info on WIP options for create a story, edit a story, or delete a story
+								On map click
+							<Checkbox
+								checked={addStory}
+								id="add-story-checkbox"
+								label="Add story"
+								onChange={(event) => setAddStory(event.target.checked)}
+							/>
+							<Checkbox
+								checked={addChapter}
+								id="add-chapter-checkbox"
+								label="Add chapter"
+								onChange={(event) => setAddChapter(event.target.checked)}
+							/>
 						</Box>
 						<Box gridArea='map'>
 							{mapContainer}
@@ -118,7 +133,7 @@ export default function Page() {
 					</Grid>
 					<CreateStoryModal
 						closeModal={() => setIsCreateStoryOpen(false)}
-						isOpen={isCreateStoryOpen}
+						isOpen={addStory && isCreateStoryOpen}
 						latitude={newStoryLocation?.[0]}
 						longitude={newStoryLocation?.[1]}
 					/>

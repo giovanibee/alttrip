@@ -17,7 +17,6 @@ model Story {
   owner                 User          @relation(fields: [userId], references: [id])
   chapters              Chapter[]
   userId                Int           
-  savedStories          SavedStories[]
 
   @@unique([name, userId])
 }
@@ -36,42 +35,26 @@ model Chapter {
   story       Story   @relation(fields: [storyId], references: [id])
   storyId     Int
 
-  completedChapters      CompletedChapters[]
-  inProgressChapters     InProgressChapters[]
+  completedByUsers      CompletedChapter[]
 
   @@unique([name, storyId])
   @@unique([order, storyId])
 }
 
-model CompletedChapters {
-  completedChapterId Int
-  chapters           Chapter[]
-  completedById      Int
-  completedBy        User      @relation(fields: [completedById], references: [id])
+model CompletedChapter {
+  chapter     Chapter @relation(fields: [chapterId], references: [id])
+  chapterId   Int
+  user        User    @relation(fields: [userId], references: [id])
+  userId      Int
 
-  @@id(completedById)
-}
-
-model InProgressChapters {
-  inProgressChapterId Int
-  chapters            Chapter[]
-  inProgressById      Int
-  inProgressBy        User      @relation(fields: [inProgressById], references: [id])
-
-  @@id(inProgressById)
+  @@unique([chapterId, userId])
+  @@id([chapterId, userId])
 }
 
 model InviteCode {
   id        Int     @id @default(autoincrement())
   code      String  @unique
   isRedeemed  Boolean @default(false)
-}
-
-model SavedStories {
-  savedStoryId Int
-  stories      Story[]
-  savedById    Int  @id
-  savedBy      User @relation(fields: [savedById], references: [id])
 }
 
 model User {
@@ -81,8 +64,5 @@ model User {
   password    String
 
   createdStories Story[]
-
-  completedChapters  CompletedChapters?
-  inProgressChapters InProgressChapters?
-  savedStories       SavedStories?
+  completedChapters CompletedChapter[]
 }

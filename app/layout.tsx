@@ -31,11 +31,7 @@ export const metadata: Metadata = {
 	themeColor: 'black',
 }
 
-export default async function RootLayout({
-	children,
-}: {
-	children: React.ReactNode
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<NextAuthProvider>
 			<html lang="en">
@@ -54,7 +50,7 @@ export default async function RootLayout({
 					/>
 					<link
 						rel="preload"
-						href="/fonts/Aloja-Extended.woff"
+						href="/fonts/Aloja/Aloja-Extended.woff"
 						as="font"
 						type="font/woff"
 						crossOrigin="use-credentials"

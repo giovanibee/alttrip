@@ -15,27 +15,28 @@ export interface Chapter {
 	storyId: number
 }
 
-export const useFetchChapters = (location: LatLngTuple) =>
+export const useFetchChapters = (location: LatLngTuple, shouldFilterByDistance = false) =>
 	useQuery({
 		queryKey: ['chapters'],
 		queryFn: async (): Promise<Chapter[] | null> => {
 			const [latitude, longitude] = location || []
 			if (Math.abs(latitude) < 1 || Math.abs(longitude) < 1) return null
 			try {
-				let response = await ky.get('/api/auth/chapters', {
+				let response = (await ky.get('/api/auth/chapters', {
 					headers: {
 						'Content-Type': 'application/json',
 					}
-				}).json() as { res: Chapter[] }
-				// response = response.filter((chapter) => {
-				// 	const distance = Math.sqrt(
-				// 		Math.pow(chapter.latitude - latitude, 2) + Math.pow(chapter.longitude - longitude, 2)
-				// 	)
-				// 	return distance < 0.1
-				// })
-				// TODO: fil
-				if (!Array.isArray(response?.res)) throw new Error('No response') 
-				return response.res
+				}).json() as { res: Chapter[] }).res
+				if (!Array.isArray(response)) throw new Error('No response')
+				if (shouldFilterByDistance) {
+					response = response.filter((chapter) => {
+						const distance = Math.sqrt(
+							Math.pow(chapter.latitude - latitude, 2) + Math.pow(chapter.longitude - longitude, 2)
+						)
+						return distance < 0.1
+					})
+				}
+				return response
 			} catch (error) {
 				console.error(error)
 				return null

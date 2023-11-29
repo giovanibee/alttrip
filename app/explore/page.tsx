@@ -21,9 +21,13 @@ export default function Page() {
 	const [addStory, setAddStory] = useState(false)
 	const [addChapter, setAddChapter] = useState(false)
 	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
+	const [shouldFilterByDistance, _setShouldFilterByDistance] = useState(false)
 
 	// update case when undefined
-	const { data: chapters = [], refetch } = useFetchChapters(location ?? [0, 0])
+	const { data: chapters = [], refetch } = useFetchChapters({
+		location,
+		shouldFilterByDistance,
+	})
 
 	useEffect(() => {
 		navigator.geolocation?.getCurrentPosition(

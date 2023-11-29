@@ -1,0 +1,39 @@
+.map-popup-mark {
+  background-color: #fff;
+  border-radius: 3px;
+  border: 2px solid #000;
+  max-width: 700px;
+  min-width: 280px;
+}
+
+div[id^=map-popup-layer] {
+  background-color: transparent;
+}
+
+div[id^=map-popup-layer], div[id^=map-popup-card] {
+  height: 100%;
+  max-width: 1000px;
+  min-width: 500px;
+}
+
+[id^=map-popup-card] {
+  background-color: rgba(0, 0, 0, 0.89);
+  color: white;
+
+  header, footer, div {
+    background-color: transparent;
+  }
+
+  header {
+    display: inline-flex;
+    word-wrap: normal;
+
+    span {
+      font-size: x-large;
+    }
+
+    span.map-popup-card-header-name {
+      font-family: Poppins;
+    }
+  }
+}

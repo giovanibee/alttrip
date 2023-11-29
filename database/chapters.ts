@@ -37,6 +37,8 @@ const deleteAllByStoryId = async (storyId: number) => prisma.chapter.deleteMany(
 
 const getAll = async () => prisma.chapter.findMany()
 
+const getAllFirstChapters = async () => prisma.chapter.findMany({ where: { order: 0 } })
+
 const getAllByStoryId = async (storyId: number) =>
 	prisma.chapter.findMany({ where: { storyId } })
 
@@ -50,4 +52,4 @@ const updateById = (id: number, data: UpdateChapter) =>
 		data,
 	})
 
-export { create, deleteById, deleteAllByStoryId, getAll, getByOrder, getAllByStoryId, getById, updateById }
+export { create, deleteById, deleteAllByStoryId, getAll, getAllFirstChapters, getByOrder, getAllByStoryId, getById, updateById }

@@ -13,13 +13,22 @@ export interface Chapter {
 	order: number
 	secretText: string | null
 	storyId: number
+
+	hasBeenCompleted?: boolean
 }
 
-export const useFetchChapters = (location: LatLngTuple, shouldFilterByDistance = false) =>
+export interface FetchChapterProps {
+	location?: LatLngTuple,
+	shouldFilterByDistance?: boolean,
+}
+export const useFetchChapters = ({
+	location,
+	shouldFilterByDistance = false,
+}: FetchChapterProps) =>
 	useQuery({
 		queryKey: ['chapters'],
 		queryFn: async (): Promise<Chapter[] | null> => {
-			const [latitude, longitude] = location || []
+			const [latitude, longitude] = location || [0, 0]
 			if (Math.abs(latitude) < 1 || Math.abs(longitude) < 1) return null
 			try {
 				let response = (await ky.get('/api/auth/chapters', {

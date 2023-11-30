@@ -24,7 +24,7 @@ export default function Page() {
 	const [shouldFilterByDistance, _setShouldFilterByDistance] = useState(false)
 
 	// update case when undefined
-	const { data: chapters = [], refetch } = useFetchChapters({
+	const { data: chapters = null, refetch } = useFetchChapters({
 		location,
 		shouldFilterByDistance,
 	})

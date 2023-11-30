@@ -24,8 +24,6 @@ interface UpdateChapter {
 }
 
 // TODO: Return only chapters within a certain distance of the user
-// TODO (SOON): Return only chapters that the user is allowed to see (correct order, etc.) using filter options
-
 const create = async (data: CreateChapter) => prisma.chapter.create({ data })
 
 const deleteById = (id: number) =>
@@ -37,14 +35,16 @@ const deleteAllByStoryId = async (storyId: number) => prisma.chapter.deleteMany(
 
 const getAll = async () => prisma.chapter.findMany()
 
-const getAllFirstChapters = async () => prisma.chapter.findMany({ where: { order: 0 } })
+const getByOrder = async (order: number) => prisma.chapter.findMany({ where: { order } })
+
+const getByOrderAndStoryId = async (order: number, storyId: number) => prisma.chapter.findUnique({
+	where: { order_storyId: { order, storyId } }
+})
 
 const getAllByStoryId = async (storyId: number) =>
 	prisma.chapter.findMany({ where: { storyId } })
 
 const getById = (id: number) => prisma.chapter.findUnique({ where: { id } })
-
-const getByOrder = (order: number, storyId: number) => prisma.chapter.findUnique({ where: { order, storyId } })
 
 const updateById = (id: number, data: UpdateChapter) =>
 	prisma.chapter.update({
@@ -52,4 +52,13 @@ const updateById = (id: number, data: UpdateChapter) =>
 		data,
 	})
 
-export { create, deleteById, deleteAllByStoryId, getAll, getAllFirstChapters, getByOrder, getAllByStoryId, getById, updateById }
+const verifyPasscode = async (chapterId: number, passcode: string) => {
+	const chapter = await getById(chapterId)
+	if (!chapter) throw new Error('Chapter not found')
+
+	if (chapter.passcode !== passcode) return null
+
+	return chapter.secretText
+}
+
+export { create, deleteById, deleteAllByStoryId, getAll, getByOrder, getByOrderAndStoryId, getAllByStoryId, getById, updateById, verifyPasscode }

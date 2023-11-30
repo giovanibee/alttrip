@@ -55,6 +55,7 @@ model InviteCode {
   id        Int     @id @default(autoincrement())
   code      String  @unique
   isRedeemed  Boolean @default(false)
+  numberOfUses Int  @default(0)
 }
 
 model User {

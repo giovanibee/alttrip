@@ -1,9 +1,10 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import toast from 'react-hot-toast'
 import { Form, FormExtendedEvent } from 'grommet'
 import ky from 'ky'
+import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
 
 import { Button, FormField, Input } from '@/components/BaseComponents'
 import { ChapterForm } from '@/components/Creation'
@@ -19,6 +20,7 @@ export default function CreateStoryForm ({
 }) {
 	const [isLoading, setIsLoading] = useState(false)
 	const numberOfForms = [0]
+	const router = useRouter()
 
 	// TODO: usehook???
 	// get loaading that way
@@ -52,11 +54,15 @@ export default function CreateStoryForm ({
 
 		try {
 			response = await ky.post('/api/auth/stories', {
-				json: { story, firstChapter: parsedChapters[0] },
+				json: {
+					firstChapter: parsedChapters[0],
+					story
+				},
 			})
 			if (response.status === 200) {
 				toast.success('New story created! You can now view it on the map')
 				closeModal()
+				router.push('/explore')
 			}
 		} catch (error: Error | any) {
 			switch (error?.response?.status) {

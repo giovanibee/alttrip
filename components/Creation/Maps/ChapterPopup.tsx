@@ -1,36 +1,55 @@
 import { useMemo, useState } from 'react'
 import { Marker, Popup } from 'react-leaflet'
-import { Chapter } from '@/lib/hooks/chapters'
+import { Chapter, useGetSecretText, useVerifyPasscode } from '@/lib/hooks/chapters'
 import { Button, Card, Layer, Input, CardHeader, CardBody, CardFooter } from '@/components/BaseComponents'
 import './ChapterPopup.scss'
+import { LoadingDots } from '@/components/Loading'
 
-export default function ChapterPopup ({ chapter, key }: { chapter: Chapter, key: number }) {
+interface ChapterPopupProps {
+  chapter: Chapter
+  key: number
+  isComplete?: boolean
+}
+
+export default function ChapterPopup ({ chapter, key, isComplete = false }: ChapterPopupProps) {
   const [isViewing, setIsViewing] = useState(false)
+  const [passcode, setPasscode] = useState('')
   const {
-    name,
     description,
     details,
+    id: chapterId,
+    name,
     order,
-} = chapter
-  const {
-    data: secret, isFetching, refetch
-  } = {
-    data: chapter.secretText,
-    isFetching: false,
-    refetch: () => {}
-  }
+  } = chapter
 
+  const { data: secret, isPending } = useGetSecretText()
+
+  const {
+    mutate: verifyPasscode,
+    isPending: isPendingVerification
+  } = useVerifyPasscode()
+
+  // when passcode is verified, mark chapter as complete
   const secretSection = useMemo(() => {
-    if (isFetching) return <p>loading</p>
+    if (isPending || isPendingVerification) return <LoadingDots />
     return (
-      secret
+      isComplete
       ? <p>{secret}</p>
       : <>
-          <Input name='passcode' type='password' />
-          <Button label="Verify" onClick={refetch} />
+          <Input
+            name='passcode'
+            onChange={(event) => setPasscode(event.target.value)}
+            type='password'
+          />
+          <Button
+            label="Verify"
+            onClick={() => verifyPasscode({ chapterId, passcode })}
+          />
         </>
-        )
-  }, [isFetching, refetch, secret])
+      )
+  }, [
+    chapterId, isComplete, isPending, isPendingVerification, passcode, secret, verifyPasscode
+  ])
 
   return (
     <Marker key={key} position={[chapter.latitude, chapter.longitude]}>
@@ -39,7 +58,7 @@ export default function ChapterPopup ({ chapter, key }: { chapter: Chapter, key:
           <Card id={`map-popup-card-${key}`}>
             <CardHeader id={`map-popup-card-${key}-header`}>
               <span className='map-popup-card-header-order'>
-              {`Chapter ${order + 1}`}
+                {`Chapter ${order + 1}`}
               </span>
              <span className='map-popup-card-header-name'>
                {name}
@@ -51,10 +70,7 @@ export default function ChapterPopup ({ chapter, key }: { chapter: Chapter, key:
               {secretSection}
             </CardBody>
             <CardFooter id={`map-popup-card-${key}-footer`}>
-              <Button
-                label="Close"
-                onClick={() => setIsViewing(false)}
-              />
+              <Button label="Close" onClick={() => setIsViewing(false)} />
             </CardFooter>
           </Card>
         </Layer>

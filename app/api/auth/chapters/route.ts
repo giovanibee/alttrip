@@ -1,6 +1,6 @@
 'use server'
 
-import { chapters, sortedChapters, user } from 'database'
+import { chapters, sortedChapters } from 'database'
 import { NextRequest } from 'next/server'
 import { getServerSession } from 'next-auth'
 

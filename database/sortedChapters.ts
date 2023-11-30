@@ -2,6 +2,59 @@
 
 import prisma from 'lib/prisma'
 import { user, chapters } from 'database'
+import { Chapter } from '@/lib/hooks/chapters'
+
+const checkIfChapterIsCompleted = async (email: string, chapterId: number) => {
+  const userRecord = await user.getByEmail(email)
+  if (!userRecord) throw new Error('User not found')
+
+  return prisma.completedChapter.findUnique({
+    where: { chapterId_userId: { userId: userRecord.id, chapterId } },
+    include: { chapter: true }
+  })
+}
+
+const getCompletedChapters = async (email: string) => {
+  const userRecord = await user.getByEmail(email)
+  if (!userRecord) throw new Error('User not found')
+
+  return prisma.completedChapter.findMany({
+    where: { userId: userRecord.id },
+    include: { chapter: true }
+  })
+}
+
+export interface SortedChapters {
+  completedChapters: Chapter[]
+  incompleteChapters: Chapter[]
+}
+
+// all completed stories + next incomplete chapter based on order
+const getSortedChapters = async (email: string): Promise<SortedChapters> => {
+  const allChapters = await chapters.getByOrder(0)
+
+  const completedChapters = await getCompletedChapters(email)
+  // if no completed stories, return first chapters of all stories
+  if (completedChapters.length === 0) {
+    return {
+      completedChapters: [],
+      incompleteChapters: allChapters,
+    }
+  }
+  
+  const incompleteChapters: Chapter[] = []
+  await Promise.all(completedChapters.map(async ({ chapter: { order, storyId }}) => {
+    const nextChapter = await chapters.getByOrderAndStoryId(order + 1, storyId)
+    if (!nextChapter) return
+
+    const isNextChapterCompleted = completedChapters.find(({ chapterId }) => chapterId === nextChapter.id)
+    if (!isNextChapterCompleted) incompleteChapters.push(nextChapter)
+  }))
+
+  return {
+    completedChapters: completedChapters.map(({ chapter }) => chapter),
+    incompleteChapters,
+  }}
 
 const markChapterAsComplete = async (email: string, chapterId: number) => {
   const userRecord = await user.getByEmail(email)
@@ -18,34 +71,4 @@ const markChapterAsComplete = async (email: string, chapterId: number) => {
   })
 }
 
-const getCompletedChapters = async (email: string) => {
-  const userRecord = await user.getByEmail(email)
-  if (!userRecord) throw new Error('User not found')
-
-  return prisma.completedChapter.findMany({
-    where: { userId: userRecord.id },
-  })
-}
-
-// completedChapters + next incomplete chapter based on order
-// if no next incomplete chapter, return first chapter
-// TODO: verify this works as expecteds
-const getSortedChapters = async (email: string) => {
-  const allChapters = await chapters.getAllFirstChapters()
-  const allChapterIds = allChapters.map((chapter) => chapter.id)
-
-  const completedChapters = await getCompletedChapters(email)
-
-  const completedChapterIds = completedChapters.map((chapter) => chapter.chapterId)
-  const incompleteChapterIds = allChapterIds.filter((id) => !completedChapterIds.includes(id))
-
-  // check in next chapter
-  // const nextChapter = await chapters.getByOrder(1)
-
-  return {
-    incompleteChapterIds: incompleteChapterIds,
-    completedChapterIds: completedChapterIds,
-  }
-}
-
-export { markChapterAsComplete, getCompletedChapters, getSortedChapters }
+export { checkIfChapterIsCompleted, getCompletedChapters, getSortedChapters, markChapterAsComplete }

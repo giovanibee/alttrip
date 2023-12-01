@@ -7,7 +7,7 @@ import { LatLngTuple } from 'leaflet'
 
 import { useFetchChapters } from '@/lib/hooks/chapters'
 import { Box, Checkbox, Grid, Grommet } from '@/components/BaseComponents'
-import Marks from '@/components/Creation/Maps/Marks'
+import { Marks } from '@/components/Creation'
 import { CreateStoryModal } from '@/components/Creation'
 import { roundNumber } from '@/lib/helpers'
 import './styles.scss'
@@ -45,7 +45,7 @@ export default function Page() {
 	const locationString = useMemo(() => {
 		if (!location) return null
 		let coords = 'loading...'
-		coords = location
+		coords = Array.isArray(location)
 			? roundNumber(location[0]) + ', ' + roundNumber(location[1], 3)
 			: 'unknown'
 		return <p id="current-location">Current location is {coords}</p>

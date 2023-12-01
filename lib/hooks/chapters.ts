@@ -2,9 +2,10 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query'
 import ky from 'ky-universal'
-import { LatLngTuple } from 'leaflet'
-import { SortedChapters } from 'database/sortedChapters'
+import { LatLngTuple } from '@/lib/types/geospatial'
 import toast from 'react-hot-toast'
+
+import { SortedChapters } from 'database/sortedChapters'
 
 export interface Chapter {
 	id: number

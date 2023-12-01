@@ -1,3 +1,3 @@
-import { useFetchChapters, useCreateChapters, useUpdateChapters } from '@/lib/hooks/chapters'
+import { useFetchChapters } from '@/lib/hooks/chapters'
 
-export { useFetchChapters, useCreateChapters, useUpdateChapters }
+export { useFetchChapters }

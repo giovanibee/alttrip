@@ -1,5 +1,3 @@
-'use server'
-
 import { getServerSession } from 'next-auth/next'
 import { useQuery } from 'react-query'
 

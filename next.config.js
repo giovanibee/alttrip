@@ -3,10 +3,10 @@ const nextConfig = {
 	experimental: {
 		serverActions: true,
 	},
+	swcMinify: true,
 	typescript: {
 		ignoreBuildErrors: true,
 	},
-	swcMinify: true,
 }
 
 module.exports = nextConfig

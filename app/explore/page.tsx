@@ -21,7 +21,8 @@ export default function Page() {
 	const [addStory, setAddStory] = useState(false)
 	const [addChapter, setAddChapter] = useState(false)
 	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
-	const [shouldFilterByDistance, _setShouldFilterByDistance] = useState(false)
+	// const [isCreateChapterOpen, setIsCreateChapterOpen] = useState(false)
+	const shouldFilterByDistance = false
 
 	// update case when undefined
 	const { data: chapters = null, refetch } = useFetchChapters({
@@ -32,13 +33,13 @@ export default function Page() {
 	useEffect(() => {
 		navigator.geolocation?.getCurrentPosition(
 			({ coords }) => setLocation([coords.latitude, coords.longitude]),
-			(err) => console.error(err)
+			(err) => console.error(err),
 		)
 	}, [])
 
 	useEffect(() => {
 		if (location) refetch()
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location])
 
 	const locationString = useMemo(() => {
@@ -47,11 +48,7 @@ export default function Page() {
 		coords = location
 			? roundNumber(location[0]) + ', ' + roundNumber(location[1], 3)
 			: 'unknown'
-		return (
-			<p id="current-location">
-				Current location is {coords}
-			</p>
-		)
+		return <p id="current-location">Current location is {coords}</p>
 	}, [location])
 
 	const MapComponent = () => {
@@ -61,7 +58,7 @@ export default function Page() {
 				const { lat, lng } = latlng
 				setNewStoryLocation([lat, lng])
 				setIsCreateStoryOpen(true)
-			}
+			},
 		})
 		return <div />
 	}
@@ -88,57 +85,53 @@ export default function Page() {
 
 	const orderBasedOnScreensize = (screenSize: string, options: string[]) => {
 		if (['xlarge', 'large'].includes(screenSize)) return [options]
-		return options.map((option) => ([option, option]))
+		return options.map((option) => [option, option])
 	}
 	return (
 		<Grommet>
 			<ResponsiveContext.Consumer>
 				{(screenSize) => (
-				<>
-					<Grid
-						id="create-story-page"
-						columns={['auto', 'medium']}
-						rows={['xxsmall', 'xsmall', 'auto', 'auto']}
-						gap="small"
-						areas={[
-							['description', 'description'],
-							['options', 'options'],
-							...(orderBasedOnScreensize(screenSize, ['map', 'nearby']))
-						]}
-					>
-						<Box gridArea='description'>
-							{locationString}
-						</Box>
-						<Box gridArea='options'>
+					<>
+						<Grid
+							id="create-story-page"
+							columns={['auto', 'medium']}
+							rows={['xxsmall', 'xsmall', 'auto', 'auto']}
+							gap="small"
+							areas={[
+								['description', 'description'],
+								['options', 'options'],
+								...orderBasedOnScreensize(screenSize, ['map', 'nearby']),
+							]}
+						>
+							<Box gridArea="description">{locationString}</Box>
+							<Box gridArea="options">
 								On map click
-							<Checkbox
-								checked={addStory}
-								id="add-story-checkbox"
-								label="Add story"
-								onChange={(event) => setAddStory(event.target.checked)}
-							/>
-							<Checkbox
-								checked={addChapter}
-								id="add-chapter-checkbox"
-								label="Add chapter"
-								onChange={(event) => setAddChapter(event.target.checked)}
-							/>
-						</Box>
-						<Box gridArea='map'>
-							{mapContainer}
-						</Box>
-						<Box gridArea='nearby'>
-							<h3>Nearby stories</h3>
-						</Box>
-					</Grid>
-					<CreateStoryModal
-						closeModal={() => setIsCreateStoryOpen(false)}
-						isOpen={addStory && isCreateStoryOpen}
-						latitude={newStoryLocation?.[0]}
-						longitude={newStoryLocation?.[1]}
-					/>
-				</>
-			)}
+								<Checkbox
+									checked={addStory}
+									id="add-story-checkbox"
+									label="Add story"
+									onChange={(event) => setAddStory(event.target.checked)}
+								/>
+								<Checkbox
+									checked={addChapter}
+									id="add-chapter-checkbox"
+									label="Add chapter"
+									onChange={(event) => setAddChapter(event.target.checked)}
+								/>
+							</Box>
+							<Box gridArea="map">{mapContainer}</Box>
+							<Box gridArea="nearby">
+								<h3>Nearby stories</h3>
+							</Box>
+						</Grid>
+						<CreateStoryModal
+							closeModal={() => setIsCreateStoryOpen(false)}
+							isOpen={addStory && isCreateStoryOpen}
+							latitude={newStoryLocation?.[0]}
+							longitude={newStoryLocation?.[1]}
+						/>
+					</>
+				)}
 			</ResponsiveContext.Consumer>
 		</Grommet>
 	)

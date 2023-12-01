@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "prisma generate && prisma migrate dev",
+    "postinstall": "prisma generate && prisma migrate deploy",
     "dev": "pnpm postinstall && next dev",
     "prettier": "prettier --write .",
     "lint:fix": "eslint --fix .",

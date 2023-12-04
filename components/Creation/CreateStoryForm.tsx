@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { Form, FormExtendedEvent } from 'grommet'
 import ky from 'ky'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
 import { Button, FormField, Input } from '@/components/BaseComponents'
@@ -13,7 +13,7 @@ import { roundNumber } from '@/lib/helpers'
 
 import './CreateStory.scss'
 
-export default function CreateStoryForm ({
+export default function CreateStoryForm({
 	closeModal = () => {},
 	latitude = 0,
 	longitude = 0,
@@ -56,7 +56,7 @@ export default function CreateStoryForm ({
 			response = await ky.post('/api/auth/stories', {
 				json: {
 					firstChapter: parsedChapters[0],
-					story
+					story,
 				},
 			})
 			if (response.status === 200) {

@@ -40,11 +40,11 @@ export interface FetchChapterProps {
 	location?: LatLngTuple
 	shouldFilterByDistance?: boolean
 }
-export const useFetchChapters = ({
+export function useFetchChapters({
 	location,
 	shouldFilterByDistance = false,
-}: FetchChapterProps) =>
-	useQuery({
+}: FetchChapterProps) {
+	return useQuery({
 		queryKey: ['chapters'],
 		queryFn: async (): Promise<SortedChapters | null> => {
 			try {
@@ -76,6 +76,7 @@ export const useFetchChapters = ({
 			}
 		},
 	})
+}
 
 export const useGetSecretText = () =>
 	useMutation({

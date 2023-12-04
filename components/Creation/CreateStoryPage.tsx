@@ -31,7 +31,7 @@ export default function CreateStoryPage() {
 	})
 
 	useEffect(() => {
-		navigator.geolocation?.getCurrentPosition(
+		window.navigator.geolocation?.getCurrentPosition(
 			({ coords }) => setLocation([coords.latitude, coords.longitude]),
 			(err) => console.error(err),
 		)

@@ -28,10 +28,13 @@ export const metadata: Metadata = {
 		description,
 	},
 	metadataBase: new URL('https://nextjs-postgres-auth.vercel.app'),
-	themeColor: 'black',
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+	children,
+}: {
+	children: React.ReactNode
+}) {
 	return (
 		<NextAuthProvider>
 			<html lang="en">
@@ -81,8 +84,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 											margin: '0px 56px 28px auto',
 										}}
 									>
-										⊛ hello.alttrip@gmail.com ⊛ made with love from las vegas, nv,
-										usa © 2023
+										⊛ hello.alttrip@gmail.com ⊛ made with love from las vegas,
+										nv, usa © 2023
 									</div>
 								</Footer>
 							</Suspense>

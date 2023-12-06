@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
 import { LoadingDots } from '@/components/Loading'
-import { Marks } from '@/components/Creation'
+import { Marks } from '@/components/Maps'
 import 'leaflet/dist/leaflet.css'
 
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">'

@@ -5,6 +5,8 @@ import {
 	useGetSecretText,
 	useVerifyPasscode,
 } from '@/lib/hooks/chapters'
+
+import { Marker, Popup } from 'react-leaflet'
 import {
 	Button,
 	Card,
@@ -13,8 +15,6 @@ import {
 	CardHeader,
 	CardBody,
 	CardFooter,
-	Marker,
-	Popup,
 } from '@/components/BaseComponents'
 import { LoadingDots } from '@/components/Loading'
 
@@ -22,13 +22,11 @@ import './ChapterPopup.scss'
 
 interface ChapterPopupProps {
 	chapter: Chapter
-	key: number
 	isComplete?: boolean
 }
 
 export default function ChapterPopup({
 	chapter,
-	key,
 	isComplete = false,
 }: ChapterPopupProps) {
 	const [isViewing, setIsViewing] = useState(false)
@@ -72,19 +70,19 @@ export default function ChapterPopup({
 		<Marker position={[chapter.latitude, chapter.longitude]}>
 			{isViewing ? (
 				<Layer id="map-popup-layer">
-					<Card id={`map-popup-card-${key}`}>
-						<CardHeader id={`map-popup-card-${key}-header`}>
+					<Card className={`map-popup-card`}>
+						<CardHeader className={`map-popup-card-header`}>
 							<span className="map-popup-card-header-order">
 								{`Chapter ${order + 1}`}
 							</span>
 							<span className="map-popup-card-header-name">{name}</span>
 						</CardHeader>
-						<CardBody id={`map-popup-card-${key}-body`}>
+						<CardBody className={`map-popup-card-body`}>
 							<p>{description}</p>
 							<p>{details}</p>
 							{secretSection}
 						</CardBody>
-						<CardFooter id={`map-popup-card-${key}-footer`}>
+						<CardFooter className={`map-popup-card-footer`}>
 							<Button label="Close" onClick={() => setIsViewing(false)} />
 						</CardFooter>
 					</Card>

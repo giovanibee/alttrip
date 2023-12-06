@@ -7,13 +7,13 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
 import { Button, FormField, Input } from '@/components/BaseComponents'
-import { ChapterForm } from '@/components/Creation'
+import { ChapterForm } from '@/components/Explore'
 import { LoadingDots } from '@/components/Loading'
 import { roundNumber } from '@/lib/helpers'
 
 import './CreateStory.scss'
 
-export default function CreateStoryForm({
+export function CreateStoryForm({
 	closeModal = () => {},
 	latitude = 0,
 	longitude = 0,

@@ -9,14 +9,15 @@ import LoadingDots from '@/components/Loading/LoadingDots'
 import { Button, FormField, Input } from '@/components/BaseComponents'
 import './style.scss'
 
-export default function SignUpForm() {
+export function SignUpForm() {
 	const [isLoading, setIsLoading] = useState(false)
 	const router = useRouter()
 
 	const onSubmit = async (event: FormExtendedEvent) => {
 		event.preventDefault()
 		setIsLoading(true)
-		const { email, nameOfUser, password, confirmPassword, inviteCode } = event.value
+		const { email, nameOfUser, password, confirmPassword, inviteCode } =
+			event.value
 
 		if (password !== confirmPassword) {
 			toast.error('Passwords do not match.')
@@ -57,7 +58,7 @@ export default function SignUpForm() {
 
 	return (
 		<Form onSubmit={onSubmit} className="flex">
-			<FormField name="email" htmlFor="email" label='Email address'>
+			<FormField name="email" htmlFor="email" label="Email address">
 				<Input
 					id="email"
 					name="email"
@@ -76,39 +77,29 @@ export default function SignUpForm() {
 				/>
 			</FormField>
 			<FormField name="password" htmlFor="password" label="Password">
-				<Input
-					id="password"
-					name="password" 
-					type="password"
-					required
-				/>
+				<Input id="password" name="password" type="password" required />
 			</FormField>
-			<FormField name="confirmPassword" htmlFor="password" label="Confirm password">
-				<Input
-					id="password"
-					name="confirmPassword" 
-					type="password"
-					required
-				/>
+			<FormField
+				name="confirmPassword"
+				htmlFor="password"
+				label="Confirm password"
+			>
+				<Input id="password" name="confirmPassword" type="password" required />
 			</FormField>
-			<FormField name="inviteCode" htmlFor='inviteCode' label="Invite code">
-				<Input
-					id="inviteCode"
-					name="inviteCode" 
-					type="text"
-				/>
+			<FormField name="inviteCode" htmlFor="inviteCode" label="Invite code">
+				<Input id="inviteCode" name="inviteCode" type="text" />
 			</FormField>
-			{isLoading
-				? <LoadingDots />
-				: (
+			{isLoading ? (
+				<LoadingDots />
+			) : (
 				<Button
 					className={`${isLoading ? 'loading' : 'not-loading'} something`}
-					id='sign-up-submit-button'
-					type='submit'
+					id="sign-up-submit-button"
+					type="submit"
 				>
 					Sign Up
 				</Button>
-				)}
+			)}
 		</Form>
 	)
 }

@@ -67,8 +67,8 @@ export default async function RootLayout({
 				<body className={poppins.className}>
 					<ReactQueryProvider>
 						<Toaster />
-						<Grommet>
-							<Suspense fallback={<Loading />}>
+						<Suspense fallback={<Loading />}>
+							<Grommet>
 								<MainHeader />
 								<Main style={{ margin: '56px' }}>{children}</Main>
 								<Footer>
@@ -83,8 +83,8 @@ export default async function RootLayout({
 										nv, usa © 2023
 									</div>
 								</Footer>
-							</Suspense>
-						</Grommet>
+							</Grommet>
+						</Suspense>
 					</ReactQueryProvider>
 				</body>
 			</html>

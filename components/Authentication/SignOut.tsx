@@ -2,10 +2,6 @@
 
 import { signOut } from 'next-auth/react'
 
-export default function SignOut() {
-	return (
-		<div onClick={() => signOut()}>
-			Sign out
-		</div>
-	)
+export function SignOut() {
+	return <div onClick={() => signOut()}>Sign out</div>
 }

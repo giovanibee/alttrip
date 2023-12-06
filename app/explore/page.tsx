@@ -1,5 +1,10 @@
-import CreateStoryPage from 'components/Creation/CreateStoryPage'
+import dynamic from 'next/dynamic'
+
+const ExplorePage = dynamic(() => import('@/components/Explore/ExplorePage'), {
+	loading: () => <p>Loading...</p>,
+	ssr: false,
+})
 
 export default function Page() {
-	return <CreateStoryPage />
+	return <ExplorePage />
 }

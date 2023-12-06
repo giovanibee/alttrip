@@ -9,7 +9,7 @@ import LoadingDots from '@/components/Loading/LoadingDots'
 import { useRouter } from 'next/navigation'
 import './style.scss'
 
-export default function LoginForm() {
+export function LoginForm() {
 	const [isLoading, setIsLoading] = useState(false)
 	const router = useRouter()
 

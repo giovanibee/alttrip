@@ -7,11 +7,11 @@ import { ResponsiveContext } from 'grommet'
 import { LatLngTuple } from '@/lib/types/geospatial'
 import { useFetchChapters } from '@/lib/hooks/chapters'
 import { Box, Checkbox, Grid, Grommet } from '@/components/BaseComponents'
-import { CreateStoryModal } from '@/components/Creation'
+import { CreateStoryModal } from '@/components/Explore'
 import { roundNumber } from '@/lib/helpers'
-import './CreateStoryPage.scss'
+import './ExplorePage.scss'
 
-const MainMap = dynamic(() => import('components/Creation/Maps/MainMap'), {
+const MainMap = dynamic(() => import('@/components/Maps/MainMap'), {
 	loading: () => <p>Loading...</p>,
 	ssr: false,
 })
@@ -92,15 +92,15 @@ export default function CreateStoryPage() {
 								<h3>Nearby stories</h3>
 							</Box>
 						</Grid>
-						<CreateStoryModal
-							closeModal={() => setIsCreateStoryOpen(false)}
-							isOpen={addStory && isCreateStoryOpen}
-							latitude={newStoryLocation?.[0]}
-							longitude={newStoryLocation?.[1]}
-						/>
 					</>
 				)}
 			</ResponsiveContext.Consumer>
+			<CreateStoryModal
+				closeModal={() => setIsCreateStoryOpen(false)}
+				isOpen={addStory && isCreateStoryOpen}
+				latitude={newStoryLocation?.[0]}
+				longitude={newStoryLocation?.[1]}
+			/>
 		</Grommet>
 	)
 }

@@ -26,6 +26,8 @@ import Textarea from './Textarea'
 // import Badge from './Badge'
 // import Tag from './Tag'
 
+export * from './Maps'
+
 export {
 	Box,
 	Button,

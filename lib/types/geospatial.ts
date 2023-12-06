@@ -1,3 +1,1 @@
-import { LatLngTuple } from 'leaflet'
-
-export type { LatLngTuple }
+export type LatLngTuple = [number, number, number?]

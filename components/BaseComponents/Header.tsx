@@ -1,5 +1,7 @@
-import { Header as GrommetHeader, HeaderExtendedProps } from 'grommet'
+import { Layout } from 'antd'
 
-export default function Header(props: HeaderExtendedProps) {
-	return <GrommetHeader {...props} />
+const { Header: AntDHeader } = Layout
+
+export function Header(props: any) {
+	return <AntDHeader {...props} />
 }

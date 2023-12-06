@@ -1,30 +1,31 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Form, FormExtendedEvent } from 'grommet'
+import { Form } from 'antd'
 import ky from 'ky'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
-import { Button, FormField, Input } from '@/components/BaseComponents'
+import { Button, Input } from '@/components/BaseComponents'
 import { ChapterForm } from '@/components/Creation'
-import { LoadingDots } from '@/components/Loading'
+import { LoadingDots } from '@/components/Loading/LoadingDots'
 import { roundNumber } from '@/lib/helpers'
 
 import './CreateStory.scss'
 
-export default function CreateStoryForm({
+export function CreateStoryForm({
 	closeModal = () => {},
 	latitude = 0,
 	longitude = 0,
 }) {
+	const [form] = Form.useForm()
 	const [isLoading, setIsLoading] = useState(false)
 	const numberOfForms = [0]
 	const router = useRouter()
 
 	// TODO: usehook???
 	// get loaading that way
-	const onSubmit = async (event: FormExtendedEvent) => {
+	const onSubmit = async (event: any) => {
 		event.preventDefault()
 		setIsLoading(true)
 		const {
@@ -84,28 +85,42 @@ export default function CreateStoryForm({
 	}, [latitude, longitude])
 
 	return (
-		<Form onSubmit={onSubmit} className="flex">
+		<Form className="flex" form={form} onFinish={onSubmit}>
 			{location}
-			<FormField name="storyName" htmlFor="story name" label="Name">
+			<Form.Item
+				name="storyName"
+				htmlFor="story name"
+				label="Name"
+				rules={[
+					{
+						required: true,
+						message: 'Please input a name for your story',
+					}
+				]}
+			>
 				<Input
 					id="storyName"
 					name="storyName"
 					placeholder="Under the Mesquite Tree"
-					required
 				/>
-			</FormField>
-			<FormField
+			</Form.Item>
+			<Form.Item
 				name="storyDescription"
 				htmlFor="story description"
 				label="Description"
+				rules={[
+					{
+						required: true,
+						message: 'Please input a name for your story description',
+					}
+				]}
 			>
 				<Input
 					id="storyDescription"
 					name="storyDescription"
 					placeholder="A story about a tortoise that makes friends with a rabbit in the desert."
-					required
 				/>
-			</FormField>
+			</Form.Item>
 			<ChapterForm numberOfForms={numberOfForms} />
 			{/* <Button
 				label="Add another chapter"

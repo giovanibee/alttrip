@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import anime from 'animejs/lib/anime.es.js'
 import './LoadingDots.scss'
 
-export default function LoadingDots ({ color = 'blue', size = 'small ' }) {
+export function LoadingDots ({ color = 'blue', size = 'small ' }) {
 	useEffect(() => {
 		anime({
 			delay: anime.stagger(200),

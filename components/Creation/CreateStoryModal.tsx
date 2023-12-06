@@ -1,9 +1,9 @@
-import { Button, Card, CardBody, CardHeader, Layer } from '@/components/BaseComponents'
+import { Modal } from '@/components/BaseComponents'
 import { CreateStoryForm } from '@/components/Creation'
 
 import './CreateStory.scss'
 
-export default function CreateStoryModal ({
+export function CreateStoryModal ({
   closeModal = () => {},
   isOpen = false,
   latitude = 0,
@@ -12,25 +12,25 @@ export default function CreateStoryModal ({
   // TODO: add a popup to ask if the user wants to save the story before closing
   if (!isOpen) return null
   return (
-    <Layer id='create-story-modal' style={{ zIndex: 9999 }}>
-      <Card id='create-story-modal-card'>
-        <CardHeader>
-          New story
-          <Button
-            id='create-story-modal-close-button'
-            label="X"
-            onClick={closeModal}
-            plain
-          />
-        </CardHeader>
-        <CardBody>
-          <CreateStoryForm
-            closeModal={closeModal}
-            latitude={latitude}
-            longitude={longitude}
-          />
-        </CardBody>
-      </Card>
-    </Layer>
+    <Modal
+      classNames={{
+        header: 'create-story-modal-header',
+        mask: 'create-story-modal',
+        footer: 'create-story-modal-footer',
+      }}
+      closeIcon
+      open={isOpen}
+      style={{ zIndex: 9999 }}
+      title='New story'
+      onCancel={closeModal}
+      width='100%'
+      wrapClassName='create-story-modal'
+    >
+      <CreateStoryForm
+        closeModal={closeModal}
+        latitude={latitude}
+        longitude={longitude}
+      />
+    </Modal>
   )
 }

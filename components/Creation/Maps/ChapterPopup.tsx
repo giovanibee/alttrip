@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import {
 	Chapter,
@@ -8,13 +8,10 @@ import {
 import {
 	Button,
 	Card,
-	Layer,
+	Modal,
 	Input,
-	CardHeader,
-	CardBody,
-	CardFooter,
 } from '@/components/BaseComponents'
-import { LoadingDots } from '@/components/Loading'
+import { LoadingDots } from '@/components/Loading/LoadingDots'
 
 import './ChapterPopup.scss'
 
@@ -24,7 +21,7 @@ interface ChapterPopupProps {
 	isComplete?: boolean
 }
 
-export default function ChapterPopup({
+export function ChapterPopup({
 	chapter,
 	key,
 	isComplete = false,
@@ -69,31 +66,34 @@ export default function ChapterPopup({
 	return (
 		<Marker key={key} position={[chapter.latitude, chapter.longitude]}>
 			{isViewing && (
-				<Layer id="map-popup-layer">
-					<Card id={`map-popup-card-${key}`}>
-						<CardHeader id={`map-popup-card-${key}-header`}>
+				<Modal id="map-popup-layer">
+					<Card id={`map-popup-card-${key}`} title={(
+						<>
 							<span className="map-popup-card-header-order">
 								{`Chapter ${order + 1}`}
 							</span>
 							<span className="map-popup-card-header-name">{name}</span>
-						</CardHeader>
-						<CardBody id={`map-popup-card-${key}-body`}>
+						</>
+					)}
+					actions={[
+						<Button title="Close" onClick={() => setIsViewing(false)} key='1' />
+					]}
+					>
+
+						<div id={`map-popup-card-${key}-body`}>
 							<p>{description}</p>
 							<p>{details}</p>
 							{secretSection}
-						</CardBody>
-						<CardFooter id={`map-popup-card-${key}-footer`}>
-							<Button label="Close" onClick={() => setIsViewing(false)} />
-						</CardFooter>
+						</div>
 					</Card>
-				</Layer>
+				</Modal>
 			)}
 			<Popup className="map-popup-mark">
 				<h3>
 					Chapter {order + 1} - {name}
 				</h3>
 				<p>{description}</p>
-				<Button label="View" onClick={() => setIsViewing(true)} />
+				<Button title="View" onClick={() => setIsViewing(true)} />
 			</Popup>
 		</Marker>
 	)

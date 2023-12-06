@@ -1,5 +1,5 @@
-import { Menu as GrommetMenu, MenuExtendedProps } from 'grommet'
+import { Menu as AntDMenu, MenuProps } from 'antd'
 
-export default function Menu(props: MenuExtendedProps) {
-	return <GrommetMenu {...props} />
+export function Menu(props: MenuProps) {
+	return <AntDMenu {...props} />
 }

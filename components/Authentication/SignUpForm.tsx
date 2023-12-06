@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import ky from 'ky'
-import { Form, FormExtendedEvent } from 'grommet'
+import { Form } from 'antd'
 import { useRouter } from 'next/navigation'
-import LoadingDots from '@/components/Loading/LoadingDots'
+import { LoadingDots } from '@/components/Loading/LoadingDots'
 import { Button, FormField, Input } from '@/components/BaseComponents'
 import './style.scss'
 
@@ -56,55 +56,54 @@ export default function SignUpForm() {
 	}
 
 	return (
-		<Form onSubmit={onSubmit} className="flex">
-			<FormField name="email" htmlFor="email" label='Email address'>
-				<Input
-					id="email"
-					name="email"
-					type="email"
-					placeholder="discoclown@email.co"
-					autoComplete="email"
-					required
-				/>
-			</FormField>
-			<FormField name="nameOfUser" htmlFor="name" label="Name">
-				<Input
-					id="nameOfUser"
-					name="nameOfUser"
-					placeholder="Sir Cottontail"
-					required
-				/>
-			</FormField>
-			<FormField name="password" htmlFor="password" label="Password">
-				<Input
-					id="password"
-					name="password" 
-					type="password"
-					required
-				/>
-			</FormField>
-			<FormField name="confirmPassword" htmlFor="password" label="Confirm password">
-				<Input
-					id="password"
-					name="confirmPassword" 
-					type="password"
-					required
-				/>
-			</FormField>
-			<FormField name="inviteCode" htmlFor='inviteCode' label="Invite code">
-				<Input
-					id="inviteCode"
-					name="inviteCode" 
-					type="text"
-				/>
-			</FormField>
+		<Form onFinish={onSubmit} className="flex">
+			<Form.Item name="email" htmlFor="email" label='Email address' rules={[
+					{
+						required: true,
+						message: 'Please input a valid email address',
+					}
+				]}>
+				<Input />
+			</Form.Item>
+			<Form.Item name="nameOfUser" htmlFor="name" label="Name" rules={[
+					{
+						required: true,
+						message: 'Please input a name',
+					}
+				]}>
+				<Input />
+			</Form.Item>
+			<Form.Item name="password" htmlFor="password" label="Password" rules={[
+					{
+						required: true,
+						message: 'Please input a password',
+					}
+				]}>
+				<Input type='password' />
+			</Form.Item>
+			<Form.Item name="confirmPassword" htmlFor="password" label="Confirm password" rules={[
+					{
+						required: true,
+						message: 'Please confirm your password',
+					}
+				]}>
+				<Input type='password' />
+			</Form.Item>
+			<Form.Item name="inviteCode" htmlFor='inviteCode' label="Invite code" rules={[
+					{
+						required: true,
+						message: 'Please input your invite code',
+					}
+				]}>
+				<Input />
+			</Form.Item>
 			{isLoading
 				? <LoadingDots />
 				: (
 				<Button
 					className={`${isLoading ? 'loading' : 'not-loading'} something`}
 					id='sign-up-submit-button'
-					type='submit'
+					htmlType='submit'
 				>
 					Sign Up
 				</Button>

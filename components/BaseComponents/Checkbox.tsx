@@ -1,9 +1,10 @@
-import { CheckBox as GrommetCheckbox, CheckBoxExtendedProps } from 'grommet'
+import { Checkbox as AntDCheckbox, CheckboxProps } from 'antd'
 
-export default function Checkbox(props: CheckBoxExtendedProps) {
+export function Checkbox(props: CheckboxProps) {
   return (
-    <div className='default-checkbox'>
-      <GrommetCheckbox {...props} />
-    </div>
+      <AntDCheckbox
+        {...props}
+        className={props.className ? props.className + ' default-checkbox' : 'default-checkbox'}
+      />
   )
 }

@@ -1,5 +1,5 @@
-import { Select as GrommetSelect, SelectExtendedProps } from 'grommet'
+import { Select as AntDSelect, SelectProps } from 'antd'
 
-export default function Select(props: SelectExtendedProps) {
-	return <GrommetSelect {...props} />
+export function Select(props: SelectProps) {
+	return <AntDSelect {...props} />
 }

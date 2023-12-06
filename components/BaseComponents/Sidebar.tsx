@@ -1,5 +1,7 @@
-import { Sidebar as GrommetSidebar, SidebarExtendedProps } from 'grommet'
+import { Layout, SiderProps } from 'antd'
 
-export default function Sidebar(props: SidebarExtendedProps) {
-	return <GrommetSidebar {...props} />
+const { Sider: AntDSidebar } = Layout
+
+export function Sidebar(props: SiderProps) {
+	return <AntDSidebar {...props} />
 }

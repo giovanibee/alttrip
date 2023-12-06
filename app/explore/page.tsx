@@ -2,20 +2,19 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
-import { ResponsiveContext } from 'grommet'
+import { Col, Row } from 'antd' // TODO: Remove Grommet
 
 import { LatLngTuple } from '@/lib/types/geospatial'
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import { Box, Checkbox, Grid, Grommet } from '@/components/BaseComponents'
-import { Marks } from '@/components/Creation'
-import { CreateStoryModal } from '@/components/Creation'
+import { Checkbox } from '@/components/BaseComponents'
+import { CreateStoryModal, Marks } from '@/components/Creation'
 import { roundNumber } from '@/lib/helpers'
 import '@/components/Creation/CreateStoryPage.scss'
 
 // const DEFAULT_LOCATION: LatLngTuple = [37.61044011296472, -115.3930761807285]
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">'
 
-export default function CreateStoryPage() {
+export default function Page() {
 	const [location, setLocation] = useState<LatLngTuple>()
 	const [newStoryLocation, setNewStoryLocation] = useState<LatLngTuple>()
 	const [addStory, setAddStory] = useState(false)
@@ -59,76 +58,55 @@ export default function CreateStoryPage() {
 		})
 		return <div />
 	}
-
-	const orderBasedOnScreensize = (screenSize: string, options: string[]) => {
-		if (['xlarge', 'large'].includes(screenSize)) return [options]
-		return options.map((option) => [option, option])
-	}
-
-	if (typeof window === 'undefined') return null
-
 	return (
-		<Grommet>
-			<ResponsiveContext.Consumer>
-				{(screenSize) => (
-					<>
-						<Grid
-							id="create-story-page"
-							columns={['auto', 'medium']}
-							rows={['xxsmall', 'xsmall', 'auto', 'auto']}
-							gap="small"
-							areas={[
-								['description', 'description'],
-								['options', 'options'],
-								...orderBasedOnScreensize(screenSize, ['map', 'nearby']),
-							]}
+		<>
+			<Row>
+				<Col span={24}>{locationString}</Col>
+				<Col span={24}>
+					On map click
+					<Checkbox
+						checked={addStory}
+						id="add-story-checkbox"
+						title="Add story"
+						onChange={(event) => setAddStory(event.target.checked)}
+					/>
+					<Checkbox
+						checked={addChapter}
+						id="add-chapter-checkbox"
+						title="Add chapter"
+						onChange={(event) => setAddChapter(event.target.checked)}
+					/>
+				</Col>
+			</Row>
+			<Row>
+				<Col span={24}>
+					<h3>Map</h3>
+					{location && (
+						<MapContainer
+							center={location}
+							id="main-map"
+							style={{ zIndex: 14 }}
+							zoom={13}
 						>
-							<Box gridArea="description">{locationString}</Box>
-							<Box gridArea="options">
-								On map click
-								<Checkbox
-									checked={addStory}
-									id="add-story-checkbox"
-									label="Add story"
-									onChange={(event) => setAddStory(event.target.checked)}
-								/>
-								<Checkbox
-									checked={addChapter}
-									id="add-chapter-checkbox"
-									label="Add chapter"
-									onChange={(event) => setAddChapter(event.target.checked)}
-								/>
-							</Box>
-							<Box gridArea="map">
-								{location && (
-									<MapContainer
-										center={location}
-										id="main-map"
-										style={{ zIndex: 14 }}
-										zoom={13}
-									>
-										<TileLayer
-											attribution={attribution}
-											url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-										/>
-										<Marks chapters={chapters} />
-										<MapComponent />
-									</MapContainer>
-								)}
-							</Box>
-							<Box gridArea="nearby">
-								<h3>Nearby stories</h3>
-							</Box>
-						</Grid>
-						<CreateStoryModal
-							closeModal={() => setIsCreateStoryOpen(false)}
-							isOpen={addStory && isCreateStoryOpen}
-							latitude={newStoryLocation?.[0]}
-							longitude={newStoryLocation?.[1]}
-						/>
-					</>
-				)}
-			</ResponsiveContext.Consumer>
-		</Grommet>
+							<TileLayer
+								attribution={attribution}
+								url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+							/>
+							<Marks chapters={chapters} />
+							<MapComponent />
+						</MapContainer>
+					)}
+				</Col>
+				<Col span={24}>
+					<h3>Nearby stories</h3>
+				</Col>
+			</Row>
+			<CreateStoryModal
+				closeModal={() => setIsCreateStoryOpen(false)}
+				isOpen={addStory && isCreateStoryOpen}
+				latitude={newStoryLocation?.[0]}
+				longitude={newStoryLocation?.[1]}
+			/>
+		</>
 	)
 }

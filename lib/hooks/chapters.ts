@@ -78,8 +78,8 @@ export function useFetchChapters({
 	})
 }
 
-export const useGetSecretText = () =>
-	useMutation({
+export function useGetSecretText ()	{
+	return useMutation({
 		mutationFn: async (id: number) => {
 			try {
 				const response = await ky.get('/api/auth/chapters/secret', {
@@ -97,14 +97,15 @@ export const useGetSecretText = () =>
 			}
 		},
 	})
+}
 
 export interface VerifyPasscodeProps {
 	chapterId: number
 	passcode: string
 }
 
-export const useVerifyPasscode = () =>
-	useMutation({
+export function useVerifyPasscode () {
+	return useMutation({
 		mutationFn: async ({ chapterId, passcode }: VerifyPasscodeProps) => {
 			try {
 				const response = await ky.put('/api/auth/chapters/secret', {
@@ -128,6 +129,7 @@ export const useVerifyPasscode = () =>
 			}
 		},
 	})
+}
 
 // export const useCreateChapters = () =>
 // 	useMutation({

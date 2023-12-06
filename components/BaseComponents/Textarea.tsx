@@ -1,7 +1,10 @@
-import { TextAreaExtendedProps, TextArea as GrommetTextarea } from 'grommet'
+import { Input } from 'antd'
+import { TextAreaProps } from 'antd/lib/input'
 import './Textarea.scss'
 
-export default function Textarea(props: TextAreaExtendedProps) {
+const { TextArea: AntDTextArea } = Input
+
+export function Textarea(props: TextAreaProps) {
 	const className = `${props.className || ''} default-textarea`
-	return <GrommetTextarea {...props} className={className} />
+	return <AntDTextArea {...props} className={className} />
 }

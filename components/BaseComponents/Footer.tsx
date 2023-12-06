@@ -1,5 +1,8 @@
-import { Footer as GrommetFooter, TableFooterProps } from 'grommet'
+import { Layout } from 'antd'
 
-export default function Footer(props: TableFooterProps) {
-	return <GrommetFooter {...props} />
+const { Footer: AntDFooter } = Layout
+
+// TODO: define props
+export function Footer(props: any) {
+	return <AntDFooter {...props} />
 }

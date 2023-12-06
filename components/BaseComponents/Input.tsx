@@ -1,9 +1,9 @@
-import { TextInput as GrommetInput, TextInputProps } from 'grommet'
+import { Input as AntDInput, InputProps } from 'antd'
 import './Input.scss'
 
-export default function Input(props: TextInputProps) {
+export function Input(props: InputProps) {
 	return (
-		<GrommetInput
+		<AntDInput
 			{...props}
 			className={`${props.className || ''} default-input`}
 		/>

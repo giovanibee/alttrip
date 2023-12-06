@@ -1,5 +1,8 @@
-import { BoxExtendedProps, Main as GrommetMain } from 'grommet'
+import { Layout } from 'antd'
 
-export default function Main(props: BoxExtendedProps) {
-	return <GrommetMain {...props} />
+const { Content } = Layout
+
+// TODO: define props
+export function Main(props: any) {
+	return <Content {...props} />
 }

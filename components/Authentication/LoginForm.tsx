@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import toast from 'react-hot-toast'
-import { Form, FormExtendedEvent } from 'grommet'
-import { Button, FormField, Input } from '@/components/BaseComponents'
-import LoadingDots from '@/components/Loading/LoadingDots'
+import { Form } from 'antd'
+import { Button, Input } from '@/components/BaseComponents'
+import { LoadingDots } from '@/components/Loading/LoadingDots'
 import { useRouter } from 'next/navigation'
 import './style.scss'
 
@@ -13,7 +13,8 @@ export default function LoginForm() {
 	const [isLoading, setIsLoading] = useState(false)
 	const router = useRouter()
 
-	const onSubmit = async (event: FormExtendedEvent) => {
+	// TODO: Replace with any in event type
+	const onSubmit = async (event: any) => {
 		event.preventDefault()
 		setIsLoading(true)
 		const { email, password = '' } = event.value as {
@@ -38,29 +39,32 @@ export default function LoginForm() {
 	}
 
 	return (
-		<Form onSubmit={onSubmit}>
-			<FormField name="email" htmlFor="email" label="Email address">
-				<Input
-					id="text-input-login-email"
-					name="email"
-					type="email"
-					placeholder="discoclown@email.co"
-					autoComplete="email"
-					required
-				/>
-			</FormField>
-			<FormField name="password" htmlFor="password" label="Password">
-				<Input id="password" name="password" type="password" required />
-			</FormField>
+		<Form onFinish={onSubmit}>
+			<Form.Item
+				name="email"
+				htmlFor="email"
+				label="Email address"
+				rules={[
+					{
+						required: true,
+						message: 'Please input a name for your story',
+					}
+				]}
+			>
+				<Input />
+			</Form.Item>
+			<Form.Item name="password" htmlFor="password" label="Password" rules={[
+					{
+						required: true,
+						message: 'Please input a name for your story',
+					}
+				]}>
+				<Input />
+			</Form.Item>
 			{isLoading ? (
 				<LoadingDots />
 			) : (
-				<Button
-					alignSelf="end"
-					disabled={isLoading}
-					id="login-submit-button"
-					type="submit"
-				>
+				<Button disabled={isLoading} id="login-submit-button" htmlType='submit'>
 					Sign In
 				</Button>
 			)}

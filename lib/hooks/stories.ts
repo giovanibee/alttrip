@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import ky from 'ky-universal'
-import { LatLngTuple } from 'leaflet'
+// import { LatLngTuple } from 'leaflet'
 
 export interface Story {
 	id: number
@@ -8,7 +8,7 @@ export interface Story {
   name: string
 }
 
-export const useFetchStories = (location?: LatLngTuple) =>
+export const useFetchStories = (location?: any) =>
 	useQuery({
 		queryKey: ['stories'],
 		queryFn: (): Promise<Story[]> | null => {

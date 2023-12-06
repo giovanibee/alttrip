@@ -1,7 +1,7 @@
 import { FormField as GrommetFormField, FormFieldExtendedProps } from 'grommet'
 import './FormField.scss'
 
-export default function Input(props: FormFieldExtendedProps) {
+export function FormField(props: FormFieldExtendedProps) {
 	return (
 		<GrommetFormField
 			{...props}

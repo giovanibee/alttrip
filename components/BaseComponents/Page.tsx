@@ -1,5 +1,5 @@
-import { GrommetExtendedProps, Page as GrommetPage } from 'grommet'
+import { Page as GrommetPage, PageExtendedProps } from 'grommet'
 
-export default function Page(props: GrommetExtendedProps) {
+export function Page(props: PageExtendedProps) {
 	return <GrommetPage {...props} />
 }

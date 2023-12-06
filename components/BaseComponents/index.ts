@@ -1,59 +1,22 @@
-import Box from './Box'
-import Button from './Button'
-import Card from './Card'
-import CardBody from './CardBody'
-import CardFooter from './CardFooter'
-import CardHeader from './CardHeader'
-import Checkbox from './Checkbox'
-import FormField from './FormField'
-import Footer from './Footer'
-import Grid from './Grid'
-import Grommet from './Grommet'
-import Header from './Header'
-import Input from './Input'
-import Layer from './Layer'
-import Main from './Main'
-import Menu from './Menu'
-import Page from './Page'
-import Select from './Select'
-import Sidebar from './Sidebar'
-import Tabs from './Tabs'
-import Textarea from './Textarea'
-// import Radio from './Radio'
-// import Switch from './Switch'
-// import Icon from './Icon'
-// import Image from './Image'
-// import Badge from './Badge'
-// import Tag from './Tag'
-
+export * from './Box'
+export * from './Button'
+export * from './Card'
+export * from './CardBody'
+export * from './CardFooter'
+export * from './CardHeader'
+export * from './Checkbox'
+export * from './FormField'
+export * from './Footer'
+export * from './Grid'
+export * from './Grommet'
+export * from './Header'
+export * from './Input'
+export * from './Layer'
+export * from './Main'
 export * from './Maps'
-
-export {
-	Box,
-	Button,
-	Card,
-	CardBody,
-	CardFooter,
-	CardHeader,
-	Checkbox,
-	FormField,
-	Footer,
-	Grid,
-	Grommet,
-	Header,
-	Input,
-	Layer,
-	Main,
-	Menu,
-	Page,
-	Select,
-	Sidebar,
-	Tabs,
-	Textarea,
-	// Radio,
-	// Switch,
-	// Icon,
-	// Image,
-	// Badge,
-	// Tag,
-}
+export * from './Menu'
+export * from './Page'
+export * from './Select'
+export * from './Sidebar'
+export * from './Tabs'
+export * from './Textarea'

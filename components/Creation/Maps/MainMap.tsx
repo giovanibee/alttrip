@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
 import { LoadingDots } from '@/components/Loading'
 import { Marks } from '@/components/Creation'
+import 'leaflet/dist/leaflet.css'
 
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">'
 // const DEFAULT_LOCATION: LatLngTuple = [37.61044011296472, -115.3930761807285]

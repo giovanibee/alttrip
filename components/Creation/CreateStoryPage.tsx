@@ -1,19 +1,20 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
+import { useMemo, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { ResponsiveContext } from 'grommet'
 
 import { LatLngTuple } from '@/lib/types/geospatial'
 import { useFetchChapters } from '@/lib/hooks/chapters'
 import { Box, Checkbox, Grid, Grommet } from '@/components/BaseComponents'
-import { Marks } from '@/components/Creation'
 import { CreateStoryModal } from '@/components/Creation'
 import { roundNumber } from '@/lib/helpers'
 import './CreateStoryPage.scss'
 
-// const DEFAULT_LOCATION: LatLngTuple = [37.61044011296472, -115.3930761807285]
-const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">'
+const MainMap = dynamic(() => import('components/Creation/Maps/MainMap'), {
+	loading: () => <p>Loading...</p>,
+	ssr: false,
+})
 
 export default function CreateStoryPage() {
 	const [location, setLocation] = useState<LatLngTuple>()
@@ -30,13 +31,6 @@ export default function CreateStoryPage() {
 		shouldFilterByDistance,
 	})
 
-	useEffect(() => {
-		window.navigator.geolocation?.getCurrentPosition(
-			({ coords }) => setLocation([coords.latitude, coords.longitude]),
-			(err) => console.error(err),
-		)
-	}, [])
-
 	const locationString = useMemo(() => {
 		if (!location) return null
 		refetch()
@@ -48,24 +42,10 @@ export default function CreateStoryPage() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location])
 
-	const MapComponent = () => {
-		// eslint-disable-next-line no-unused-vars
-		const _map = useMapEvents({
-			click: ({ latlng }) => {
-				const { lat, lng } = latlng
-				setNewStoryLocation([lat, lng])
-				setIsCreateStoryOpen(true)
-			},
-		})
-		return <div />
-	}
-
 	const orderBasedOnScreensize = (screenSize: string, options: string[]) => {
 		if (['xlarge', 'large'].includes(screenSize)) return [options]
 		return options.map((option) => [option, option])
 	}
-
-	if (typeof window === 'undefined') return null
 
 	return (
 		<Grommet>
@@ -100,21 +80,13 @@ export default function CreateStoryPage() {
 								/>
 							</Box>
 							<Box gridArea="map">
-								{location && (
-									<MapContainer
-										center={location}
-										id="main-map"
-										style={{ zIndex: 14 }}
-										zoom={13}
-									>
-										<TileLayer
-											attribution={attribution}
-											url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-										/>
-										<Marks chapters={chapters} />
-										<MapComponent />
-									</MapContainer>
-								)}
+								<MainMap
+									location={location}
+									setLocation={setLocation}
+									chapters={chapters}
+									setNewStoryLocation={setNewStoryLocation}
+									setIsCreateStoryOpen={setIsCreateStoryOpen}
+								/>
 							</Box>
 							<Box gridArea="nearby">
 								<h3>Nearby stories</h3>

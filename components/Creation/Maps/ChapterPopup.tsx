@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { Marker, Popup } from 'react-leaflet'
 import {
 	Chapter,
 	useGetSecretText,
@@ -13,6 +12,8 @@ import {
 	CardHeader,
 	CardBody,
 	CardFooter,
+	Marker,
+	Popup,
 } from '@/components/BaseComponents'
 import { LoadingDots } from '@/components/Loading'
 

@@ -1,7 +1,7 @@
 import { TextInput as GrommetInput, TextInputProps } from 'grommet'
 import './Input.scss'
 
-export default function Input(props: TextInputProps) {
+export function Input(props: TextInputProps) {
 	return (
 		<GrommetInput
 			{...props}

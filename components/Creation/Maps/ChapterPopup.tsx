@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+
 import {
 	Chapter,
 	useGetSecretText,
@@ -68,8 +69,8 @@ export default function ChapterPopup({
 	])
 
 	return (
-		<Marker key={key} position={[chapter.latitude, chapter.longitude]}>
-			{isViewing && (
+		<Marker position={[chapter.latitude, chapter.longitude]}>
+			{isViewing ? (
 				<Layer id="map-popup-layer">
 					<Card id={`map-popup-card-${key}`}>
 						<CardHeader id={`map-popup-card-${key}-header`}>
@@ -88,7 +89,7 @@ export default function ChapterPopup({
 						</CardFooter>
 					</Card>
 				</Layer>
-			)}
+			) : null}
 			<Popup className="map-popup-mark">
 				<h3>
 					Chapter {order + 1} - {name}

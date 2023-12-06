@@ -4,7 +4,11 @@ import {
 } from 'grommet'
 import './Card.scss'
 
-export default function CardHeader(props: BoxProps) {
-	return <GrommetHeader {...props} className={`${props.className} default-card-header`} />
+export function CardHeader(props: BoxProps) {
+	return (
+		<GrommetHeader
+			{...props}
+			className={`${props.className} default-card-header`}
+		/>
+	)
 }
-

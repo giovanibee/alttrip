@@ -57,7 +57,8 @@ export function useFetchChapters({
 						})
 						.json()) as { res: SortedChapters }
 				).res
-
+				
+				console.log('RESPONSE', response)
 				if (!response) throw new Error('No response')
 				if (shouldFilterByDistance && location) {
 					response.incompleteChapters = filterChaptersByDistance(
@@ -78,18 +79,25 @@ export function useFetchChapters({
 	})
 }
 
-export const useGetSecretText = () =>
-	useMutation({
-		mutationFn: async (id: number) => {
+export const useGetSecretText = (id: number) =>
+	useQuery({
+		queryKey: ['secretText'],
+		queryFn: async () => {
 			try {
+				if (isNaN(id)) throw new Error('No id')
+
 				const response = await ky.get('/api/auth/chapters/secret', {
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					searchParams: { id },
+					searchParams: { chapterId: id },
 				})
-				const secretText = ((await response.json()) as { res: string })?.res
-				if (secretText === undefined) throw new Error('No response')
+
+				const secretText = await response?.json()
+				if (!secretText || typeof secretText === 'undefined') {
+					throw new Error('No response')
+				}
+
 				return secretText
 			} catch (error) {
 				console.error(error)

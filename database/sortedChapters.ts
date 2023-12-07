@@ -23,7 +23,9 @@ const checkIfChapterIsCompleted = async (email: string, chapterId: number) => {
 	if (!userRecord) throw new Error('User not found')
 
 	return prisma.completedChapter.findUnique({
-		where: { chapterId_userId: { userId: userRecord.id, chapterId } },
+		where: {
+			chapterId_userId: { userId: userRecord.id, chapterId }
+		},
 		include: { chapter: true },
 	})
 }
@@ -45,32 +47,41 @@ export interface SortedChapters {
 
 // all completed stories + next incomplete chapter based on order
 const getSortedChapters = async (email: string): Promise<SortedChapters> => {
-	const allChapters = await chapters.getByOrder(0)
+	const allFirstChapters = await chapters.getByOrder(0)
 
 	const completedChapters = await getCompletedChapters(email)
 	// if no completed stories, return first chapters of all stories
 	if (completedChapters.length === 0) {
 		return {
 			completedChapters: [],
-			incompleteChapters: allChapters,
+			incompleteChapters: allFirstChapters,
 		}
 	}
 
 	const incompleteChapters: Chapter[] = []
 	await Promise.all(
-		completedChapters.map(async ({ chapter: { order, storyId } }) => {
-			const nextChapter = await chapters.getByOrderAndStoryId(
-				order + 1,
-				storyId,
+		allFirstChapters.map(async (chapter) => {
+			const isChapterCompleted = completedChapters.find(
+				({ chapterId }) => chapterId === chapter.id,
 			)
+
+			if (!isChapterCompleted) return incompleteChapters.push(chapter)
+
+			const nextChapter = await chapters.getByOrderAndStoryId(
+				chapter.order + 1,
+				chapter.storyId,
+			)
+
 			if (!nextChapter) return
 
 			const isNextChapterCompleted = completedChapters.find(
 				({ chapterId }) => chapterId === nextChapter.id,
 			)
+
+			console.log('is NEXT CHAPTER completed', isNextChapterCompleted)
 			if (!isNextChapterCompleted) incompleteChapters.push(nextChapter)
-		}),
-	)
+		}
+	))
 
 	return {
 		completedChapters: completedChapters.map(({ chapter }) => chapter),

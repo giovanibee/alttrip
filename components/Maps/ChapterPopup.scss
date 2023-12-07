@@ -6,8 +6,13 @@
   min-width: 280px;
 }
 
-div[id^=map-popup-layer] {
+div#map-popup-layer {
   background-color: transparent;
+
+  div.default-card {
+    background-color: rgba(0, 0, 0, 0.80);
+    color: white;
+  }
 }
 
 div[id^=map-popup-layer], div[id^=map-popup-card] {
@@ -16,10 +21,7 @@ div[id^=map-popup-layer], div[id^=map-popup-card] {
   min-width: 500px;
 }
 
-[id^=map-popup-card] {
-  background-color: rgba(0, 0, 0, 0.89);
-  color: white;
-
+div.map-popup-card {
   header, footer, div {
     background-color: transparent;
   }

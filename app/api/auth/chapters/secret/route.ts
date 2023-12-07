@@ -6,9 +6,12 @@ import { getServerSession } from 'next-auth'
 
 // evaluate if user already has access to chapter
 export async function GET(request: NextRequest) {
-	const { chapterId } = await request.json() || {}
-	if (!chapterId) {
-		return Response.json({ error: 'ChapterId is missing' })
+	const url = new URL(request.nextUrl).searchParams
+	console.log('URLLL', url)
+	const searchParams = new URL(request.nextUrl).searchParams?.get('chapterId')
+	const id = parseInt(searchParams || '')
+	if (isNaN(id)) {
+		return Response.json({ error: 'ChapterId is missing' }, { status: 400 })
 	}
 
 	try {
@@ -17,7 +20,7 @@ export async function GET(request: NextRequest) {
 		if (!email) {
 			return Response.json({ error: 'Not authenticated', status: 401 })
 		}
-		const response = await sortedChapters.checkIfChapterIsCompleted(email, chapterId)
+		const response = await sortedChapters.checkIfChapterIsCompleted(email, id)
 		const secretText = response?.chapter?.secretText
 		return Response.json(secretText)
 	} catch (error) {

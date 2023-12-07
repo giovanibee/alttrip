@@ -1,3 +1,16 @@
 {
-	"extends": ["next/core-web-vitals", "eslint:recommended"]
+	"extends": ["next/core-web-vitals", "eslint:recommended"],
+	"rules": {
+		"react-hooks/exhaustive-deps": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+    	"error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+		]
+	}
 }

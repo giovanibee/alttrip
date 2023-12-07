@@ -1,7 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-import dynamic from 'next/dynamic'
+import { useEffect, useMemo, useState } from 'react'
 import { ResponsiveContext } from 'grommet'
 
 import { LatLngTuple } from '@/lib/types/geospatial'
@@ -9,12 +8,8 @@ import { useFetchChapters } from '@/lib/hooks/chapters'
 import { Box, Checkbox, Grid, Grommet } from '@/components/BaseComponents'
 import { CreateStoryModal } from '@/components/Explore'
 import { roundNumber } from '@/lib/helpers'
+import MainMap from '@/components/Maps/MainMap'
 import './ExplorePage.scss'
-
-const MainMap = dynamic(() => import('@/components/Maps/MainMap'), {
-	loading: () => <p>Loading...</p>,
-	ssr: false,
-})
 
 export default function CreateStoryPage() {
 	const [location, setLocation] = useState<LatLngTuple>()
@@ -31,6 +26,12 @@ export default function CreateStoryPage() {
 		shouldFilterByDistance,
 	})
 
+	useEffect(() => {
+		if (Array.isArray(chapters?.incompleteChapters)) {
+			refetch()
+		}
+	}, [chapters])
+
 	const locationString = useMemo(() => {
 		if (!location) return null
 		refetch()
@@ -39,7 +40,6 @@ export default function CreateStoryPage() {
 			? roundNumber(location[0]) + ', ' + roundNumber(location[1], 3)
 			: 'unknown'
 		return <p id="current-location">Current location is {coords}</p>
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location])
 
 	const orderBasedOnScreensize = (screenSize: string, options: string[]) => {

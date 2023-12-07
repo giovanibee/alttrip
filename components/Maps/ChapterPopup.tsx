@@ -33,7 +33,7 @@ export default function ChapterPopup({
 	const [passcode, setPasscode] = useState('')
 	const { description, details, id: chapterId, name, order } = chapter
 
-	const { data: secret, isPending } = useGetSecretText()
+	const { data: secret, isPending } = useGetSecretText(chapter.id)
 
 	const { mutate: verifyPasscode, isPending: isPendingVerification } =
 		useVerifyPasscode()
@@ -41,21 +41,23 @@ export default function ChapterPopup({
 	// when passcode is verified, mark chapter as complete
 	const secretSection = useMemo(() => {
 		if (isPending || isPendingVerification) return <LoadingDots />
-		return isComplete ? (
-			<p>{secret}</p>
-		) : (
-			<>
-				<Input
-					name="passcode"
-					onChange={(event) => setPasscode(event.target.value)}
-					type="password"
-				/>
-				<Button
-					label="Verify"
-					onClick={() => verifyPasscode({ chapterId, passcode })}
-				/>
-			</>
-		)
+		console.log('secret', secret)
+		if (!secret || typeof secret !== 'string') return null
+		return isComplete
+			? <p>{secret}</p>
+			: (
+				<>
+					<Input
+						name="passcode"
+						onChange={(event) => setPasscode(event.target.value)}
+						type="password"
+					/>
+					<Button
+						label="Verify"
+						onClick={() => verifyPasscode({ chapterId, passcode })}
+					/>
+				</>
+			)
 	}, [
 		chapterId,
 		isComplete,

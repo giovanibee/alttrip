@@ -21,6 +21,7 @@ interface UpdateChapter {
 	name?: string
   passcode?: string
   secretText?:  string
+	question?: string
 }
 
 // TODO: Return only chapters within a certain distance of the user

@@ -18,6 +18,7 @@ export interface Chapter {
 	order: number
 	secretText: string | null
 	storyId: number
+	question: string | null
 
 	hasBeenCompleted?: boolean
 }
@@ -57,8 +58,7 @@ export function useFetchChapters({
 						})
 						.json()) as { res: SortedChapters }
 				).res
-				
-				console.log('RESPONSE', response)
+
 				if (!response) throw new Error('No response')
 				if (shouldFilterByDistance && location) {
 					response.incompleteChapters = filterChaptersByDistance(
@@ -85,7 +85,6 @@ export const useGetSecretText = (id: number) =>
 		queryFn: async () => {
 			try {
 				if (isNaN(id)) throw new Error('No id')
-
 				const response = await ky.get('/api/auth/chapters/secret', {
 					headers: {
 						'Content-Type': 'application/json',

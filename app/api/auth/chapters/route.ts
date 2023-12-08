@@ -13,7 +13,8 @@ export async function GET() {
 		const email =  session?.user?.email
 		if (!email) {
 			return Response.json(
-				{ error: 'Unauthorized access' }, { status: 401 }
+				{ error: 'Unauthorized access' },
+				{ status: 401 }
 			)
 		}
 

@@ -14,6 +14,7 @@ export interface Chapter {
 	order: number
 	secretText: string | null
 	storyId: number
+	question: string | null
 
 	hasBeenCompleted?: boolean
 }
@@ -78,7 +79,6 @@ const getSortedChapters = async (email: string): Promise<SortedChapters> => {
 				({ chapterId }) => chapterId === nextChapter.id,
 			)
 
-			console.log('is NEXT CHAPTER completed', isNextChapterCompleted)
 			if (!isNextChapterCompleted) incompleteChapters.push(nextChapter)
 		}
 	))

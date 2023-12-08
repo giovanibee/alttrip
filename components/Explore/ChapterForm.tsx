@@ -28,7 +28,7 @@ export function ChapterForm({ numberOfForms = [1] }) {
 			<FormField
 				name={`details-${id}`}
 				htmlFor="details"
-				label="Hints / Details"
+				label="Passcode question"
 			>
 				<Textarea
 					id={`details-${id}`}
@@ -39,6 +39,18 @@ export function ChapterForm({ numberOfForms = [1] }) {
 			</FormField>
 			<FormField name={`passcode-${id}`} htmlFor="inviteCode" label="Passcode">
 				<Input id={`passcode-${id}`} name={`passcode-${id}`} type="text" />
+			</FormField>
+			<FormField
+				name={`details-${id}`}
+				htmlFor="details"
+				label="Hints / Details"
+			>
+				<Textarea
+					id={`details-${id}`}
+					name={`details-${id}`}
+					placeholder="Check out the trees nearby :)"
+					required
+				/>
 			</FormField>
 			<FormField
 				name={`secretText-${id}`}

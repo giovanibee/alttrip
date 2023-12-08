@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import {
 	Chapter,
@@ -6,6 +6,7 @@ import {
 	useVerifyPasscode,
 } from '@/lib/hooks/chapters'
 
+import { Icon } from 'leaflet'
 import { Marker, Popup } from 'react-leaflet'
 import {
 	Button,
@@ -17,6 +18,7 @@ import {
 	CardFooter,
 } from '@/components/BaseComponents'
 import { LoadingDots } from '@/components/Loading'
+import 'leaflet/dist/leaflet.css'
 
 import './ChapterPopup.scss'
 
@@ -31,22 +33,26 @@ export default function ChapterPopup({
 }: ChapterPopupProps) {
 	const [isViewing, setIsViewing] = useState(false)
 	const [passcode, setPasscode] = useState('')
-	const { description, details, id: chapterId, name, order } = chapter
+	const { description, details, id: chapterId, name, order, question } = chapter
 
-	const { data: secret, isPending } = useGetSecretText(chapter.id)
+	const { data: secret, isPending, refetch } = useGetSecretText(chapter.id)
 
 	const { mutate: verifyPasscode, isPending: isPendingVerification } =
 		useVerifyPasscode()
 
+	useEffect(() => {
+		if (!secret || typeof secret !== 'string') refetch()
+	}, [isViewing, secret])
+
 	// when passcode is verified, mark chapter as complete
 	const secretSection = useMemo(() => {
 		if (isPending || isPendingVerification) return <LoadingDots />
-		console.log('secret', secret)
 		if (!secret || typeof secret !== 'string') return null
 		return isComplete
-			? <p>{secret}</p>
+			? <p>Secret: {secret}</p>
 			: (
 				<>
+					<p>{question || 'What is the passcode?'}</p>
 					<Input
 						name="passcode"
 						onChange={(event) => setPasscode(event.target.value)}
@@ -64,12 +70,21 @@ export default function ChapterPopup({
 		isPending,
 		isPendingVerification,
 		passcode,
+		question,
 		secret,
 		verifyPasscode,
 	])
 
 	return (
-		<Marker position={[chapter.latitude, chapter.longitude]}>
+		<Marker
+			icon={new Icon({
+				iconUrl: isComplete
+					? '/icons/completed-icon.png'
+					: '/icons/default-viewed-icon.png',
+				iconSize: [25, 41],
+			})}
+			position={[chapter.latitude, chapter.longitude]}
+		>
 			{isViewing ? (
 				<Layer id="map-popup-layer">
 					<Card className={`map-popup-card`}>
@@ -80,8 +95,8 @@ export default function ChapterPopup({
 							<span className="map-popup-card-header-name">{name}</span>
 						</CardHeader>
 						<CardBody className={`map-popup-card-body`}>
-							<p>{description}</p>
-							<p>{details}</p>
+							<p>Description: {description}</p>
+							<p>Details: {details}</p>
 							{secretSection}
 						</CardBody>
 						<CardFooter className={`map-popup-card-footer`}>

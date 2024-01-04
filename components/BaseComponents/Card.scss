@@ -1,9 +1,10 @@
 @use '../../lib/themes/variables';
 
 div.default-card {
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  box-shadow: 0 0 10px 4px variables.$iconic-yellow;
+  background-color: rgb(0, 0, 0, 0.89);
+  border: 1px solid variables.$iconic-yellow;
+  border-radius: 3px;
+  color: white;
   margin: 28px auto;
   max-width: 800px;
   padding: 42px 42px;

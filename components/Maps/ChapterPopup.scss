@@ -1,3 +1,12 @@
+.coordinates-link {
+  display: block;
+  margin-bottom: 10px;
+
+  span {
+    font-weight: 600;
+  }
+}
+
 .map-popup-mark {
   background-color: #fff;
   border-radius: 12px;
@@ -6,16 +15,24 @@
   min-width: 280px;
 }
 
-div#map-popup-layer {
-  background-color: transparent;
-
-  div.default-card {
-    background-color: rgba(0, 0, 0, 0.80);
-    color: white;
-  }
+span.chapter-popup-loading {
+  margin-top: 28px;
 }
 
-div[id^=map-popup-layer], div[id^=map-popup-card] {
+p.map-popup-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* number of lines to show */
+          line-clamp: 4; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+div.map-popup-layer {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+div.map-popup-layer, div.map-popup-card {
   height: 100%;
   max-width: 1000px;
   min-width: 500px;
@@ -35,7 +52,46 @@ div.map-popup-card {
     }
 
     span.map-popup-card-header-name {
-      font-family: Poppins;
+      font-family: serif;
     }
+  }
+}
+
+button.close-button {
+  background-color: black;
+}
+
+button.close-button, button.verify-button {
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: auto;
+  width: 100px;
+}
+
+button.hint-button {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #fff;
+  margin-top: 16px;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
+
+button.view-button {
+  background-color: #fff;
+  border: 1px solid #ababab;
+  border-radius: 3px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  padding: 5px 10px;
+  width: 100%;
+
+  &:hover {
+    box-shadow: none;
   }
 }

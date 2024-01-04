@@ -2,14 +2,11 @@
 
 #create-story-modal {
   background-color: transparent;
-  width: 100%;
+  max-width: 100%;
+  min-width: 600px;
 }
 
 #create-story-modal-card {
-  background-color: rgb(0, 0, 0, 0.74);
-  border: 1px solid variables.$iconic-yellow;
-  box-shadow: none;
-  color: white;
   margin: auto;
   overflow-y: scroll;
   position: relative;

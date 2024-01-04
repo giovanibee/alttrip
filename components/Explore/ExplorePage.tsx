@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { ResponsiveContext } from 'grommet'
+import { getDistance } from 'geolib'
 
 import { LatLngTuple } from '@/lib/types/geospatial'
 import { useFetchChapters } from '@/lib/hooks/chapters'
@@ -17,6 +18,8 @@ export default function CreateStoryPage() {
 	const [addStory, setAddStory] = useState(false)
 	const [addChapter, setAddChapter] = useState(false)
 	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
+	// should be in settings page eventually
+	const [useMiles, setUseMiles] = useState(true)
 	// const [isCreateChapterOpen, setIsCreateChapterOpen] = useState(false)
 	const shouldFilterByDistance = false
 
@@ -47,6 +50,22 @@ export default function CreateStoryPage() {
 		return options.map((option) => [option, option])
 	}
 
+	const listOfIncompleteChapters = useMemo(() => {
+		const canShow = location && chapters?.incompleteChapters
+		return canShow && chapters?.incompleteChapters.map(
+			(chapter, id) => {
+				let distance = getDistance(
+					{ latitude: location[0], longitude: location[1] },
+					{ latitude: chapter.latitude, longitude: chapter.longitude },
+				) / 1000 // convert to km
+				if (useMiles) distance = distance * 0.621371
+				return (
+				<div key={id}>
+					{chapter.name} - {roundNumber(distance, 2)} {useMiles ? 'miles' : 'km'}
+				</div>
+			)})
+		}, [chapters, location, useMiles])
+
 	return (
 		<Grommet>
 			<ResponsiveContext.Consumer>
@@ -74,6 +93,7 @@ export default function CreateStoryPage() {
 								/>
 								<Checkbox
 									checked={addChapter}
+									disabled
 									id="add-chapter-checkbox"
 									label="Add chapter"
 									onChange={(event) => setAddChapter(event.target.checked)}
@@ -89,7 +109,14 @@ export default function CreateStoryPage() {
 								/>
 							</Box>
 							<Box gridArea="nearby">
-								<h3>Nearby stories</h3>
+								<h3>Nearby stories - Incomplete</h3>
+								<Checkbox
+									className='use-miles-checkbox'
+									checked={useMiles}
+									label="Use miles"
+									onChange={(event) => setUseMiles(event.target.checked)}
+								/>
+								{listOfIncompleteChapters}
 							</Box>
 						</Grid>
 					</>

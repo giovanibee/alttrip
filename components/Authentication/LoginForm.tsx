@@ -13,7 +13,7 @@ export function LoginForm() {
 	const [isLoading, setIsLoading] = useState(false)
 	const router = useRouter()
 
-	const onSubmit = async (event: FormExtendedEvent) => {
+	const onSubmit = (event: FormExtendedEvent) => {
 		event.preventDefault()
 		setIsLoading(true)
 		const { email, password = '' } = event.value as {
@@ -26,15 +26,17 @@ export function LoginForm() {
 			return setIsLoading(false)
 		}
 
-		const response = await signIn('credentials', {
+		const response = signIn('credentials', {
 			email,
 			password,
 			redirect: false,
+		}).then((response) => {
+			setIsLoading(false)
+			if (!response?.error) return router.push('/explore')
+
+			console.error(response?.error)
+			toast.error('Invalid login credentials--please try again.')
 		})
-		if (!response?.error) return router.push('/explore')
-		console.error(response?.error)
-		setIsLoading(false)
-		toast.error('Invalid login credentials--please try again.')
 	}
 
 	return (

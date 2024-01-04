@@ -3,7 +3,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "prisma generate && prisma migrate deploy",
-    "dev": "NEXTAUTH_URL=http://localhost:3000/ pnpm postinstall && next dev",
+    "dev": "NEXTAUTH_URL=\"http://localhost:3000/\" pnpm postinstall && next dev",
     "prettier": "prettier --write .",
     "lint:fix": "eslint --fix .",
     "build": "pnpm postinstall && next build",

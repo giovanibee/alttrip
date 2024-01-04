@@ -1,0 +1,9 @@
+div.info-field {
+  border-bottom: 1px solid #ababab;
+  display: block;
+  padding-bottom: 8px;
+
+  &-label {
+    font-weight: 600;
+  }
+}

@@ -2,7 +2,7 @@ import React from 'react'
 import { Suspense } from 'react'
 import { Metadata } from 'next'
 import Script from 'next/script'
-import { Poppins } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { MainHeader } from '@/components/Homepage'
 import { Footer, Grommet, Main } from '@/components/BaseComponents'
@@ -10,7 +10,7 @@ import { NextAuthProvider, ReactQueryProvider } from '@/components/Misc'
 import Loading from '@/app/loading'
 import 'styles/globals.css'
 
-const poppins = Poppins({
+const defaultFont = Inter({
 	display: 'swap',
 	subsets: ['latin'],
 	weight: '400',
@@ -64,7 +64,7 @@ export default async function RootLayout({
 						crossOrigin="anonymous"
 					/>
 				</head>
-				<body className={poppins.className}>
+				<body className={defaultFont.className}>
 					<ReactQueryProvider>
 						<Toaster />
 						<Suspense fallback={<Loading />}>

@@ -14,6 +14,9 @@ importers:
       '@prisma/client':
         specifier: ^5.5.2
         version: 5.6.0(prisma@5.6.0)
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.7.1
+        version: 5.7.1
       '@tanstack/react-query':
         specifier: ^5.0.5
         version: 5.12.2(react@18.2.0)
@@ -587,6 +590,10 @@ packages:
   /@prisma/engines@5.6.0:
     resolution: {integrity: sha512-Mt2q+GNJpU2vFn6kif24oRSBQv1KOkYaterQsi0k2/lA+dLvhRX6Lm26gon6PYHwUM8/h8KRgXIUMU0PCLB6bw==}
     requiresBuild: true
+
+  /@prisma/nextjs-monorepo-workaround-plugin@5.7.1:
+    resolution: {integrity: sha512-imzkXQ/iNytpSHAEfXzI4eJcuwuJoBPPak4zuedyOYv6lQoOJ5/nFuW2V17GcumWaxb2qyWrr2NyX9iJvqgL5w==}
+    dev: false
 
   /@react-leaflet/core@2.1.0(leaflet@1.9.4)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-Qk7Pfu8BSarKGqILj4x7bCSZ1pjuAPZ+qmRwH5S7mDS91VSbVVsJSrW4qA+GPrro8t69gFYVMWb1Zc4yFmPiVg==}

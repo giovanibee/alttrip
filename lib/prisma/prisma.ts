@@ -2,7 +2,7 @@ import { PrismaClient } from '../node_modules/.prisma/client'
 
 declare global {
 	// eslint-disable-next-line no-unused-vars
-	var prisma: PrismaClient | undefined
+	let prisma: PrismaClient | undefined
 }
 
 const prisma = global.prisma || new PrismaClient()

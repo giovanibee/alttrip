@@ -49,7 +49,7 @@ export function useFetchChapters({
 		queryKey: ['chapters'],
 		queryFn: async (): Promise<SortedChapters | null> => {
 			try {
-				let response = (
+				const response = (
 					(await ky
 						.get('/api/auth/chapters', {
 							headers: {

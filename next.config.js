@@ -1,3 +1,4 @@
+// this is a workaround for prisma's nextjs plugin not working with monorepos
 // eslint-disable-next-line
 const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin')
 

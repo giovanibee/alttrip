@@ -1,13 +1,13 @@
-'use server'
+'use client'
 
-import { getServerSession } from 'next-auth/next'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Menu } from '@/components/BaseComponents'
 import { SignOut } from '@/components/Authentication'
 import './style.scss'
 
 export async function AuthStatus() {
-	const session = await getServerSession()
+	const { data: session } = useSession()
 	return (
 		<div id="auth-status">
 			{session?.user?.name ? (
@@ -28,6 +28,9 @@ export async function AuthStatus() {
 				/>
 			) : (
 				<div id="auth-status-options">
+					<Link href={{ pathname: '/login', query: { type: 'guest' } }}>
+						Guest
+					</Link>
 					<Link href="/login">Login</Link>
 					<Link href="/register">Sign Up</Link>
 				</div>

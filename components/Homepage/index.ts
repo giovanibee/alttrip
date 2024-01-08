@@ -1,5 +1,1 @@
-import MainHeader from "./Header"
-
-export {
-  MainHeader
-}
+export * from "./Header"

@@ -6,7 +6,7 @@ import { Menu } from '@/components/BaseComponents'
 import { SignOut } from '@/components/Authentication'
 import './style.scss'
 
-export async function AuthStatus() {
+export function AuthStatus() {
 	const { data: session } = useSession()
 	return (
 		<div id="auth-status">

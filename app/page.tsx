@@ -1,11 +1,16 @@
 'use client'
 
 import { useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import Image from 'next/image'
 import anime from 'animejs/lib/anime.es.js'
 import globeImage from '/public/images/stock-globe-picture.png'
 import './page.scss'
+
+const Canvas = dynamic(() => import('@/components/Homepage/Canvas'), {
+	ssr: false,
+})
 
 export default function Home() {
 	useEffect(() => {
@@ -24,6 +29,7 @@ export default function Home() {
 			],
 		})
 	})
+
 	return (
 		<div id="main-home">
 			<Image
@@ -33,6 +39,7 @@ export default function Home() {
 				height={280}
 				width={280}
 			/>
+			<Canvas />
 			<div className="summary-container">
 				<p>Go on adventures by hunting for stories in the real world. 🗺️ 🔎</p>
 				<p>Make your own and share them with others 🔗 🤝🏽</p>

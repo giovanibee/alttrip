@@ -4,7 +4,7 @@ import { AuthStatus } from '@/components/Authentication'
 import Logo from '@/components/Homepage/Logo'
 import './Header.scss'
 
-export default function MainHeader() {
+export function MainHeader() {
   return (
     <BaseHeader id="main-header">
       <Logo />

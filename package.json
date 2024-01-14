@@ -7,7 +7,7 @@
     "prettier": "prettier --write .",
     "lint:fix": "eslint --fix .",
     "build": "pnpm postinstall && next build",
-    "start": "pnpm build && next start",
+    "start": "next",
     "lint": "next lint"
   },
   "dependencies": {

@@ -25,7 +25,7 @@ export function AuthStatus() {
 			) : (
 				<>
 					<Link href={{ pathname: '/login', query: { type: 'guest' } }}>
-						Guest Session
+						Guest
 					</Link>
 					<div className="divider"> | </div>
 					<Link href="/login">Login</Link>

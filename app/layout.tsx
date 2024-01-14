@@ -24,11 +24,11 @@ export const metadata: Metadata = {
 	metadataBase: new URL('https://alttrip.vercel.app'),
 }
 
-export default async function RootLayout({
-	children,
-}: {
+interface RootLayoutProps {
 	children: React.ReactNode
-}) {
+}
+
+export default async function RootLayout({ children }: RootLayoutProps) {
 	return (
 		<NextAuthProvider>
 			<html lang="en">

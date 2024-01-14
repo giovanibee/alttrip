@@ -1,7 +1,7 @@
 'use client'
 
-import React, { use, useEffect, useRef, useState } from 'react'
-import { Canvas as ThreeCanvas, useFrame } from '@react-three/fiber'
+import React, { useState } from 'react'
+import { Canvas as ThreeCanvas } from '@react-three/fiber'
 import './Canvas.scss'
 import * as THREE from 'three'
 
@@ -29,42 +29,49 @@ import * as THREE from 'three'
 // }
 
 export default function Canvas() {
-  const [cameraPosition, setCameraPosition] = useState<THREE.Vector3>(new THREE.Vector3(-3, 0, 30))
+	const [cameraPosition, setCameraPosition] = useState<THREE.Vector3>(
+		new THREE.Vector3(-3, 0, 30),
+	)
 
-  function moveCamera() {
-    const t = document.body.getBoundingClientRect().top
-    const x = t * -0.0002
-    const y = x
-    const z = t * -0.1
-    setCameraPosition(new THREE.Vector3(x, y, z))
-  }
+	function moveCamera() {
+		const t = document.body.getBoundingClientRect().top
+		const x = t * -0.0002
+		const y = x
+		const z = t * -0.1
+		setCameraPosition(new THREE.Vector3(x, y, z))
+	}
 
-  const stars = (
-    <group>
-      {Array(200).fill('').map(() => {
-        const [x, y, z] = Array(3).fill('').map(() => THREE.MathUtils.randFloatSpread(100))
-        return (
-          <mesh
-            position={[x, y, z]}
-          >
-            <sphereGeometry />
-            <meshNormalMaterial />
-          </mesh>
-        )
-      })}
-    </group>
-  )
+	const stars = (
+		<group>
+			{Array(200)
+				.fill('')
+				.map(() => {
+					const [x, y, z] = Array(3)
+						.fill('')
+						.map(() => THREE.MathUtils.randFloatSpread(100))
+					return (
+						<mesh position={[x, y, z]}>
+							<sphereGeometry />
+							<meshNormalMaterial />
+						</mesh>
+					)
+				})}
+		</group>
+	)
 
-  return (
-    <div id="homepage-canvas">
-      <ThreeCanvas camera={{ position: cameraPosition, fov: 28 }} onWheel={moveCamera}>
-        {stars}
-        <ambientLight intensity={0.6} />
-        {/* <mesh position={[0, 0, 0]}>
+	return (
+		<div id="homepage-canvas">
+			<ThreeCanvas
+				camera={{ position: cameraPosition, fov: 28 }}
+				onWheel={moveCamera}
+			>
+				{stars}
+				<ambientLight intensity={0.6} />
+				{/* <mesh position={[0, 0, 0]}>
           <sphereGeometry />
           <meshNormalMaterial />
         </mesh> */}
-      </ThreeCanvas>
-    </div>
-  )
+			</ThreeCanvas>
+		</div>
+	)
 }

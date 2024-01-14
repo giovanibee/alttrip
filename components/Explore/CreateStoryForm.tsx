@@ -13,6 +13,14 @@ import { roundNumber } from '@/lib/helpers'
 
 import './CreateStory.scss'
 
+interface ChapterFormValues {
+	name: string
+	description: string
+	details: string
+	passcode: string
+	secretText: string
+}
+
 export function CreateStoryForm({
 	closeModal = () => {},
 	latitude = 0,
@@ -39,12 +47,14 @@ export function CreateStoryForm({
 			description,
 		}
 
-		const parsedChapters: { [key: string]: any }[] = []
+		const parsedChapters: {
+			[key: string]: string | number | ChapterFormValues
+		}[] = []
 		Object.keys(chapters).forEach((key) => {
 			const [type, idString] = key.split('-') as [string, string]
 			const id = parseInt(idString)
 			if (!parsedChapters[id]) parsedChapters[id] = {}
-			parsedChapters[id][type] = chapters[key]
+			parsedChapters[id][type] = chapters[key] as ChapterFormValues
 			parsedChapters[id].latitude = latitude
 			parsedChapters[id].longitude = longitude
 			parsedChapters[id].order = id
@@ -64,8 +74,9 @@ export function CreateStoryForm({
 				closeModal()
 				router.push('/explore')
 			}
-		} catch (error: Error | any) {
-			switch (error?.response?.status) {
+		} catch (error: unknown) {
+			const { response } = (error as { response: { status: number } }) || {}
+			switch (response?.status) {
 				case 422:
 					toast.error('Field is missing')
 					break

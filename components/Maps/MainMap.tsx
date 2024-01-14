@@ -1,11 +1,21 @@
 import { useEffect } from 'react'
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
+import { LatLngTuple } from 'leaflet'
 import { LoadingDots } from '@/components/Loading'
 import { Marks } from '@/components/Maps'
+import { SortedChapters } from 'database/sortedChapters'
 import 'leaflet/dist/leaflet.css'
 
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">'
 // const DEFAULT_LOCATION: LatLngTuple = [37.61044011296472, -115.3930761807285]
+
+interface MainMapProps {
+	chapters: SortedChapters | null
+	location: LatLngTuple
+	setLocation: (param: LatLngTuple) => void
+	setNewStoryLocation: (param: LatLngTuple) => void
+	setIsCreateStoryOpen: (param: boolean) => void
+}
 
 export default function MainMap({
 	chapters,
@@ -13,13 +23,7 @@ export default function MainMap({
 	setLocation,
 	setNewStoryLocation,
 	setIsCreateStoryOpen,
-}: {
-	chapters: any
-	location: any
-	setLocation: any
-	setNewStoryLocation: any
-	setIsCreateStoryOpen: any
-}) {
+}: MainMapProps) {
 	useEffect(() => {
 		if (!navigator?.geolocation) return
 		navigator.geolocation.getCurrentPosition(
@@ -29,8 +33,7 @@ export default function MainMap({
 	}, [setLocation])
 
 	const MapComponent = () => {
-		// eslint-disable-next-line no-unused-vars
-		const _map = useMapEvents({
+		useMapEvents({
 			click: ({ latlng }) => {
 				const { lat, lng } = latlng
 				setNewStoryLocation([lat, lng])

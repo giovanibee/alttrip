@@ -9,31 +9,28 @@ import './style.scss'
 export function AuthStatus() {
 	const { data: session } = useSession()
 	return (
-		<div id="auth-status">
+		<div id="auth-status-options">
 			{session?.user?.name ? (
-				<Menu
-					dropBackground="black"
-					label={session?.user?.name || 'Unknown'}
-					id="auth-status-signed-in"
-					items={[
-						{
-							label: <SignOut />,
-						},
-					]}
-					justifyContent="end"
-					margin={{
-						top: 'auto',
-						bottom: '0',
-					}}
-				/>
+				<>
+					<Link href="/explore">Explore</Link>
+					<Menu
+						dropBackground="black"
+						label={session?.user?.name || 'Unknown'}
+						id="auth-status-signed-in"
+						items={[{ label: <SignOut /> }]}
+						justifyContent="end"
+						margin={{ top: 'auto', bottom: '0' }}
+					/>
+				</>
 			) : (
-				<div id="auth-status-options">
+				<>
 					<Link href={{ pathname: '/login', query: { type: 'guest' } }}>
-						Guest
+						Guest Session
 					</Link>
+					<div className="divider"> | </div>
 					<Link href="/login">Login</Link>
 					<Link href="/register">Sign Up</Link>
-				</div>
+				</>
 			)}
 		</div>
 	)

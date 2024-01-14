@@ -2,11 +2,11 @@ import React from 'react'
 import ChapterPopup from './ChapterPopup'
 import { SortedChapters } from 'database/sortedChapters'
 
-export function Marks({
-	chapters = null,
-}: {
+interface MarksProps {
 	chapters: SortedChapters | null
-}) {
+}
+
+export function Marks({ chapters = null }: MarksProps) {
 	return (
 		<>
 			{chapters?.incompleteChapters &&

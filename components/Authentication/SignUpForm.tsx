@@ -34,8 +34,9 @@ export function SignUpForm() {
 				toast.success('Account created! You can now sign in.')
 				setTimeout(() => router.push('/login'), 2000)
 			}
-		} catch (error: Error | any) {
-			switch (error?.response?.status) {
+		} catch (error: unknown) {
+			const { response } = (error as { response: { status: number } }) || {}
+			switch (response?.status) {
 				case 400:
 					toast.error('Field is missing')
 					break

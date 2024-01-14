@@ -1,17 +1,13 @@
-#auth-status {
-  margin: 0 0 0 auto;
+#auth-status-options {
+  display: flex;
+  margin: 0 28px 0 auto;
+  min-width: 200px;
 
-  &-options {
-    display: flex;
-    margin-top: 28px;
-    min-width: 200px;
-
-    a {
-      display: block;
-      font-weight: 600;
-      padding: 0px 12px;
-      text-decoration: none;
-    }
+  a {
+    display: block;
+    font-weight: 600;
+    padding: 0px 12px;
+    text-decoration: none;
   }
 }
 
@@ -23,4 +19,8 @@ button#login-submit-button {
 button#sign-up-submit-button {
   display: flex;
   margin: 14px 0 0 auto;
+}
+
+div.divider {
+  margin: 12px 0;
 }

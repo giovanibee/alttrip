@@ -26,7 +26,7 @@ export function LoginForm() {
 			return setIsLoading(false)
 		}
 
-		const response = signIn('credentials', {
+		signIn('credentials', {
 			email,
 			password,
 			redirect: false,

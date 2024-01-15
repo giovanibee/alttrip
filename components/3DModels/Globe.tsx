@@ -17,12 +17,12 @@ type GLTFResult = GLTF & {
 	}
 }
 
-export function Globe() {
+export function Globe({ position = [0.261, 1, 0.368] }) {
 	const { nodes, materials } = useGLTF('/models/globe/globe.glb') as GLTFResult
 	return (
 		<group
-			position={[0.261, 1, 0.368]}
-			rotation={[-Math.PI / 2, 1.134, Math.PI / 2]}
+			position={position as [number, number, number]}
+			rotation={[0, 0, 0]}
 			scale={3}
 		>
 			<mesh

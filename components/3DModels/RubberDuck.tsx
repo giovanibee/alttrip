@@ -19,10 +19,11 @@ export function RubberDuck() {
 	const { nodes, materials } = useGLTF(
 		'/models/rubber-duck/rubber_duck_toy_4k.glb',
 	) as GLTFResult
+	materials.rubber_duck_toy.metalness = 0.1
+	materials.rubber_duck_toy.roughness = 0.7
 	return (
 		<mesh
 			scale={10}
-			castShadow
 			receiveShadow
 			geometry={nodes.rubber_duck_toy.geometry}
 			material={materials.rubber_duck_toy}

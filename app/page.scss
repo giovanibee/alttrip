@@ -1,16 +1,28 @@
+@import "lib/themes/variables";
+
 #link-enter-explore {
   font-family: Aloja;
   font-size: 1.6em;
   font-weight: bold;
-
   text-align: center;
 }
 
 #globe-image {
-  border: 2px solid transparent;
-  border-radius: 50%;
-  display: block;
-  margin: 56px auto;
+  display: flex;
+}
+
+#globe-image, #map-preview-image, #map-preview-image-2 {
+  opacity: 0.95;
+}
+
+#map-preview-image {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+#map-preview-image-2 {
+  margin-left: auto;
+  margin-right: 0;
 }
 
 #main-home {
@@ -18,10 +30,29 @@
 }
 
 .summary-container {
-  display: flex;
+  display: inline;
   font-size: larger;
 
-  :nth-of-type(2) {
-    padding: 56px;
+  :nth-child(2), :last-child {
+    margin-left: auto;
+    margin-right: 0;
+    text-align: end;
+  }
+
+  div {
+    margin-left: 0;
+  }
+
+  p {
+    background-color: black;
+    color: white;
+    font-size: 18px; 
+    line-height: 28px;
+    padding: 4px 10px;
+  }
+
+  :last-child {
+    top: 0px;
   }
 }
+

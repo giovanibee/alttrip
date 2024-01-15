@@ -3,31 +3,8 @@
 import React, { useState } from 'react'
 import { Canvas as ThreeCanvas } from '@react-three/fiber'
 import * as THREE from 'three'
-import { Globe, RubberDuck } from '../3DModels'
+import { WireframeBall } from '../3DModels'
 import './Canvas.scss'
-
-// function Box(props: any) {
-//   // This reference will give us direct access to the mesh
-//   const meshRef = useRef()
-//   // Set up state for the hovered and active state
-//   const [hovered, setHover] = useState(false)
-//   const [active, setActive] = useState(false)
-//   // Subscribe this component to the render-loop, rotate the mesh every frame
-//   useFrame((state, delta) => (meshRef?.current?.rotation?.x += delta))
-//   // Return view, these are regular three.js elements expressed in JSX
-//   return (
-//     <mesh
-//       {...props}
-//       ref={meshRef}
-//       scale={active ? 1.5 : 1}
-//       onClick={(event) => setActive(!active)}
-//       onPointerOver={(event) => setHover(true)}
-//       onPointerOut={(event) => setHover(false)}>
-//       <boxGeometry args={[1, 1, 1]} />
-//       <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-//     </mesh>
-//   )
-// }
 
 export default function Canvas() {
 	const [cameraPosition, setCameraPosition] = useState<THREE.Vector3>(
@@ -44,15 +21,15 @@ export default function Canvas() {
 
 	const stars = (
 		<group>
-			{Array(28)
+			{Array(56)
 				.fill('')
-				.map(() => {
+				.map((_, id) => {
 					const [x, y, z] = Array(3)
 						.fill('')
-						.map(() => THREE.MathUtils.randFloatSpread(50))
+						.map(() => THREE.MathUtils.randFloatSpread(40))
 					return (
 						<group key={`${x}-${y}-${z}`} position={[x, y, z]} dispose={null}>
-							<RubberDuck />
+							<WireframeBall />
 						</group>
 					)
 				})}
@@ -65,15 +42,20 @@ export default function Canvas() {
 				camera={{ position: cameraPosition, fov: 28 }}
 				onWheel={moveCamera}
 			>
-				<directionalLight intensity={2} />
-				<directionalLight position={[-3, 0, 30]} intensity={1} />
-				<ambientLight intensity={0.2} />
-				<Globe position={[-3, 0, 60]} />
+				<fog attach="fog" args={['rgba(0, 0, 0, 0.1)', 20, 70]} />
+				<directionalLight color="yellow" intensity={1} position={[50, -2, 0]} />
+				<directionalLight
+					color="rgb(16, 192, 223)"
+					intensity={1.2}
+					position={[-3, 0, 5]}
+				/>
+				<directionalLight
+					color="purple"
+					intensity={1}
+					position={[-10, -10, 0]}
+				/>
+				<ambientLight color="rgb(16, 192, 223)" intensity={0.5} />
 				{stars}
-				{/* <mesh position={[0, 0, 0]}>
-          <sphereGeometry />
-          <meshNormalMaterial />
-        </mesh> */}
 			</ThreeCanvas>
 		</div>
 	)

@@ -19,26 +19,19 @@ export default function Home() {
 			easing: 'spring(4, 60, 10, 0)',
 			loop: true,
 			targets: '#globe-image',
-			keyframes: [
-				{
-					translateY: 14,
-				},
-				{
-					translateY: -14,
-				},
-			],
+			keyframes: [{ translateY: 14 }, { translateY: -14 }],
 		})
 	})
 
 	return (
 		<div id="main-home">
-			<Image
+			{/* <Image
 				alt="photo image of a globe"
 				id="globe-image"
 				src={globeImage}
 				height={280}
 				width={280}
-			/>
+			/> */}
 			<Canvas />
 			<div className="summary-container">
 				<p>Go on adventures by hunting for stories in the real world. 🗺️ 🔎</p>

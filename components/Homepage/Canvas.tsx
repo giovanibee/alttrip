@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react'
 import { Canvas as ThreeCanvas } from '@react-three/fiber'
-import './Canvas.scss'
 import * as THREE from 'three'
+import { Globe, RubberDuck } from '../3DModels'
+import './Canvas.scss'
 
 // function Box(props: any) {
 //   // This reference will give us direct access to the mesh
@@ -43,17 +44,16 @@ export default function Canvas() {
 
 	const stars = (
 		<group>
-			{Array(200)
+			{Array(28)
 				.fill('')
 				.map(() => {
 					const [x, y, z] = Array(3)
 						.fill('')
-						.map(() => THREE.MathUtils.randFloatSpread(100))
+						.map(() => THREE.MathUtils.randFloatSpread(50))
 					return (
-						<mesh position={[x, y, z]}>
-							<sphereGeometry />
-							<meshNormalMaterial />
-						</mesh>
+						<group key={`${x}-${y}-${z}`} position={[x, y, z]} dispose={null}>
+							<RubberDuck />
+						</group>
 					)
 				})}
 		</group>
@@ -65,8 +65,11 @@ export default function Canvas() {
 				camera={{ position: cameraPosition, fov: 28 }}
 				onWheel={moveCamera}
 			>
+				<directionalLight intensity={2} />
+				<directionalLight position={[-3, 0, 30]} intensity={1} />
+				<ambientLight intensity={0.2} />
+				<Globe position={[-3, 0, 60]} />
 				{stars}
-				<ambientLight intensity={0.6} />
 				{/* <mesh position={[0, 0, 0]}>
           <sphereGeometry />
           <meshNormalMaterial />

@@ -11,7 +11,8 @@ export default function Canvas() {
 		new THREE.Vector3(-3, 0, 30),
 	)
 
-	function moveCamera() {
+	function moveCamera(event: React.WheelEvent<HTMLDivElement>) {
+		event.preventDefault()
 		const t = document.body.getBoundingClientRect().top
 		const x = t * -0.0002
 		const y = x

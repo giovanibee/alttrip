@@ -1,26 +1,26 @@
 #auth-status-options {
-  display: flex;
+  display: inline-block;
   margin: 0 28px 0 auto;
   min-width: 200px;
 
+  a, button, div {
+    display: inline-block;
+  }
   a {
-    display: block;
     font-weight: 600;
     padding: 0px 12px;
     text-decoration: none;
   }
-}
 
-button#login-submit-button {
-  display: flex;
-  margin: 14px 0 0 auto;
-}
-
-button#sign-up-submit-button {
-  display: flex;
-  margin: 14px 0 0 auto;
-}
-
-div.divider {
-  margin: 12px 0;
+  button#login-submit-button {
+    margin: 14px 0 0 auto;
+  }
+  
+  button#sign-up-submit-button {
+    margin: 14px 0 0 auto;
+  }
+  
+  div.divider {
+    margin: 12px 0;
+  }
 }

@@ -22,11 +22,6 @@ export default function Login() {
 		if (isGuest) {
 			setIsLoading(true)
 			// redirect to explore page and set session to guest
-			console.log('logging in as guest')
-			console.log(
-				process.env.NEXT_PUBLIC_GUEST_EMAIL,
-				process.env.NEXT_PUBLIC_GUEST_PASSWORD,
-			)
 			signIn('credentials', {
 				email: process.env.NEXT_PUBLIC_GUEST_EMAIL,
 				password: process.env.NEXT_PUBLIC_GUEST_PASSWORD,

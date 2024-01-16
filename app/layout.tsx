@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 						<Suspense fallback={<Loading />}>
 							<Grommet>
 								<MainHeader />
-								<Main style={{ margin: '56px' }}>{children}</Main>
+								<Main>{children}</Main>
 								<Footer>
 									<div
 										style={{

@@ -7,6 +7,7 @@ import Image from 'next/image'
 import anime from 'animejs/lib/anime.es.js'
 import globeImage from '/public/images/globe.png'
 import previewImage from '/public/images/map-preview.png'
+import previewImage2 from '/public/images/add-chapter-preview.png'
 import './page.scss'
 
 const Canvas = dynamic(() => import('@/components/Homepage/Canvas'), {
@@ -50,7 +51,7 @@ export default function Home() {
 					<Image
 						alt="preview image of creation interface"
 						id="map-preview-image-2"
-						src={previewImage}
+						src={previewImage2}
 						height={344.36}
 						width={550}
 					/>

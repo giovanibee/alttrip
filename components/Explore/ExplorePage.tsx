@@ -52,19 +52,24 @@ export default function CreateStoryPage() {
 
 	const listOfIncompleteChapters = useMemo(() => {
 		const canShow = location && chapters?.incompleteChapters
-		return canShow && chapters?.incompleteChapters.map(
-			(chapter, id) => {
-				let distance = getDistance(
-					{ latitude: location[0], longitude: location[1] },
-					{ latitude: chapter.latitude, longitude: chapter.longitude },
-				) / 1000 // convert to km
+		return (
+			canShow &&
+			chapters?.incompleteChapters.map((chapter, id) => {
+				let distance =
+					getDistance(
+						{ latitude: location[0], longitude: location[1] },
+						{ latitude: chapter.latitude, longitude: chapter.longitude },
+					) / 1000 // convert to km
 				if (useMiles) distance = distance * 0.621371
 				return (
-				<div key={id}>
-					{chapter.name} - {roundNumber(distance, 2)} {useMiles ? 'miles' : 'km'}
-				</div>
-			)})
-		}, [chapters, location, useMiles])
+					<div key={id}>
+						{chapter.name} - {roundNumber(distance, 2)}{' '}
+						{useMiles ? 'miles' : 'km'}
+					</div>
+				)
+			})
+		)
+	}, [chapters, location, useMiles])
 
 	return (
 		<Grommet>
@@ -72,7 +77,7 @@ export default function CreateStoryPage() {
 				{(screenSize) => (
 					<>
 						<Grid
-							id="create-story-page"
+							id="explore-page-grid"
 							columns={['auto', 'medium']}
 							rows={['xxsmall', 'xsmall', 'auto', 'auto']}
 							gap="small"
@@ -111,7 +116,7 @@ export default function CreateStoryPage() {
 							<Box gridArea="nearby">
 								<h3>Nearby stories - Incomplete</h3>
 								<Checkbox
-									className='use-miles-checkbox'
+									className="use-miles-checkbox"
 									checked={useMiles}
 									label="Use miles"
 									onChange={(event) => setUseMiles(event.target.checked)}

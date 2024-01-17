@@ -13,6 +13,7 @@ export default async function middleware(req: NextRequest) {
 		cookieName: 'next-auth.session-token',
 	})
 
+	console.log('session', session)
 	if (session === null && path === '/explore') {
 		return NextResponse.redirect(new URL('/login', req.url))
 	} else if (session && ['/login', '/register'].includes(path)) {

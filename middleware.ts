@@ -8,7 +8,7 @@ export default async function middleware(req: NextRequest) {
 	if (path === '/') return NextResponse.next()
 
 	const session = await getToken({
-		req,
+		req: req,
 		secret: process.env.NEXTAUTH_SECRET,
 		cookieName: 'next-auth.session-token',
 	})

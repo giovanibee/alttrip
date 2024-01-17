@@ -5,6 +5,7 @@ generator client {
 
 datasource db {
   provider          = "postgresql"
+  directUrl         = env("POSTGRES_DIRECT_URL")
   url               = env("POSTGRES_PRISMA_URL")
   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
 }

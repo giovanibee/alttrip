@@ -7,6 +7,7 @@ export default async function middleware(req: NextRequest) {
 	if (path === '/') return NextResponse.next()
 
 	const token = req.cookies.get('next-auth.session-token')
+	console.log('token', token)
 
 	if (!token && path === '/explore') {
 		return NextResponse.redirect(new URL('/login', req.url))

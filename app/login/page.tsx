@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
@@ -10,8 +11,8 @@ import {
 	CardFooter,
 } from '@/components/BaseComponents'
 import { LoginForm } from '@/components/Authentication'
-import { useMemo, useState } from 'react'
 import { LoadingDots } from '@/components/Loading'
+import './page.scss'
 
 export default function Login() {
 	const [isLoading, setIsLoading] = useState(false)
@@ -27,9 +28,7 @@ export default function Login() {
 				password: process.env.NEXT_PUBLIC_GUEST_PASSWORD,
 				redirect: false,
 			})
-				.then((session) => {
-					console.log(session)
-					// document.cookie='next-auth.session-token=;'
+				.then(() => {
 					router.push('/explore')
 				})
 				.catch((err) => {

@@ -1,4 +1,6 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
+// import { getIronSession } from 'iron-session'
+// import { cookies } from 'next/headers'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { compare } from 'bcrypt'
 import { user } from 'database'
@@ -32,6 +34,11 @@ export const authOptions: NextAuthOptions = {
 
 				const doesPasswordMatch = await compare(credentials.password, password)
 				if (!doesPasswordMatch) return null
+				// const session = await getIronSession(cookies(), {
+				// 	password: process.env.IRON_SESSION_SECRET || '',
+				// 	cookieName: 'next-auth-session-token',
+				// })
+				// session.save()
 
 				return { id, email, name }
 			},

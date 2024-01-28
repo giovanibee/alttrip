@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { ResponsiveContext } from 'grommet'
 import { getDistance } from 'geolib'
 
@@ -11,6 +13,7 @@ import { CreateStoryModal } from '@/components/Explore'
 import { roundNumber } from '@/lib/helpers'
 import MainMap from '@/components/Maps/MainMap'
 import './ExplorePage.scss'
+import { LoadingDots } from '../Loading'
 
 export default function CreateStoryPage() {
 	const [location, setLocation] = useState<LatLngTuple>()
@@ -18,8 +21,11 @@ export default function CreateStoryPage() {
 	const [addStory, setAddStory] = useState(false)
 	const [addChapter, setAddChapter] = useState(false)
 	const [isCreateStoryOpen, setIsCreateStoryOpen] = useState(false)
+	const router = useRouter()
 	// should be in settings page eventually
 	const [useMiles, setUseMiles] = useState(true)
+
+	const { data: session } = useSession()
 	// const [isCreateChapterOpen, setIsCreateChapterOpen] = useState(false)
 	const shouldFilterByDistance = false
 
@@ -28,6 +34,10 @@ export default function CreateStoryPage() {
 		location,
 		shouldFilterByDistance,
 	})
+
+	useEffect(() => {
+		if (!session?.user?.name) router.push('/login')
+	}, [session])
 
 	useEffect(() => {
 		if (Array.isArray(chapters?.incompleteChapters)) {
@@ -70,6 +80,8 @@ export default function CreateStoryPage() {
 			})
 		)
 	}, [chapters, location, useMiles])
+
+	if (!session?.user?.name) return <LoadingDots />
 
 	return (
 		<Grommet>

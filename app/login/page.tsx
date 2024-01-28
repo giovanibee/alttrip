@@ -26,9 +26,15 @@ export default function Login() {
 				email: process.env.NEXT_PUBLIC_GUEST_EMAIL,
 				password: process.env.NEXT_PUBLIC_GUEST_PASSWORD,
 				redirect: false,
-			}).then(() => {
-				router.push('/explore')
 			})
+				.then((session) => {
+					console.log(session)
+					// document.cookie='next-auth.session-token=;'
+					router.push('/explore')
+				})
+				.catch((err) => {
+					console.error(err)
+				})
 		}
 		return (
 			<Card id="login-card">

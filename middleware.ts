@@ -6,7 +6,8 @@ export default async function middleware(req: NextRequest) {
 	// If it's the root path, just render it
 	if (path === '/') return NextResponse.next()
 
-	const token = req.cookies.get('next-auth.session-token')
+	// TODO--- set custom cookie to figure this out once and all
+	const token = req.cookies.get('isAuthenticated')
 	console.log('token', token)
 
 	if (!token && path === '/explore') {

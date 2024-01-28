@@ -8,12 +8,19 @@ import { getDistance } from 'geolib'
 
 import { LatLngTuple } from '@/lib/types/geospatial'
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import { Box, Checkbox, Grid, Grommet } from '@/components/BaseComponents'
+import {
+	Box,
+	Button,
+	Checkbox,
+	Grid,
+	Grommet,
+} from '@/components/BaseComponents'
 import { CreateStoryModal } from '@/components/Explore'
 import { roundNumber } from '@/lib/helpers'
 import MainMap from '@/components/Maps/MainMap'
 import './ExplorePage.scss'
-import { LoadingDots } from '../Loading'
+
+const DEFAULT_LOCAITON: LatLngTuple = [36.276, -115.17]
 
 export default function CreateStoryPage() {
 	const [location, setLocation] = useState<LatLngTuple>()
@@ -35,9 +42,14 @@ export default function CreateStoryPage() {
 		shouldFilterByDistance,
 	})
 
+	const setLocalLocation = () => {
+		navigator.geolocation.getCurrentPosition((location) => {
+			setLocation([location.coords.latitude, location.coords.longitude])
+		})
+	}
 	useEffect(() => {
-		if (!session?.user?.name) router.push('/login')
-	}, [session])
+		setLocalLocation()
+	}, [])
 
 	useEffect(() => {
 		if (Array.isArray(chapters?.incompleteChapters)) {
@@ -81,7 +93,10 @@ export default function CreateStoryPage() {
 		)
 	}, [chapters, location, useMiles])
 
-	if (!session?.user?.name) return <LoadingDots />
+	if (!session?.user?.name) {
+		router.push('/login')
+		return null
+	}
 
 	return (
 		<Grommet>
@@ -91,15 +106,26 @@ export default function CreateStoryPage() {
 						<Grid
 							id="explore-page-grid"
 							columns={['auto', 'medium']}
-							rows={['xxsmall', 'xsmall', 'auto', 'auto']}
+							rows={['xxsmall', 'xsmall', 'xsmall', 'auto', 'auto']}
 							gap="small"
 							areas={[
 								['description', 'description'],
+								['click', 'click'],
 								['options', 'options'],
 								...orderBasedOnScreensize(screenSize, ['map', 'nearby']),
 							]}
 						>
 							<Box gridArea="description">{locationString}</Box>
+							<Box gridArea="click">
+								<a
+									onClick={() => {
+										setLocation(DEFAULT_LOCAITON)
+									}}
+								>
+									Use demo location (where most of the stories are currently!
+								</a>
+								<a onClick={setLocalLocation}>Reload current location</a>
+							</Box>
 							<Box gridArea="options">
 								On map click
 								<Checkbox
@@ -118,9 +144,9 @@ export default function CreateStoryPage() {
 							</Box>
 							<Box gridArea="map">
 								<MainMap
-									location={location}
-									setLocation={setLocation}
+									location={location ?? DEFAULT_LOCAITON}
 									chapters={chapters}
+									setLocation={setLocation}
 									setNewStoryLocation={setNewStoryLocation}
 									setIsCreateStoryOpen={setIsCreateStoryOpen}
 								/>

@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { signIn } from 'next-auth/react'
 import {
 	Card,
@@ -17,6 +18,7 @@ import './page.scss'
 export default function Login() {
 	const [isLoading, setIsLoading] = useState(false)
 	const router = useRouter()
+	const { data: session } = useSession()
 	const isGuest = useSearchParams()?.get?.('type') === 'guest'
 
 	const loginPage = useMemo(() => {
@@ -48,5 +50,9 @@ export default function Login() {
 		)
 	}, [isGuest])
 
+	if (session?.user?.name) {
+		router.push('/explore')
+		return null
+	}
 	return isLoading ? <LoadingDots /> : loginPage
 }

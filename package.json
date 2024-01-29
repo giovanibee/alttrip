@@ -28,7 +28,7 @@
     "ky-universal": "^0.12.0",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
-    "next": "^14.0.3",
+    "next": "^14.0.1",
     "next-auth": "^4.24.3",
     "next-session": "^4.0.5",
     "react": "^18.2.0",

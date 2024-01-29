@@ -47,7 +47,14 @@ export default function Page() {
 				<p>You can view stories and chapters by clicking on the map markers.</p>
 			</div>
 			<div className="faq-section">
-				<h3>Could I get involved?</h3>
+				<h3>Will there be a mobile app?</h3>
+				<p>
+					Someday! A mobile app would be better suited to exploring for sure, so
+					that's top of priority once the proof of concept is fleshed out.
+				</p>
+			</div>
+			<div className="faq-section">
+				<h3>Can I get involved in development?</h3>
 				<p>
 					Yes! This is a pre-alpha version of the game, so there's a lot of work
 					to be done. If you're interested in contributing, please reach out to
@@ -58,6 +65,10 @@ export default function Page() {
 					Or reach out to me (Giovani) directly{' '}
 					<a href="https://www.linkedin.com/in/giovani-bee/">on LinkedIn</a>!
 				</p>
+			</div>
+			<div className="faq-section">
+				<h3>Has anyone actually asked questions for this FAQ?</h3>
+				<p>No, but I can dream :,)</p>
 			</div>
 		</Card>
 	)

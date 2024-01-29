@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet'
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
 import { LatLngTuple } from 'leaflet'
 import { Marks, UserLocationPopup } from '@/components/Maps'
 import { SortedChapters } from 'database/sortedChapters'

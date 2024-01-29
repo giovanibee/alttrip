@@ -15,6 +15,10 @@ export interface Chapter {
 	secretText: string | null
 	storyId: number
 	question: string | null
+	story?: {
+		description: string
+		name: string
+	}
 
 	hasBeenCompleted?: boolean
 }
@@ -25,7 +29,7 @@ const checkIfChapterIsCompleted = async (email: string, chapterId: number) => {
 
 	return prisma.completedChapter.findUnique({
 		where: {
-			chapterId_userId: { userId: userRecord.id, chapterId }
+			chapterId_userId: { userId: userRecord.id, chapterId },
 		},
 		include: { chapter: true },
 	})
@@ -37,7 +41,11 @@ const getCompletedChapters = async (email: string) => {
 
 	return prisma.completedChapter.findMany({
 		where: { userId: userRecord.id },
-		include: { chapter: true },
+		include: {
+			chapter: {
+				include: { story: true },
+			},
+		},
 	})
 }
 
@@ -46,11 +54,19 @@ export interface SortedChapters {
 	incompleteChapters: Chapter[]
 }
 
+interface CompletedChapter {
+	id: number
+	chapterId: number
+	userId: number
+	chapter: Chapter
+}
+
 // all completed stories + next incomplete chapter based on order
 const getSortedChapters = async (email: string): Promise<SortedChapters> => {
-	const allFirstChapters = await chapters.getByOrder(0)
+	const allFirstChapters: Chapter[] = await chapters.getByOrder(0)
 
-	const completedChapters = await getCompletedChapters(email)
+	const completedChapters: CompletedChapter[] =
+		await getCompletedChapters(email)
 	// if no completed stories, return first chapters of all stories
 	if (completedChapters.length === 0) {
 		return {
@@ -63,7 +79,7 @@ const getSortedChapters = async (email: string): Promise<SortedChapters> => {
 	await Promise.all(
 		allFirstChapters.map(async (chapter) => {
 			const isChapterCompleted = completedChapters.find(
-				({ chapterId }) => chapterId === chapter.id,
+				({ id }) => id === chapter.id,
 			)
 
 			if (!isChapterCompleted) return incompleteChapters.push(chapter)
@@ -76,12 +92,12 @@ const getSortedChapters = async (email: string): Promise<SortedChapters> => {
 			if (!nextChapter) return
 
 			const isNextChapterCompleted = completedChapters.find(
-				({ chapterId }) => chapterId === nextChapter.id,
+				({ id }) => id === nextChapter.id,
 			)
 
 			if (!isNextChapterCompleted) incompleteChapters.push(nextChapter)
-		}
-	))
+		}),
+	)
 
 	return {
 		completedChapters: completedChapters.map(({ chapter }) => chapter),

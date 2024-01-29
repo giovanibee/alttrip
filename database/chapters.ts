@@ -8,8 +8,8 @@ interface CreateChapter extends UpdateChapter {
 	latitude: number
 	longitude: number
 	name: string
-  order: number
-  storyId: number
+	order: number
+	storyId: number
 }
 
 // TODO: allow for updating of order (and maybe story) later
@@ -19,8 +19,8 @@ interface UpdateChapter {
 	latitude?: number
 	longitude?: number
 	name?: string
-  passcode?: string
-  secretText?:  string
+	passcode?: string
+	secretText?: string
 	question?: string
 }
 
@@ -32,20 +32,24 @@ const deleteById = (id: number) =>
 		where: { id },
 	})
 
-const deleteAllByStoryId = async (storyId: number) => prisma.chapter.deleteMany({ where: { storyId } })
+const deleteAllByStoryId = async (storyId: number) =>
+	prisma.chapter.deleteMany({ where: { storyId } })
 
 const getAll = async () => prisma.chapter.findMany()
 
-const getByOrder = async (order: number) => prisma.chapter.findMany({ where: { order } })
+const getByOrder = async (order: number) =>
+	prisma.chapter.findMany({ where: { order }, include: { story: true } })
 
-const getByOrderAndStoryId = async (order: number, storyId: number) => prisma.chapter.findUnique({
-	where: { order_storyId: { order, storyId } }
-})
+const getByOrderAndStoryId = async (order: number, storyId: number) =>
+	prisma.chapter.findUnique({
+		where: { order_storyId: { order, storyId }, include: { story: true } },
+	})
 
 const getAllByStoryId = async (storyId: number) =>
-	prisma.chapter.findMany({ where: { storyId } })
+	prisma.chapter.findMany({ where: { storyId }, include: { story: true } })
 
-const getById = (id: number) => prisma.chapter.findUnique({ where: { id } })
+const getById = (id: number) =>
+	prisma.chapter.findUnique({ where: { id }, include: { story: true } })
 
 const updateById = (id: number, data: UpdateChapter) =>
 	prisma.chapter.update({
@@ -62,4 +66,15 @@ const verifyPasscode = async (chapterId: number, passcode: string) => {
 	return chapter.secretText
 }
 
-export { create, deleteById, deleteAllByStoryId, getAll, getByOrder, getByOrderAndStoryId, getAllByStoryId, getById, updateById, verifyPasscode }
+export {
+	create,
+	deleteById,
+	deleteAllByStoryId,
+	getAll,
+	getByOrder,
+	getByOrderAndStoryId,
+	getAllByStoryId,
+	getById,
+	updateById,
+	verifyPasscode,
+}

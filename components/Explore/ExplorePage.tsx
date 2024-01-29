@@ -104,8 +104,10 @@ export default function CreateStoryPage() {
 					if (useMiles) distance = distance * 0.621371
 					return (
 						<div key={id}>
-							{chapter.name} - {roundNumber(distance, 2)}{' '}
-							{useMiles ? 'miles' : 'km'}
+							{chapter.name} -{' '}
+							<span className="story-distance-inline">
+								{roundNumber(distance, 2)} {useMiles ? 'miles' : 'km'}
+							</span>
 						</div>
 					)
 				})

@@ -60,7 +60,7 @@ importers:
         specifier: ^0.1.2
         version: 0.1.2
       next:
-        specifier: ^14.0.3
+        specifier: ^14.0.1
         version: 14.0.3(@babel/core@7.23.5)(react-dom@18.2.0)(react@18.2.0)(sass@1.69.5)
       next-auth:
         specifier: ^4.24.3

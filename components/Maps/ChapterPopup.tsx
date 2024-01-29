@@ -43,9 +43,9 @@ export default function ChapterPopup({
 		id: chapterId,
 		latitude,
 		longitude,
-		name,
 		order,
 		question,
+		story,
 	} = chapter
 
 	const { data: secret, isPending, refetch } = useGetSecretText(chapter.id)
@@ -60,10 +60,10 @@ export default function ChapterPopup({
 	const secretSection = useMemo(() => {
 		if (isPending || isPendingVerification) {
 			return <LoadingDots className="chapter-popup-loading" />
-		} else if (!secret || typeof secret !== 'string') return null
-		return isComplete ? (
-			<p>Secret: {secret}</p>
-		) : (
+		} else if (isComplete && typeof secret === 'string') {
+			return <p>Secret: {secret}</p>
+		}
+		return (
 			<>
 				<p>{question || 'What is the passcode?'}</p>
 				<Input
@@ -74,7 +74,11 @@ export default function ChapterPopup({
 				<Button
 					className="verify-button"
 					label="Verify"
-					onClick={() => verifyPasscode({ chapterId, passcode })}
+					onClick={async () => {
+						const response = verifyPasscode({ chapterId, passcode })
+						console.log(response)
+						setIsViewing(false)
+					}}
 				/>
 			</>
 		)
@@ -110,7 +114,7 @@ export default function ChapterPopup({
 							<span className="map-popup-card-header-order">
 								{`Chapter ${order + 1}`}
 							</span>
-							<span className="map-popup-card-header-name">{name}</span>
+							<span className="map-popup-card-header-name">{story?.name}</span>
 						</CardHeader>
 						<CardBody className={`map-popup-card-body`}>
 							<InfoField label="Description" value={description} />
@@ -138,7 +142,7 @@ export default function ChapterPopup({
 			)}
 			<Popup className="map-popup-mark">
 				<h3>
-					Chapter {order + 1} - {name}
+					{story?.name} - Chapter {order + 1}
 				</h3>
 				<p className="map-popup-description">{description}</p>
 				<div className="coordinates-link">

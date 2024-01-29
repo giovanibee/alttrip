@@ -11,7 +11,8 @@ export async function GET(request: NextRequest) {
 	const id = parseInt(searchParams ?? '')
 	if (!id && id !== 0) {
 		return Response.json({
-			error: 'ChapterId is missing', status: 400
+			error: 'ChapterId is missing',
+			status: 400,
 		})
 	}
 
@@ -20,14 +21,16 @@ export async function GET(request: NextRequest) {
 		const email = session?.user?.email
 		if (!email) {
 			return Response.json({
-				error: 'Not authenticated', status: 401
+				error: 'Not authenticated',
+				status: 401,
 			})
 		}
 
 		const response = await sortedChapters.checkIfChapterIsCompleted(email, id)
 		if (!response) {
 			return Response.json({
-				error: 'Cannot access chapter', status: 403
+				error: 'Chapter is not completed',
+				status: 200,
 			})
 		}
 		const secretText = response?.chapter?.secretText
@@ -35,13 +38,14 @@ export async function GET(request: NextRequest) {
 	} catch (error) {
 		console.error(error)
 		return Response.json({
-			error: 'Server error', status: 500
+			error: 'Server error',
+			status: 500,
 		})
 	}
 }
 
 export async function PUT(request: NextRequest) {
-	const { chapterId, passcode } = await request.json() || {}
+	const { chapterId, passcode } = (await request.json()) || {}
 	if (!chapterId || !passcode) {
 		return Response.json({ error: 'Param in body is missing' })
 	}
@@ -56,7 +60,7 @@ export async function PUT(request: NextRequest) {
 		if (!response) {
 			return Response.json({ error: 'Invalid passcode', status: 400 })
 		}
-		
+
 		await sortedChapters.markChapterAsComplete(email, chapterId)
 		return Response.json(response)
 	} catch (error) {

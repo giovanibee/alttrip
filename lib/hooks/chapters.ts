@@ -6,6 +6,12 @@ import { LatLngTuple } from '@/lib/types/geospatial'
 import toast from 'react-hot-toast'
 
 import { SortedChapters } from 'database/sortedChapters'
+import { queryClient } from '@/components/Misc/ReactQueryProvider'
+
+export interface Story {
+	description: string
+	name: string
+}
 
 export interface Chapter {
 	id: number
@@ -21,6 +27,7 @@ export interface Chapter {
 	question: string | null
 
 	hasBeenCompleted?: boolean
+	story?: Story
 }
 
 const filterChaptersByDistance = (
@@ -81,22 +88,17 @@ export function useFetchChapters({
 
 export const useGetSecretText = (id: number) =>
 	useQuery({
-		queryKey: ['secretText'],
+		queryKey: [`secretText-${id}`],
 		queryFn: async () => {
 			try {
 				if (isNaN(id)) throw new Error('No id')
 				const response = await ky.get('/api/auth/chapters/secret', {
-					headers: {
-						'Content-Type': 'application/json',
-					},
+					headers: { 'Content-Type': 'application/json' },
 					searchParams: { chapterId: id },
 				})
 
-				const secretText = await response?.json()
-				if (!secretText || typeof secretText === 'undefined') {
-					throw new Error('No response')
-				}
-
+				const secretText = ((await response?.json()) as string) || null
+				if (!secretText) return ''
 				return secretText
 			} catch (error) {
 				console.error(error)
@@ -115,18 +117,19 @@ export const useVerifyPasscode = () =>
 		mutationFn: async ({ chapterId, passcode }: VerifyPasscodeProps) => {
 			try {
 				const response = await ky.put('/api/auth/chapters/secret', {
-					headers: {
-						'Content-Type': 'application/json',
-					},
+					headers: { 'Content-Type': 'application/json' },
 					json: { chapterId, passcode },
 				})
-				const secretText = ((await response.json()) as { res: string | null })
-					?.res
-				if (!secretText) {
-					toast.error('Invalid passcode')
-				} else {
-					toast.success('Correct!')
+				// TODO: clean this up
+				const secretText = (await response.json()) as
+					| string
+					| null
+					| { status: number }
+				if (!secretText || (secretText as { status: number }).status === 400) {
+					return toast.error('Invalid passcode')
 				}
+				toast.success('Correct!')
+				queryClient.setQueryData(['secretText'], secretText)
 				return secretText
 			} catch (error) {
 				console.error(error)

@@ -16,7 +16,7 @@ export function AuthStatus() {
 					<Link href="/explore">Explore</Link>
 					<Menu
 						dropBackground="black"
-						label={session?.user?.name || 'Unknown'}
+						label={session.user.name}
 						id="auth-status-signed-in"
 						items={[{ label: <SignOut /> }]}
 						justifyContent="end"

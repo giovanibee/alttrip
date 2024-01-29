@@ -10,6 +10,7 @@ export function AuthStatus() {
 	const { data: session } = useSession()
 	return (
 		<div id="auth-status-options">
+			<Link href="/about">About</Link>
 			{session?.user?.name ? (
 				<>
 					<Link href="/explore">Explore</Link>

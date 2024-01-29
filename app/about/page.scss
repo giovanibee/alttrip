@@ -1,0 +1,11 @@
+@import "lib/themes/variables";
+
+#faq-card {
+  margin: 100px auto;
+}
+
+.faq-section {
+  @include gradient-border-bottom-left-aligned;
+  margin: 0;
+  padding-bottom: 7px;
+}

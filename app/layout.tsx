@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 										}}
 									>
 										⊛ hello.alttrip@gmail.com ⊛ made with love from las vegas,
-										nv, usa © 2023
+										nv, usa © 2024
 									</div>
 								</Footer>
 							</Grommet>

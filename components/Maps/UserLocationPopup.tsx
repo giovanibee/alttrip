@@ -34,8 +34,10 @@ export const UserLocationPopup = ({
 				position={location}
 				icon={
 					new Icon({
-						iconUrl: '/icons/default-viewed-icon.png',
-						iconSize: [25, 41],
+						iconUrl: '/icons/star.svg',
+						iconAnchor: [0, 0],
+						iconSize: [35, 35],
+						popupAnchor: [0, 0],
 					})
 				}
 			>

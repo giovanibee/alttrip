@@ -25,9 +25,7 @@ export const UserLocationPopup = ({
 	}, [map])
 
 	useEffect(() => {
-		if (location) {
-			map.flyTo(location, map.getZoom())
-		}
+		if (location) map.flyTo(location, map.getZoom())
 	}, [location])
 
 	return (

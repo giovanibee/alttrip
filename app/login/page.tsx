@@ -16,9 +16,9 @@ import { LoadingDots } from '@/components/Loading'
 import './page.scss'
 
 export default function Login() {
-	const [isLoading, setIsLoading] = useState(false)
-	const router = useRouter()
 	const { data: session } = useSession()
+	const router = useRouter()
+	const [isLoading, setIsLoading] = useState(false)
 	const isGuest = useSearchParams()?.get?.('type') === 'guest'
 
 	const loginPage = useMemo(() => {

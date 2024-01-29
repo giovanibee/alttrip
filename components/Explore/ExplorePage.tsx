@@ -8,13 +8,7 @@ import { getDistance } from 'geolib'
 
 import { LatLngTuple } from '@/lib/types/geospatial'
 import { useFetchChapters } from '@/lib/hooks/chapters'
-import {
-	Box,
-	Button,
-	Checkbox,
-	Grid,
-	Grommet,
-} from '@/components/BaseComponents'
+import { Box, Checkbox, Grid, Grommet } from '@/components/BaseComponents'
 import { CreateStoryModal } from '@/components/Explore'
 import { roundNumber } from '@/lib/helpers'
 import MainMap from '@/components/Maps/MainMap'
@@ -52,9 +46,7 @@ export default function CreateStoryPage() {
 	}, [])
 
 	useEffect(() => {
-		if (Array.isArray(chapters?.incompleteChapters)) {
-			refetch()
-		}
+		if (Array.isArray(chapters?.incompleteChapters)) refetch()
 	}, [chapters])
 
 	const locationString = useMemo(() => {
@@ -64,7 +56,19 @@ export default function CreateStoryPage() {
 		coords = Array.isArray(location)
 			? roundNumber(location[0]) + ', ' + roundNumber(location[1], 3)
 			: 'unknown'
-		return <p id="current-location">Current location is {coords}</p>
+		return (
+			<p id="current-location">
+				Current location is {coords}
+				<a onClick={setLocalLocation}>[Reload]</a>
+				<a
+					onClick={() => {
+						setLocation(DEFAULT_LOCAITON)
+					}}
+				>
+					[Use demo location]
+				</a>
+			</p>
+		)
 	}, [location])
 
 	const orderBasedOnScreensize = (screenSize: string, options: string[]) => {
@@ -76,20 +80,35 @@ export default function CreateStoryPage() {
 		const canShow = location && chapters?.incompleteChapters
 		return (
 			canShow &&
-			chapters?.incompleteChapters.map((chapter, id) => {
-				let distance =
-					getDistance(
-						{ latitude: location[0], longitude: location[1] },
-						{ latitude: chapter.latitude, longitude: chapter.longitude },
-					) / 1000 // convert to km
-				if (useMiles) distance = distance * 0.621371
-				return (
-					<div key={id}>
-						{chapter.name} - {roundNumber(distance, 2)}{' '}
-						{useMiles ? 'miles' : 'km'}
-					</div>
-				)
-			})
+			chapters?.incompleteChapters
+				.sort((a, b) => {
+					/// TODO: NEEDS REFACTORING AAAHHHHH
+					const aDistance =
+						getDistance(
+							{ latitude: location[0], longitude: location[1] },
+							{ latitude: a.latitude, longitude: a.longitude },
+						) / 1000
+					const bDistance =
+						getDistance(
+							{ latitude: location[0], longitude: location[1] },
+							{ latitude: b.latitude, longitude: b.longitude },
+						) / 1000
+					return aDistance - bDistance
+				})
+				.map((chapter, id) => {
+					let distance =
+						getDistance(
+							{ latitude: location[0], longitude: location[1] },
+							{ latitude: chapter.latitude, longitude: chapter.longitude },
+						) / 1000 // convert to km
+					if (useMiles) distance = distance * 0.621371
+					return (
+						<div key={id}>
+							{chapter.name} - {roundNumber(distance, 2)}{' '}
+							{useMiles ? 'miles' : 'km'}
+						</div>
+					)
+				})
 		)
 	}, [chapters, location, useMiles])
 
@@ -105,31 +124,23 @@ export default function CreateStoryPage() {
 					<>
 						<Grid
 							id="explore-page-grid"
-							columns={['auto', 'medium']}
-							rows={['xxsmall', 'xsmall', 'xsmall', 'auto', 'auto']}
+							columns={['auto', 'auto']}
+							rows={['auto', 'auto', 'auto', 'auto', 'auto']}
 							gap="small"
 							areas={[
 								['description', 'description'],
-								['click', 'click'],
 								['options', 'options'],
 								...orderBasedOnScreensize(screenSize, ['map', 'nearby']),
 							]}
 						>
-							<Box gridArea="description">{locationString}</Box>
-							<Box gridArea="click">
-								<a
-									onClick={() => {
-										setLocation(DEFAULT_LOCAITON)
-									}}
-								>
-									Use demo location (where most of the stories are currently!
-								</a>
-								<a onClick={setLocalLocation}>Reload current location</a>
+							<Box gridArea="description" className="header-w-bottom-border">
+								{locationString}
 							</Box>
-							<Box gridArea="options">
-								On map click
+							<Box gridArea="options" id="map-click-options">
+								<p>On map click:</p>
 								<Checkbox
 									checked={addStory}
+									pad="small"
 									id="add-story-checkbox"
 									label="Add story"
 									onChange={(event) => setAddStory(event.target.checked)}
@@ -152,13 +163,18 @@ export default function CreateStoryPage() {
 								/>
 							</Box>
 							<Box gridArea="nearby">
-								<h3>Nearby stories - Incomplete</h3>
-								<Checkbox
-									className="use-miles-checkbox"
-									checked={useMiles}
-									label="Use miles"
-									onChange={(event) => setUseMiles(event.target.checked)}
-								/>
+								<div
+									id="nearby-stories-header"
+									className="header-w-bottom-border"
+								>
+									<h3>Nearby stories</h3>
+									<a
+										className="use-miles-checkbox"
+										onClick={() => setUseMiles(!useMiles)}
+									>
+										[Use {useMiles ? 'km' : 'miles'}]
+									</a>
+								</div>
 								{listOfIncompleteChapters}
 							</Box>
 						</Grid>

@@ -1,13 +1,63 @@
+@import "lib/themes/variables";
+
 #explore-page-grid {
   margin: 56px;
 }
 
-#current-location {
+#current-location, #map-click-options p {
   font-size: 1.2em;
+  margin: 10px 0;
+}
+
+
+#current-location {
+  a {
+    cursor: pointer;
+    font-size: 16px;
+    padding-left: 14px;
+  }
 }
 
 #main-map {
   border: 2px solid purple;
   border-radius: 8px;
   height: 560px;
+}
+
+#map-click-options {
+  display: inline-block;
+  
+  p {
+    font-size: 22px;
+    padding-right: 21px;
+  }
+
+  span {
+    padding-right: 14px;
+  }
+
+  p, div {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+#nearby-stories-header {
+  display: inline;
+  margin-bottom: 16px;
+
+  h3, a {
+    display: inline-block;
+  }
+
+  a {
+    cursor: pointer;
+    font-size: 16px;
+    padding-left: 14px;
+  }
+}
+
+.header-w-bottom-border {
+  @include gradient-border;
+  border-image: linear-gradient(to right, $iconic-blue, $stellar-purple) 1;
 }
